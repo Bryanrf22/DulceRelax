@@ -361,3 +361,17 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Firebase - credenciales y configuración sensible
+**/serviceAccountKey.json
+**/firebase-adminsdk*.json
+appsettings.Development.json
+appsettings.Local.json
+
+# Firebase - config de apps cliente (contiene API keys del proyecto)
+**/google-services.json
+**/GoogleService-Info.plist
+
+# Firma de apps Android
+*.keystore
+*.jks
