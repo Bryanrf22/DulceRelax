@@ -8,16 +8,15 @@ using Google.Cloud.Firestore;
 namespace DulceRelax.Shared.DTOs
 {
     [FirestoreData]
-    public class UsuarioDTO
+    public class DiaHorarioDTO
     {
-        [FirestoreDocumentId]
-        public string Id { get; set; } 
+        [FirestoreProperty]
+        public bool Activo { get; set; }
 
         [FirestoreProperty]
-        public string NombreCompleto { get; set; }
+        public string HoraInicio { get; set; }
 
         [FirestoreProperty]
-        public string NumTelefono { get; set; }
-
+        public string HoraFin { get; set; }
     }
 }
