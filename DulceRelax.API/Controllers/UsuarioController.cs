@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DulceRelax.API.Repositories;
+using DulceRelax.Shared.DTOs;
+using FirebaseAdmin.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using DulceRelax.API.Repositories;
 
 namespace DulceRelax.API.Controllers
 {
@@ -18,6 +20,30 @@ namespace DulceRelax.API.Controllers
         {
             var usuarios = await _repository.GetAllAsync();
             return Ok(usuarios);
+        }
+
+        [HttpPost("registrar")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Registrar(RegistrarUsuarioDTO dto)
+        {
+            var args = new UserRecordArgs
+            {
+                Email = dto.Email,
+                Password = dto.Password,
+                DisplayName = dto.NombreCompleto
+            };
+
+            var userRecord = await FirebaseAuth.DefaultInstance.CreateUserAsync(args);
+
+            var usuario = new UsuarioDTO
+            {
+                Id = userRecord.Uid,
+                NombreCompleto = dto.NombreCompleto,
+                NumTelefono = dto.NumTelefono
+            };
+            await _repository.SetAsync(userRecord.Uid, usuario);
+
+            return Ok(new { uid = userRecord.Uid });
         }
     }
 }
