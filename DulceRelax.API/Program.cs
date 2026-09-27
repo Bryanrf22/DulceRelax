@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddHttpClient();
 
 var projectId = builder.Configuration["Firebase:ProjectId"];
 var credentialsJson = builder.Configuration["Firebase:CredentialsJson"];
