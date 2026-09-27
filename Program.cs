@@ -1,21 +1,18 @@
-using DulceRelax.API.Repositories;
+using System.Text;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
+using DulceRelax.Api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- Servicios (todo esto ANTES de builder.Build()) ---
-
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
-builder.Services.AddHttpClient();
-
-var projectId = builder.Configuration["Firebase:ProjectId"];
+// Configuración de Firebase
 var credentialsJson = builder.Configuration["Firebase:CredentialsJson"];
+var projectId = builder.Configuration["Firebase:ProjectId"];
 
+// Firestore
 var firestoreDb = new FirestoreDbBuilder
 {
     ProjectId = projectId,
@@ -23,6 +20,13 @@ var firestoreDb = new FirestoreDbBuilder
 }.Build();
 builder.Services.AddSingleton(firestoreDb);
 
+// FirebaseAdmin (para operaciones administrativas: crear usuarios, custom claims)
+FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromJson(credentialsJson)
+});
+
+// Autenticación con Firebase Auth (JWT Bearer)
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -34,29 +38,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true
         };
     });
-
-FirebaseApp.Create(new AppOptions
-{
-    Credential = GoogleCredential.FromJson(credentialsJson)
-});
-
 builder.Services.AddAuthorization();
 
+// Repositorios
 builder.Services.AddScoped<UsuarioRepository>();
 
-// --- Build ---
+// Controllers, Swagger
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// --- Pipeline (orden importa) ---
-
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

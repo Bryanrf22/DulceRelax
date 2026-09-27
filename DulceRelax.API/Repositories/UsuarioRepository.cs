@@ -14,5 +14,10 @@ namespace DulceRelax.API.Repositories
             var snapshot = await _db.Collection("usuarios").GetSnapshotAsync();
             return snapshot.Documents.Select(d => d.ConvertTo<UsuarioDTO>()).ToList();
         }
+
+        public async Task SetAsync(string id, UsuarioDTO usuario)
+        {
+            await _db.Collection("usuarios").Document(id).SetAsync(usuario);
+        }
     }
 }
