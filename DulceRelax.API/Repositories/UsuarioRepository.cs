@@ -19,5 +19,25 @@ namespace DulceRelax.API.Repositories
         {
             await _db.Collection("usuarios").Document(id).SetAsync(usuario);
         }
+
+        public async Task<UsuarioDTO> GetByIdAsync(string id)
+        {
+            var doc = await _db.Collection("usuarios").Document(id).GetSnapshotAsync();
+            return doc.Exists ? doc.ConvertTo<UsuarioDTO>() : null;
+        }
+
+        public async Task UpdateAsync(string id, ActualizarUsuarioDTO dto)
+        {
+            await _db.Collection("usuarios").Document(id).UpdateAsync(new Dictionary<string, object>
+            {
+                {"NombreCompleto", dto.NombreCompleto },
+                {"NumTelefono", dto.NumTelefono }
+            });
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            await _db.Collection("usuarios").Document(id).DeleteAsync();
+        }
     }
 }

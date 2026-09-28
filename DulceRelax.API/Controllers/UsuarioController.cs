@@ -36,7 +36,7 @@ namespace DulceRelax.API.Controllers
 
         [HttpPost("registrar")]
         [AllowAnonymous]
-        public async Task<IActionResult> Registrar(RegistrarDTO dto)
+        public async Task<IActionResult> Registrar(RegistrarUsuarioDTO dto)
         {
             try
             {
@@ -92,6 +92,36 @@ namespace DulceRelax.API.Controllers
 
         }
 
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMe()
+        {
+            var uid = User.FindFirst("user_id")?.Value;
+            var usuario = await _repository.GetByIdAsync(uid);
+            return usuario is null ? NotFound() : Ok(usuario);
+        }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            var usuario = await _repository.GetByIdAsync(id);
+            return usuario is null ? NotFound() : Ok(usuario);
+        }
+
+        [HttpPut("me")]
+        public async Task<IActionResult> UpdateMe(ActualizarUsuarioDTO dto)
+        {
+            var uid = User.FindFirst("user_id")?.Value;
+            await _repository.UpdateAsync(uid, dto);
+            return NoContent();
+        }
+
+        [HttpDelete("me")]
+        public async Task<IActionResult> DeleteMe()
+        {
+            var uid = User.FindFirst("user_id")?.Value;
+            await _repository.DeleteAsync(uid);
+            await FirebaseAuth.DefaultInstance.DeleteUserAsync(uid);
+            return NoContent();
+        }
     }
 }
