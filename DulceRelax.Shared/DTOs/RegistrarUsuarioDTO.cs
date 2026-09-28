@@ -1,6 +1,6 @@
 ﻿namespace DulceRelax.Shared.DTOs
 {
-    public class RegistrarDTO
+    public class RegistrarUsuarioDTO
     {
         public string Correo { get; set; }
         public string Password { get; set; }
