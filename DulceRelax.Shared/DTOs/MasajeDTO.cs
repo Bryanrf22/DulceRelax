@@ -23,7 +23,7 @@ namespace DulceRelax.Shared.DTOs
         public bool Disponible { get; set; }
 
         [FirestoreProperty]
-        public decimal Precio {  get; set; }
+        public double Precio {  get; set; }
 
     }
 }
