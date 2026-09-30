@@ -43,6 +43,7 @@ FirebaseApp.Create(new AppOptions
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<UsuarioRepository>();
+builder.Services.AddScoped<MasajeRepository>();
 
 // --- Build ---
 

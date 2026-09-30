@@ -15,9 +15,12 @@ namespace DulceRelax.API.Repositories
             return snapshot.Documents.Select(d => d.ConvertTo<MasajeDTO>()).ToList();
         }
 
-        public async Task SetAsync(string id, MasajeDTO masaje)
+        public async Task<string> CreateAsync(MasajeDTO masaje)
         {
-            await _db.Collection("masajes").Document(id).SetAsync(masaje);
+            var docRef = _db.Collection("masajes").Document();
+            masaje.Id = docRef.Id;
+            await docRef.SetAsync(masaje);
+            return docRef.Id;
         }
 
         public async Task<MasajeDTO> GetById(string id)
@@ -32,7 +35,8 @@ namespace DulceRelax.API.Repositories
             {
                 { "Nombre", dto.Nombre },
                 { "Descripcion", dto.Descripcion },
-                { "Disponible", dto.Disponible }
+                { "Disponible", dto.Disponible },
+                { "Precio", dto.Precio }
             });
         }
 
