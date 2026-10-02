@@ -14,22 +14,22 @@ namespace DulceRelax.API.Repositories
 
         private CollectionReference Citas => _db.Collection("citas");
 
-        public async Task<CitaDTO?> GetByIdAsync(string id)
+        public async Task<CitaRespuestaDTO?> GetByIdAsync(string id)
         {
             var doc = await Citas.Document(id).GetSnapshotAsync();
-            return doc.Exists ? doc.ConvertTo<CitaDTO>() : null;
+            return doc.Exists ? ToRespuesta(doc.ConvertTo<CitaDTO>()) : null;
         }
 
-        public async Task<List<CitaDTO>> GetByUsuarioAsync(string usuarioId)
+        public async Task<List<CitaRespuestaDTO>> GetByUsuarioAsync(string usuarioId)
         {
             var snap = await Citas.WhereEqualTo("UsuarioId", usuarioId).GetSnapshotAsync();
             return snap.Documents
-                .Select(d => d.ConvertTo<CitaDTO>())
-                .OrderBy(c => c.FechaHora.ToDateTime())
+                .Select(d => ToRespuesta(d.ConvertTo<CitaDTO>()))
+                .OrderBy(c => c.FechaHora)
                 .ToList();
         }
 
-        public async Task<List<CitaDTO>> GetByFechaAsync(DateTime fecha)
+        public async Task<List<CitaRespuestaDTO>> GetByFechaAsync(DateTime fecha)
         {
             var inicio = DateTime.SpecifyKind(fecha.Date, DateTimeKind.Utc);
             var snap = await Citas
@@ -37,8 +37,8 @@ namespace DulceRelax.API.Repositories
                 .WhereLessThan("FechaHora", Timestamp.FromDateTime(inicio.AddDays(1)))
                 .GetSnapshotAsync();
             return snap.Documents
-                .Select(d => d.ConvertTo<CitaDTO>())
-                .OrderBy(c => c.FechaHora.ToDateTime())
+                .Select(d => ToRespuesta(d.ConvertTo<CitaDTO>()))
+                .OrderBy(c => c.FechaHora)
                 .ToList();
         }
 
@@ -115,5 +115,19 @@ namespace DulceRelax.API.Repositories
                 d.Id != excluirId &&
                 d.ConvertTo<CitaDTO>().Estado != EstadoCita.Cancelada);
         }
+
+        private static CitaRespuestaDTO ToRespuesta(CitaDTO c) => new()
+        {
+            Id = c.Id,
+            UsuarioId = c.UsuarioId,
+            UsuarioNombre = c.UsuarioNombre,
+            UsuarioTelefono = c.UsuarioTelefono,
+            DireccionExacta = c.DireccionExacta,
+            DetalleDireccion = c.DetalleDireccion,
+            MasajeId = c.MasajeId,
+            MasajeNombre = c.MasajeNombre,
+            FechaHora = c.FechaHora.ToDateTime(),
+            Estado = c.Estado
+        };
     }
 }
