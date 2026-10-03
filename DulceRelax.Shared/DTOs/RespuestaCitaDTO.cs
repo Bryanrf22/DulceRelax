@@ -1,6 +1,6 @@
 ﻿namespace DulceRelax.Shared.DTOs
 {
-    public class CitaRespuestaDTO
+    public class RespuestaCitaDTO
     {
         public string Id { get; set; }
         public string UsuarioId { get; set; }

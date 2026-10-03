@@ -34,6 +34,16 @@ namespace DulceRelax.API.Controllers
             return Ok(await _repository.GetByUsuarioAsync(uid));
         }
 
+        [HttpGet("agendadas")]
+        public async Task<IActionResult> GetAgendadas(
+            [FromQuery] DateTimeOffset desde, [FromQuery] DateTimeOffset hasta)
+        {
+            if (hasta <= desde || hasta - desde > TimeSpan.FromDays(3))
+                return BadRequest(new { error = "Rango inválido." });
+
+            return Ok(await _repository.GetConfirmadasPorRangoAsync(desde.UtcDateTime, hasta.UtcDateTime));
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
