@@ -14,13 +14,13 @@ namespace DulceRelax.API.Repositories
 
         private CollectionReference Citas => _db.Collection("citas");
 
-        public async Task<CitaRespuestaDTO?> GetByIdAsync(string id)
+        public async Task<RespuestaCitaDTO?> GetByIdAsync(string id)
         {
             var doc = await Citas.Document(id).GetSnapshotAsync();
             return doc.Exists ? ToRespuesta(doc.ConvertTo<CitaDTO>()) : null;
         }
 
-        public async Task<List<CitaRespuestaDTO>> GetByUsuarioAsync(string usuarioId)
+        public async Task<List<RespuestaCitaDTO>> GetByUsuarioAsync(string usuarioId)
         {
             var snap = await Citas.WhereEqualTo("UsuarioId", usuarioId).GetSnapshotAsync();
             return snap.Documents
@@ -29,7 +29,7 @@ namespace DulceRelax.API.Repositories
                 .ToList();
         }
 
-        public async Task<List<CitaRespuestaDTO>> GetByFechaAsync(DateTime fecha)
+        public async Task<List<RespuestaCitaDTO>> GetByFechaAsync(DateTime fecha)
         {
             var inicio = DateTime.SpecifyKind(fecha.Date, DateTimeKind.Utc);
             var snap = await Citas
@@ -38,6 +38,20 @@ namespace DulceRelax.API.Repositories
                 .GetSnapshotAsync();
             return snap.Documents
                 .Select(d => ToRespuesta(d.ConvertTo<CitaDTO>()))
+                .OrderBy(c => c.FechaHora)
+                .ToList();
+        }
+
+        public async Task<List<RespuestaCitaDTO>> GetConfirmadasPorRangoAsync(DateTime desdeUtc, DateTime hastaUtc)
+        {
+            var snap = await Citas
+                .WhereGreaterThanOrEqualTo("FechaHora", Timestamp.FromDateTime(desdeUtc))
+                .WhereLessThan("FechaHora", Timestamp.FromDateTime(hastaUtc))
+                .GetSnapshotAsync();
+
+            return snap.Documents
+                .Select(d => ToRespuesta(d.ConvertTo<CitaDTO>()))
+                .Where(c => c.Estado == EstadoCita.Confirmada)
                 .OrderBy(c => c.FechaHora)
                 .ToList();
         }
@@ -116,7 +130,7 @@ namespace DulceRelax.API.Repositories
                 d.ConvertTo<CitaDTO>().Estado != EstadoCita.Cancelada);
         }
 
-        private static CitaRespuestaDTO ToRespuesta(CitaDTO c) => new()
+        private static RespuestaCitaDTO ToRespuesta(CitaDTO c) => new()
         {
             Id = c.Id,
             UsuarioId = c.UsuarioId,
