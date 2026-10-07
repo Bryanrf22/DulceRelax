@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DulceRelax.App.Cliente.Views.InicioSesionCliente"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FBF6F2">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="30"
+            Spacing="0"
+            VerticalOptions="Center">
+
+            <Image
+                Source="logo.png"
+                HeightRequest="120"
+                WidthRequest="120"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"
+                Margin="0,0,0,20" />
+            <Border
+                BackgroundColor="White"
+                StrokeThickness="0"
+                Padding="25"
+                HorizontalOptions="Fill">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label
+                        Text="Bienvenido"
+                        FontSize="30"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="#222222"
+                        Margin="0,0,0,5" />
+
+                    <Label
+                        Text="Inicie sesión para continuar"
+                        FontSize="15"
+                        HorizontalOptions="Center"
+                        TextColor="#777777"
+                        Margin="0,0,0,20" />
+
+                    <Label
+                        Text="Correo electrónico"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        TextColor="#333333" />
+
+                    <Border
+                        BackgroundColor="White"
+                        Stroke="#DDDDD9"
+                        StrokeThickness="1"
+                        HeightRequest="48"
+                        Padding="12,0"
+                        Margin="0,0,0,10">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Entry
+                            x:Name="EmailEntry"
+                            Placeholder="ejemplo@email.com"
+                            Keyboard="Email"
+                            ClearButtonVisibility="WhileEditing"
+                            FontSize="14"
+                            TextColor="#333333"
+                            PlaceholderColor="#999999"
+                            BackgroundColor="Transparent" />
+
+                    </Border>
+
+                    <Label
+                        Text="Contraseña"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        TextColor="#333333" />
+
+                    <Border
+                        BackgroundColor="White"
+                        Stroke="#DDDDD9"
+                        StrokeThickness="1"
+                        HeightRequest="48"
+                        Padding="12,0"
+                        Margin="0,0,0,8">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Entry
+                            x:Name="PasswordEntry"
+                            Placeholder="Contraseña"
+                            IsPassword="True"
+                            FontSize="14"
+                            TextColor="#333333"
+                            PlaceholderColor="#999999"
+                            BackgroundColor="Transparent" />
+
+                    </Border>
+
+                    <Grid
+                        ColumnDefinitions="Auto,*,Auto"
+                        ColumnSpacing="8"
+                        Margin="0,0,0,18">
+
+                  
+                        <CheckBox
+                            x:Name="RememberCheckBox"
+                            Grid.Column="0"
+                            Color="#3F8758"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            Grid.Column="1"
+                            Text="Recordarme"
+                            FontSize="13"
+                            TextColor="#888888"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            x:Name="ForgotPasswordLabel"
+                            Grid.Column="2"
+                            Text="¿Olvidaste tu contraseña?"
+                            FontSize="13"
+                            FontAttributes="Bold"
+                            TextColor="#3F8758"
+                            VerticalOptions="Center">
+
+                            <Label.GestureRecognizers>
+                                <PointerGestureRecognizer
+                                    PointerEntered="OnForgotPasswordEntered"
+                                    PointerExited="OnForgotPasswordExited" />
+                            </Label.GestureRecognizers>
+
+                        </Label>
+
+                    </Grid>
+
+                    <Button
+                        x:Name="LoginButton"
+                        Text="Iniciar sesión"
+                        Clicked="OnLoginClicked"
+                        BackgroundColor="#3F8758"
+                        TextColor="White"
+                        CornerRadius="15"
+                        HeightRequest="50"
+                        FontSize="15"
+                        FontAttributes="Bold"
+                        Margin="0,0,0,8">
+
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer
+                                PointerEntered="OnButtonPointerEntered"
+                                PointerExited="OnButtonPointerExited" />
+                        </Button.GestureRecognizers>
+
+                    </Button>
+    
+                    <HorizontalStackLayout
+                        HorizontalOptions="Center"
+                        Spacing="4">
+
+                        <Label
+    Text="¿No tienes una cuenta?"
+    FontSize="14"
+    TextColor="#888888"
+    VerticalOptions="Center" />
+
+                        <Label
+    x:Name="RegisterLabel"
+    Text="Regístrate"
+    FontSize="14"
+    FontAttributes="Bold"
+    TextColor="#3F8758"
+    VerticalOptions="Center">
+
+                            <Label.GestureRecognizers>
+
+                               
+                                <TapGestureRecognizer
+            Tapped="OnRegisterClicked" />
+
+                                <PointerGestureRecognizer
+            PointerEntered="OnRegisterEntered"
+            PointerExited="OnRegisterExited" />
+
+                            </Label.GestureRecognizers>
+
+                        </Label>
+                    </HorizontalStackLayout>
+
+               
+                    <Label
+                        x:Name="MessageLabel"
+                        HorizontalOptions="Center"
+                        TextColor="Red"
+                        FontSize="13"
+                        Margin="0,5,0,0" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+
+</ContentPage>

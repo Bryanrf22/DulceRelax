@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="DulceRelax.App.Cliente.Views.PerfilCliente"
+    BackgroundColor="#FBF6F2"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="30"
+            Spacing="0"
+            VerticalOptions="Center">
+
+            <!-- LOGO FUERA DEL CONTENEDOR -->
+            <Image
+                Source="logo.png"
+                HeightRequest="120"
+                WidthRequest="120"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"
+                Margin="0,0,0,20" />
+
+            <!-- CONTENEDOR BLANCO -->
+            <Border
+                BackgroundColor="White"
+                StrokeThickness="0"
+                Padding="25"
+                HorizontalOptions="Fill">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout
+                    Spacing="12">
+
+                    <!-- ICONO DE PERFIL -->
+                    <Image
+                        Source="icono.png"
+                        HeightRequest="90"
+                        WidthRequest="90"
+                        Aspect="AspectFit"
+                        HorizontalOptions="Center"
+                        Margin="0,0,0,10" />
+
+                    <!-- TITULO -->
+                    <Label
+                        Text="Mi perfil"
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        TextColor="#333333"
+                        HorizontalOptions="Center"
+                        Margin="0,0,0,10" />
+
+                    <!-- CORREO -->
+                    <Label
+                        Text="Correo electrónico"
+                        FontSize="13"
+                        TextColor="#666666" />
+
+                    <Border
+                        BackgroundColor="#F5F5F5"
+                        Stroke="#DDDDDD"
+                        StrokeThickness="1"
+                        Padding="12">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+
+                        <Entry
+                            x:Name="EmailEntry"
+                            IsReadOnly="True"
+                            TextColor="#555555"
+                            BackgroundColor="Transparent"
+                            FontSize="14" />
+                    </Border>
+
+                    <!-- CONTRASEÑA -->
+                    <Label
+                        Text="Contraseña"
+                        FontSize="13"
+                        TextColor="#666666"
+                        Margin="0,5,0,0" />
+
+                    <Border
+                        BackgroundColor="#F5F5F5"
+                        Stroke="#DDDDDD"
+                        StrokeThickness="1"
+                        Padding="12">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+
+                        <Entry
+                            x:Name="PasswordEntry"
+                            IsReadOnly="True"
+                            IsPassword="True"
+                            TextColor="#555555"
+                            BackgroundColor="Transparent"
+                            FontSize="14" />
+                    </Border>
+
+                    <!-- NOMBRE -->
+                    <Label
+                        Text="Nombre"
+                        FontSize="13"
+                        TextColor="#666666"
+                        Margin="0,5,0,0" />
+
+                    <Border
+                        BackgroundColor="#F5F5F5"
+                        Stroke="#DDDDDD"
+                        StrokeThickness="1"
+                        Padding="12">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+
+                        <Entry
+                            x:Name="NombreEntry"
+                            IsReadOnly="True"
+                            TextColor="#555555"
+                            BackgroundColor="Transparent"
+                            FontSize="14" />
+                    </Border>
+
+                    <!-- TELEFONO -->
+                    <Label
+                        Text="Teléfono"
+                        FontSize="13"
+                        TextColor="#666666"
+                        Margin="0,5,0,0" />
+
+                    <Border
+                        BackgroundColor="#F5F5F5"
+                        Stroke="#DDDDDD"
+                        StrokeThickness="1"
+                        Padding="12">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+
+                        <Entry
+                            x:Name="TelefonoEntry"
+                            IsReadOnly="True"
+                            TextColor="#555555"
+                            BackgroundColor="Transparent"
+                            FontSize="14" />
+                    </Border>
+
+                    <!-- DIRECCION -->
+                    <Label
+                        Text="Dirección"
+                        FontSize="13"
+                        TextColor="#666666"
+                        Margin="0,5,0,0" />
+
+                    <Border
+                        BackgroundColor="#F5F5F5"
+                        Stroke="#DDDDDD"
+                        StrokeThickness="1"
+                        Padding="12">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+
+                        <Entry
+                            x:Name="DireccionEntry"
+                            IsReadOnly="True"
+                            TextColor="#555555"
+                            BackgroundColor="Transparent"
+                            FontSize="14" />
+                    </Border>
+
+                    <!-- BOTON EDITAR -->
+                    <Button
+                        x:Name="EditButton"
+                        Text="Editar"
+                        TextColor="White"
+                        BackgroundColor="#3F8758"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        CornerRadius="12"
+                        Margin="0,15,0,0"
+                        Clicked="OnEditClicked">
+
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer
+                                PointerEntered="OnEditEntered"
+                                PointerExited="OnEditExited" />
+                        </Button.GestureRecognizers>
+
+                    </Button>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

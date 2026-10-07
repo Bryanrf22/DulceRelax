@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="DulceRelax.App.Cliente.Views.PrincipalCliente"
+    BackgroundColor="#F5F4F0"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="*,75">
+
+        <ScrollView Grid.Row="0">
+
+            <VerticalStackLayout
+                Padding="20,30,20,20"
+                Spacing="0">
+
+                <Image
+                    Source="logo.png"
+                    HeightRequest="270"
+                    WidthRequest="280"
+                    Aspect="AspectFit"
+                    HorizontalOptions="Center"
+                    Margin="0,0,0,5" />
+
+                <Border
+                    BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="18,15,18,20"
+                    HorizontalOptions="Fill">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+
+                    <VerticalStackLayout Spacing="5">
+
+
+                        <Label
+                            Text="Masajes"
+                            FontSize="25"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            TextColor="#262626"
+                            Margin="0,0,0,0" />
+
+
+                        <Label
+                            Text="Masajes Disponibles"
+                            FontSize="13"
+                            HorizontalOptions="Center"
+                            TextColor="#888888"
+                            Margin="0,0,0,18" />
+
+
+                        <Border
+                            BackgroundColor="White"
+                            Stroke="#E0E0E0"
+                            StrokeThickness="1"
+                            Padding="0"
+                            HeightRequest="145"
+                            HorizontalOptions="Fill">
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="15" />
+                            </Border.StrokeShape>
+
+                            <Grid ColumnDefinitions="103,*">
+
+                            
+                                <Border
+                                    Grid.Column="0"
+                                    BackgroundColor="#D2E5D5"
+                                    StrokeThickness="0">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle
+                                            CornerRadius="15,0,0,15" />
+                                    </Border.StrokeShape>
+
+                                    <Image
+                                            Source="masaje1.jpg"
+                                            Aspect="AspectFill"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill" />
+
+                                </Border>
+
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Padding="14,10,12,10"
+                                    Spacing="3">
+
+
+                                    <Grid ColumnDefinitions="*,Auto">
+
+                                        <Label
+                                            Text="Relajante"
+                                            FontSize="16"
+                                            FontAttributes="Bold"
+                                            TextColor="#292929"
+                                            VerticalOptions="Center" />
+
+                                        <Border
+                                            Grid.Column="1"
+                                            BackgroundColor="#EAF4EC"
+                                            StrokeThickness="0"
+                                            Padding="10,4">
+
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="12" />
+                                            </Border.StrokeShape>
+
+                                            <Label
+                                                Text="Precio: 200 C$"
+                                                FontSize="11"
+                                                FontAttributes="Bold"
+                                                TextColor="#3F8758" />
+
+                                        </Border>
+
+                                    </Grid>
+
+                                    <Label
+                                        Text="◷ Duración: 1 hora"
+                                        FontSize="11"
+                                        TextColor="#777777" />
+
+
+                                    <Label
+                                        Text="Reduce el estrés y alivia la tensión muscular"
+                                        FontSize="10.5"
+                                        TextColor="#777777"
+                                        LineBreakMode="WordWrap"
+                                        MaxLines="2" />
+
+                                    <Button
+                                        x:Name="RelaxButton"
+                                        Text="Solicitar cita"
+                                        FontSize="11"
+                                        FontAttributes="Bold"
+                                        HeightRequest="30"
+                                        CornerRadius="8"
+                                        Padding="0"
+                                        BackgroundColor="#3F8758"
+                                        TextColor="White"
+                                        Clicked="OnRelaxClicked">
+
+                                        <Button.GestureRecognizers>
+
+                                            <PointerGestureRecognizer
+                                                PointerEntered="OnRelaxEntered"
+                                                PointerExited="OnRelaxExited" />
+
+                                        </Button.GestureRecognizers>
+
+                                    </Button>
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+
+                        </Border>
+
+                        <BoxView
+                            HeightRequest="12"
+                            BackgroundColor="Transparent" />
+
+                        <Border
+                            BackgroundColor="White"
+                            Stroke="#E0E0E0"
+                            StrokeThickness="1"
+                            Padding="0"
+                            HeightRequest="145"
+                            HorizontalOptions="Fill">
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="15" />
+                            </Border.StrokeShape>
+
+                            <Grid ColumnDefinitions="103,*">
+
+                                <Border
+                                    Grid.Column="0"
+                                    BackgroundColor="#D2E5D5"
+                                    StrokeThickness="0">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle
+                                            CornerRadius="15,0,0,15" />
+                                    </Border.StrokeShape>
+
+                                    <Image
+                                             Source="masaje2.jpg"
+                                             Aspect="AspectFill"
+                                             HorizontalOptions="Fill"
+                                             VerticalOptions="Fill" />
+
+                                </Border>
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Padding="14,10,12,10"
+                                    Spacing="3">
+
+                                    <Grid ColumnDefinitions="*,Auto">
+
+                                        <Label
+                                            Text="Profundo"
+                                            FontSize="16"
+                                            FontAttributes="Bold"
+                                            TextColor="#292929"
+                                            VerticalOptions="Center" />
+
+                                        <Border
+                                            Grid.Column="1"
+                                            BackgroundColor="#EAF4EC"
+                                            StrokeThickness="0"
+                                            Padding="10,4">
+
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="12" />
+                                            </Border.StrokeShape>
+
+                                            <Label
+                                                Text="Precio: 250 C$"
+                                                FontSize="11"
+                                                FontAttributes="Bold"
+                                                TextColor="#3F8758" />
+
+                                        </Border>
+
+                                    </Grid>
+
+                                    <Label
+                                        Text="◷ Duración: 1 hora"
+                                        FontSize="11"
+                                        TextColor="#777777" />
+                                    <Label
+                                        Text="Aplica presión firme e intensa para llegar a las capas musculares profundas y aliviar nudos o dolores crónicos"
+                                        FontSize="10.5"
+                                        TextColor="#777777"
+                                        LineBreakMode="WordWrap"
+                                        MaxLines="3" />
+
+                                    <Button
+                                        x:Name="DeepButton"
+                                        Text="Solicitar cita"
+                                        FontSize="11"
+                                        FontAttributes="Bold"
+                                        HeightRequest="30"
+                                        CornerRadius="8"
+                                        Padding="0"
+                                        BackgroundColor="#3F8758"
+                                        TextColor="White"
+                                        Clicked="OnDeepClicked">
+
+                                        <Button.GestureRecognizers>
+
+                                            <PointerGestureRecognizer
+                                                PointerEntered="OnDeepEntered"
+                                                PointerExited="OnDeepExited" />
+
+                                        </Button.GestureRecognizers>
+
+                                    </Button>
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+
+                        </Border>
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+        <Border
+            Grid.Row="1"
+            BackgroundColor="White"
+            Stroke="#E5E5E5"
+            StrokeThickness="1"
+            Padding="10,5">
+
+            <Grid ColumnDefinitions="*,*,*">
+
+                <VerticalStackLayout
+                    Grid.Column="0"
+                    HorizontalOptions="Center"
+                    Spacing="2">
+
+                    <!-- PLACEHOLDER: reemplazar por home.png definitivo -->
+                    <Border
+                        x:Name="HomeIcon"
+                        BackgroundColor="#FFF3CD"
+                        Stroke="#F0AD4E"
+                        StrokeThickness="2"
+                        StrokeDashArray="4,2"
+                        StrokeShape="RoundRectangle 6"
+                        HeightRequest="40"
+                        WidthRequest="40"
+                        HorizontalOptions="Center">
+                        <Label
+                            Text="IMG"
+                            FontSize="9"
+                            FontAttributes="Bold"
+                            TextColor="#8A6D3B"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                    <Label
+                        x:Name="HomeLabel"
+                        Text="Inicio"
+                        FontSize="10"
+                        FontAttributes="Bold"
+                        TextColor="#3F8758"
+                        HorizontalOptions="Center" />
+
+                    <VerticalStackLayout.GestureRecognizers>
+
+                        <PointerGestureRecognizer
+                            PointerEntered="OnHomeEntered"
+                            PointerExited="OnHomeExited" />
+
+                    </VerticalStackLayout.GestureRecognizers>
+
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    HorizontalOptions="Center"
+                    Spacing="2">
+
+                    <!-- PLACEHOLDER: reemplazar por calendar.png definitivo -->
+                    <Border
+                        x:Name="CalendarIcon"
+                        BackgroundColor="#CFF4FC"
+                        Stroke="#0EA5E9"
+                        StrokeThickness="2"
+                        StrokeDashArray="4,2"
+                        StrokeShape="RoundRectangle 6"
+                        HeightRequest="40"
+                        WidthRequest="40"
+                        HorizontalOptions="Center">
+                        <Label
+                            Text="IMG"
+                            FontSize="9"
+                            FontAttributes="Bold"
+                            TextColor="#075985"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                    <Label
+                        x:Name="CalendarLabel"
+                        Text="Mis Citas"
+                        FontSize="10"
+                        TextColor="#333333"
+                        HorizontalOptions="Center" />
+
+                    <VerticalStackLayout.GestureRecognizers>
+
+                        <PointerGestureRecognizer
+                            PointerEntered="OnCalendarEntered"
+                            PointerExited="OnCalendarExited" />
+
+                    </VerticalStackLayout.GestureRecognizers>
+
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+    Grid.Column="2"
+    HorizontalOptions="Center"
+    Spacing="2">
+
+                    <Image
+        x:Name="ProfileIcon"
+        Source="icono.png"
+        HeightRequest="23"
+        WidthRequest="23" />
+
+                    <Label
+        x:Name="ProfileLabel"
+        Text="Perfil"
+        FontSize="10"
+        TextColor="#333333"
+        HorizontalOptions="Center" />
+
+                    <VerticalStackLayout.GestureRecognizers>
+
+                        <TapGestureRecognizer Tapped="OnProfileTapped" />
+
+                        <PointerGestureRecognizer
+            PointerEntered="OnProfileEntered"
+            PointerExited="OnProfileExited" />
+                    </VerticalStackLayout.GestureRecognizers>
+
+                </VerticalStackLayout>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</ContentPage>
