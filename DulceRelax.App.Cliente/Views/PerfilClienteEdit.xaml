@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DulceRelax.App.Cliente.Views.PerfilClienteEdit"
+             Title="Editar Perfil"
+             BackgroundColor="#FBF6F2"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Editar Perfil"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="#222222"
+                   Margin="5,0,0,0" />
+
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="25"
+                    HorizontalOptions="Fill">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label Text="Nombre"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="NombreEntry"
+                               Placeholder="Nombre completo"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Correo Electrónico"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="EmailEntry"
+                               Placeholder="correo@ejemplo.com"
+                               Keyboard="Email"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Teléfono"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="TelefonoEntry"
+                               Placeholder="Teléfono"
+                               Keyboard="Telephone"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Dirección"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="DireccionEntry"
+                               Placeholder="Dirección"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Contraseña"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="PasswordEntry"
+                               IsPassword="True"
+                               Placeholder="Contraseña"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
+                    </Border>
+
+                    <HorizontalStackLayout Spacing="10" Margin="0,20">
+                        <Button x:Name="SaveButton"
+                                Text="💾 Guardar"
+                                HeightRequest="50"
+                                CornerRadius="15"
+                                BackgroundColor="#3F8758"
+                                TextColor="White"
+                                FontSize="15"
+                                FontAttributes="Bold"
+                                Clicked="OnSaveClicked"
+                                HorizontalOptions="FillAndExpand" />
+                        <Button x:Name="CancelButton"
+                                Text="✕ Cancelar"
+                                HeightRequest="50"
+                                CornerRadius="15"
+                                BackgroundColor="#C9423F"
+                                TextColor="White"
+                                FontSize="15"
+                                FontAttributes="Bold"
+                                Clicked="OnCancelClicked"
+                                HorizontalOptions="FillAndExpand" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

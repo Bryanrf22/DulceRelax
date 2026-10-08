@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DulceRelax.App.Cliente.Views.PerfilCliente"
+             Title="Mi Perfil"
+             BackgroundColor="#FBF6F2"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <HorizontalStackLayout HorizontalOptions="FillAndExpand" Spacing="10">
+                <Button x:Name="BackButton"
+                        Text="← Atrás"
+                        BackgroundColor="#3F8758"
+                        TextColor="White"
+                        Padding="15,10"
+                        CornerRadius="12"
+                        FontSize="14"
+                        Clicked="OnBackClicked"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start" />
+                <Label Text="Mi Perfil"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="#222222"
+                       VerticalOptions="Center" />
+                <Button x:Name="EditButton"
+                        Text="✏️ Editar"
+                        BackgroundColor="#3F8758"
+                        TextColor="White"
+                        Padding="15,10"
+                        CornerRadius="12"
+                        FontSize="14"
+                        Clicked="OnEditClicked"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End" />
+            </HorizontalStackLayout>
+
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="25"
+                    HorizontalOptions="Fill">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label Text="Nombre"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="#F5F5F5"
+                            StrokeThickness="0"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="NombreEntry"
+                               IsReadOnly="True"
+                               BackgroundColor="Transparent"
+                               FontSize="14"
+                               TextColor="#333333" />
+                    </Border>
+
+                    <Label Text="Correo Electrónico"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="#F5F5F5"
+                            StrokeThickness="0"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="EmailEntry"
+                               IsReadOnly="True"
+                               BackgroundColor="Transparent"
+                               FontSize="14"
+                               TextColor="#333333" />
+                    </Border>
+
+                    <Label Text="Teléfono"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="#F5F5F5"
+                            StrokeThickness="0"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="TelefonoEntry"
+                               IsReadOnly="True"
+                               BackgroundColor="Transparent"
+                               FontSize="14"
+                               TextColor="#333333" />
+                    </Border>
+
+                    <Label Text="Dirección"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="#F5F5F5"
+                            StrokeThickness="0"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="DireccionEntry"
+                               IsReadOnly="True"
+                               BackgroundColor="Transparent"
+                               FontSize="14"
+                               TextColor="#333333" />
+                    </Border>
+
+                    <Label Text="Contraseña"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="#F5F5F5"
+                            StrokeThickness="0"
+                            HeightRequest="48"
+                            Padding="12,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="PasswordEntry"
+                               IsPassword="True"
+                               IsReadOnly="True"
+                               BackgroundColor="Transparent"
+                               FontSize="14"
+                               TextColor="#333333" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

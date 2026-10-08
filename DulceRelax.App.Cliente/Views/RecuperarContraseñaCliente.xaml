@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DulceRelax.App.Cliente.Views.RecuperarContraseñaCliente"
+             Title="Recuperar Contraseña"
+             BackgroundColor="#FBF6F2"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+
+            <Image Source="logo.png"
+                   HeightRequest="120"
+                   WidthRequest="120"
+                   Aspect="AspectFit"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,20" />
+
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="25"
+                    HorizontalOptions="Fill">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label Text="Recuperar Contraseña"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#222222"
+                           Margin="0,0,0,5" />
+
+                    <Label Text="Ingresa tu correo electrónico para recuperar tu contraseña"
+                           FontSize="14"
+                           HorizontalOptions="Center"
+                           TextColor="#777777"
+                           Margin="0,0,0,15" />
+
+                    <Label x:Name="MessageLabel"
+                           Text=""
+                           HorizontalTextAlignment="Center"
+                           TextColor="#27AE60"
+                           FontSize="14"
+                           Margin="0,0,0,5" />
+
+                    <Label Text="Correo electrónico"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry Placeholder="ejemplo@email.com"
+                               Keyboard="Email"
+                               ClearButtonVisibility="WhileEditing"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Button x:Name="SendButton"
+                            Text="Enviar correo"
+                            HeightRequest="50"
+                            CornerRadius="15"
+                            BackgroundColor="#3F8758"
+                            TextColor="White"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            Clicked="OnSendClicked"
+                            Margin="0,5,0,8" />
+
+                    <Button x:Name="BackButton"
+                            Text="Volver al inicio de sesión"
+                            HeightRequest="50"
+                            CornerRadius="15"
+                            BackgroundColor="#3F8758"
+                            TextColor="White"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            Clicked="OnBackClicked" />
+
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
