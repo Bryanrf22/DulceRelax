@@ -14,19 +14,14 @@ public partial class PerfilClienteEdit : ContentPage
         DireccionEntry.Text = "De los helados El pepe 67m al sur pegado a donde vivia doña Mary";
     }
 
-    // TODO: guardar cambios en la API (fase posterior)
     private async void OnSaveClicked(object sender, EventArgs e)
     {
-        await Shell.Current.Navigation.PopAsync();
+        // TODO: guardar cambios en la API (fase posterior)
+        await Shell.Current.GoToAsync("..");
     }
 
-    private void OnSaveEntered(object sender, PointerEventArgs e)
+    private async void OnCancelClicked(object sender, EventArgs e)
     {
-        SaveButton.BackgroundColor = Color.FromArgb("#2F7047");
-    }
-
-    private void OnSaveExited(object sender, PointerEventArgs e)
-    {
-        SaveButton.BackgroundColor = Color.FromArgb("#3F8758");
+        await Shell.Current.GoToAsync("..");
     }
 }

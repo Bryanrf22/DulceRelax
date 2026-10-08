@@ -19,13 +19,8 @@ public partial class PerfilCliente : ContentPage
         await Shell.Current.GoToAsync(nameof(PerfilClienteEdit));
     }
 
-    private void OnEditEntered(object sender, PointerEventArgs e)
+    private async void OnBackClicked(object sender, EventArgs e)
     {
-        EditButton.BackgroundColor = Color.FromArgb("#2F7047");
-    }
-
-    private void OnEditExited(object sender, PointerEventArgs e)
-    {
-        EditButton.BackgroundColor = Color.FromArgb("#3F8758");
+        await Shell.Current.GoToAsync("..");
     }
 }

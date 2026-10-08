@@ -145,17 +145,7 @@
                                         Padding="0"
                                         BackgroundColor="#3F8758"
                                         TextColor="White"
-                                        Clicked="OnRelaxClicked">
-
-                                        <Button.GestureRecognizers>
-
-                                            <PointerGestureRecognizer
-                                                PointerEntered="OnRelaxEntered"
-                                                PointerExited="OnRelaxExited" />
-
-                                        </Button.GestureRecognizers>
-
-                                    </Button>
+                                        Clicked="OnRelaxClicked" />
 
                                 </VerticalStackLayout>
 
@@ -254,17 +244,7 @@
                                         Padding="0"
                                         BackgroundColor="#3F8758"
                                         TextColor="White"
-                                        Clicked="OnDeepClicked">
-
-                                        <Button.GestureRecognizers>
-
-                                            <PointerGestureRecognizer
-                                                PointerEntered="OnDeepEntered"
-                                                PointerExited="OnDeepExited" />
-
-                                        </Button.GestureRecognizers>
-
-                                    </Button>
+                                        Clicked="OnDeepClicked" />
 
                                 </VerticalStackLayout>
 
@@ -324,9 +304,7 @@
 
                     <VerticalStackLayout.GestureRecognizers>
 
-                        <PointerGestureRecognizer
-                            PointerEntered="OnHomeEntered"
-                            PointerExited="OnHomeExited" />
+                        <TapGestureRecognizer Tapped="OnHomeClicked" />
 
                     </VerticalStackLayout.GestureRecognizers>
 
@@ -366,9 +344,7 @@
 
                     <VerticalStackLayout.GestureRecognizers>
 
-                        <PointerGestureRecognizer
-                            PointerEntered="OnCalendarEntered"
-                            PointerExited="OnCalendarExited" />
+                        <TapGestureRecognizer Tapped="OnCalendarTapped" />
 
                     </VerticalStackLayout.GestureRecognizers>
 
@@ -395,10 +371,6 @@
                     <VerticalStackLayout.GestureRecognizers>
 
                         <TapGestureRecognizer Tapped="OnProfileTapped" />
-
-                        <PointerGestureRecognizer
-            PointerEntered="OnProfileEntered"
-            PointerExited="OnProfileExited" />
                     </VerticalStackLayout.GestureRecognizers>
 
                 </VerticalStackLayout>

@@ -17,20 +17,4 @@ public partial class RegistroCliente : ContentPage
 
         await Shell.Current.GoToAsync(nameof(PrincipalCliente));
     }
-
-    private void OnRegisterEntered(object sender, PointerEventArgs e)
-    {
-        if (sender is Button button)
-        {
-            button.BackgroundColor = Color.FromArgb("#2F7047");
-        }
-    }
-
-    private void OnRegisterExited(object sender, PointerEventArgs e)
-    {
-        if (sender is Button button)
-        {
-            button.BackgroundColor = Color.FromArgb("#3F8758");
-        }
-    }
 }

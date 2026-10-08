@@ -7,7 +7,8 @@ public partial class InicioSesionCliente : ContentPage
         InitializeComponent();
     }
 
-    // TODO: validar credenciales contra la API (fase posterior)
+    // TODO: fase posterior - validar credenciales contra la API.
+    // Por ahora el acceso es libre, sin validación de credenciales.
     private async void OnLoginClicked(object sender, EventArgs e)
     {
         MessageLabel.Text = string.Empty;
@@ -15,38 +16,13 @@ public partial class InicioSesionCliente : ContentPage
         await Shell.Current.GoToAsync(nameof(PrincipalCliente));
     }
 
-    private void OnButtonPointerEntered(object sender, PointerEventArgs e)
+    private async void OnForgotPasswordClicked(object sender, EventArgs e)
     {
-        LoginButton.BackgroundColor = Color.FromArgb("#2F7047");
-    }
-
-    private void OnButtonPointerExited(object sender, PointerEventArgs e)
-    {
-        LoginButton.BackgroundColor = Color.FromArgb("#3F8758");
-    }
-
-    private void OnForgotPasswordEntered(object sender, PointerEventArgs e)
-    {
-        ForgotPasswordLabel.TextColor = Color.FromArgb("#245C38");
-    }
-
-    private void OnForgotPasswordExited(object sender, PointerEventArgs e)
-    {
-        ForgotPasswordLabel.TextColor = Color.FromArgb("#3F8758");
+        await Shell.Current.GoToAsync(nameof(RecuperarContraseñaCliente));
     }
 
     private async void OnRegisterClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(RegistroCliente));
-    }
-
-    private void OnRegisterEntered(object sender, PointerEventArgs e)
-    {
-        RegisterLabel.TextColor = Color.FromArgb("#245C38");
-    }
-
-    private void OnRegisterExited(object sender, PointerEventArgs e)
-    {
-        RegisterLabel.TextColor = Color.FromArgb("#3F8758");
     }
 }

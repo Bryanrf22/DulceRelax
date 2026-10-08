@@ -135,9 +135,7 @@
                             VerticalOptions="Center">
 
                             <Label.GestureRecognizers>
-                                <PointerGestureRecognizer
-                                    PointerEntered="OnForgotPasswordEntered"
-                                    PointerExited="OnForgotPasswordExited" />
+                                <TapGestureRecognizer Tapped="OnForgotPasswordClicked" />
                             </Label.GestureRecognizers>
 
                         </Label>
@@ -155,13 +153,6 @@
                         FontSize="15"
                         FontAttributes="Bold"
                         Margin="0,0,0,8">
-
-                        <Button.GestureRecognizers>
-                            <PointerGestureRecognizer
-                                PointerEntered="OnButtonPointerEntered"
-                                PointerExited="OnButtonPointerExited" />
-                        </Button.GestureRecognizers>
-
                     </Button>
     
                     <HorizontalStackLayout
@@ -184,13 +175,8 @@
 
                             <Label.GestureRecognizers>
 
-                               
                                 <TapGestureRecognizer
             Tapped="OnRegisterClicked" />
-
-                                <PointerGestureRecognizer
-            PointerEntered="OnRegisterEntered"
-            PointerExited="OnRegisterExited" />
 
                             </Label.GestureRecognizers>
 

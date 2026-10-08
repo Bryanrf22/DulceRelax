@@ -1,218 +1,167 @@
 <?xml version="1.0" encoding="utf-8" ?>
-
-<ContentPage
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="DulceRelax.App.Cliente.Views.PerfilClienteEdit"
-    BackgroundColor="#FBF6F2"
-    Shell.NavBarIsVisible="False">
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DulceRelax.App.Cliente.Views.PerfilClienteEdit"
+             Title="Editar Perfil"
+             BackgroundColor="#FBF6F2"
+             Shell.NavBarIsVisible="False">
 
     <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
 
-        <VerticalStackLayout
-            Padding="30"
-            Spacing="0"
-            VerticalOptions="Center">
+            <Label Text="Editar Perfil"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="#222222"
+                   Margin="5,0,0,0" />
 
-            <Image
-                Source="logo.png"
-                HeightRequest="120"
-                WidthRequest="120"
-                Aspect="AspectFit"
-                HorizontalOptions="Center"
-                Margin="0,0,0,20" />
-
-            <!-- CONTENEDOR -->
-            <Border
-                BackgroundColor="White"
-                StrokeThickness="0"
-                Padding="25"
-                HorizontalOptions="Fill">
-
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    Padding="25"
+                    HorizontalOptions="Fill">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="20" />
                 </Border.StrokeShape>
 
-                <VerticalStackLayout
-                    Spacing="12">
+                <VerticalStackLayout Spacing="8">
 
-                    <!-- ICONO -->
-                    <Image
-                        Source="icono.png"
-                        HeightRequest="90"
-                        WidthRequest="90"
-                        Aspect="AspectFit"
-                        HorizontalOptions="Center"
-                        Margin="0,0,0,10" />
+                    <Label Text="Nombre"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
 
-                    <!-- TITULO -->
-                    <Label
-                        Text="Editar perfil"
-                        FontSize="24"
-                        FontAttributes="Bold"
-                        TextColor="#333333"
-                        HorizontalOptions="Center"
-                        Margin="0,0,0,10" />
-
-                    <!-- CORREO -->
-                    <Label
-                        Text="Correo electrónico"
-                        FontSize="13"
-                        TextColor="#666666" />
-
-                    <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDDD"
-                        StrokeThickness="1"
-                        Padding="12">
-
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10" />
+                            <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
-
-                        <Entry
-                            x:Name="EmailEntry"
-                            Placeholder="Ingrese su correo"
-                            Keyboard="Email"
-                            TextColor="#333333"
-                            BackgroundColor="Transparent"
-                            FontSize="14" />
-
+                        <Entry x:Name="NombreEntry"
+                               Placeholder="Nombre completo"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
                     </Border>
 
-                    <!-- CONTRASEÑA -->
-                    <Label
-                        Text="Contraseña"
-                        FontSize="13"
-                        TextColor="#666666"
-                        Margin="0,5,0,0" />
+                    <Label Text="Correo Electrónico"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
 
-                    <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDDD"
-                        StrokeThickness="1"
-                        Padding="12">
-
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10" />
+                            <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
-
-                        <Entry
-                            x:Name="PasswordEntry"
-                            Placeholder="Ingrese su contraseña"
-                            IsPassword="True"
-                            TextColor="#333333"
-                            BackgroundColor="Transparent"
-                            FontSize="14" />
-
+                        <Entry x:Name="EmailEntry"
+                               Placeholder="correo@ejemplo.com"
+                               Keyboard="Email"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
                     </Border>
 
-                    <!-- NOMBRE -->
-                    <Label
-                        Text="Nombre"
-                        FontSize="13"
-                        TextColor="#666666"
-                        Margin="0,5,0,0" />
+                    <Label Text="Teléfono"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
 
-                    <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDDD"
-                        StrokeThickness="1"
-                        Padding="12">
-
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10" />
+                            <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
-
-                        <Entry
-                            x:Name="NombreEntry"
-                            Placeholder="Ingrese su nombre"
-                            TextColor="#333333"
-                            BackgroundColor="Transparent"
-                            FontSize="14" />
-
+                        <Entry x:Name="TelefonoEntry"
+                               Placeholder="Teléfono"
+                               Keyboard="Telephone"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
                     </Border>
 
-                    <!-- TELEFONO -->
-                    <Label
-                        Text="Teléfono"
-                        FontSize="13"
-                        TextColor="#666666"
-                        Margin="0,5,0,0" />
+                    <Label Text="Dirección"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
 
-                    <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDDD"
-                        StrokeThickness="1"
-                        Padding="12">
-
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10" />
+                            <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
-
-                        <Entry
-                            x:Name="TelefonoEntry"
-                            Placeholder="Ingrese su teléfono"
-                            Keyboard="Telephone"
-                            TextColor="#333333"
-                            BackgroundColor="Transparent"
-                            FontSize="14" />
-
+                        <Entry x:Name="DireccionEntry"
+                               Placeholder="Dirección"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
                     </Border>
 
-                    <!-- DIRECCION -->
-                    <Label
-                        Text="Dirección"
-                        FontSize="13"
-                        TextColor="#666666"
-                        Margin="0,5,0,0" />
+                    <Label Text="Contraseña"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
 
-                    <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDDD"
-                        StrokeThickness="1"
-                        Padding="12">
-
+                    <Border BackgroundColor="White"
+                            Stroke="#DDDDD9"
+                            StrokeThickness="1"
+                            HeightRequest="48"
+                            Padding="12,0"
+                            Margin="0,0,0,10">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10" />
+                            <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
-
-                        <Entry
-                            x:Name="DireccionEntry"
-                            Placeholder="Ingrese su dirección"
-                            TextColor="#333333"
-                            BackgroundColor="Transparent"
-                            FontSize="14" />
-
+                        <Entry x:Name="PasswordEntry"
+                               IsPassword="True"
+                               Placeholder="Contraseña"
+                               FontSize="14"
+                               TextColor="#333333"
+                               PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
                     </Border>
 
-                    <!-- GUARDAR -->
-                    <Button
-                        x:Name="SaveButton"
-                        Text="Guardar cambios"
-                        TextColor="White"
-                        BackgroundColor="#3F8758"
-                        FontAttributes="Bold"
-                        FontSize="16"
-                        HeightRequest="50"
-                        CornerRadius="12"
-                        Margin="0,15,0,0"
-                        Clicked="OnSaveClicked">
-
-                        <Button.GestureRecognizers>
-                            <PointerGestureRecognizer
-                                PointerEntered="OnSaveEntered"
-                                PointerExited="OnSaveExited" />
-                        </Button.GestureRecognizers>
-
-                    </Button>
-
+                    <HorizontalStackLayout Spacing="10" Margin="0,20">
+                        <Button x:Name="SaveButton"
+                                Text="💾 Guardar"
+                                HeightRequest="50"
+                                CornerRadius="15"
+                                BackgroundColor="#3F8758"
+                                TextColor="White"
+                                FontSize="15"
+                                FontAttributes="Bold"
+                                Clicked="OnSaveClicked"
+                                HorizontalOptions="FillAndExpand" />
+                        <Button x:Name="CancelButton"
+                                Text="✕ Cancelar"
+                                HeightRequest="50"
+                                CornerRadius="15"
+                                BackgroundColor="#C9423F"
+                                TextColor="White"
+                                FontSize="15"
+                                FontAttributes="Bold"
+                                Clicked="OnCancelClicked"
+                                HorizontalOptions="FillAndExpand" />
+                    </HorizontalStackLayout>
                 </VerticalStackLayout>
-
             </Border>
-
         </VerticalStackLayout>
-
     </ScrollView>
-
 </ContentPage>
