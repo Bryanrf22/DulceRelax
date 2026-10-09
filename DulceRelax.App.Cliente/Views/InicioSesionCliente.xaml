@@ -65,7 +65,7 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Entry
+                        <Entry Text="{Binding Email}"
                             x:Name="EmailEntry"
                             Placeholder="ejemplo@email.com"
                             Keyboard="Email"
@@ -95,7 +95,7 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Entry
+                        <Entry Text="{Binding Password}"
                             x:Name="PasswordEntry"
                             Placeholder="Contraseña"
                             IsPassword="True"
@@ -142,10 +142,12 @@
 
                     </Grid>
 
+                    <Label Text="{Binding Error}" TextColor="Red" IsVisible="{Binding Error, Converter={StaticResource IsNotNullConverter}}" />
+
                     <Button
                         x:Name="LoginButton"
                         Text="Iniciar sesión"
-                        Clicked="OnLoginClicked"
+                        Command="{Binding LoginCommand}"
                         BackgroundColor="#3F8758"
                         TextColor="White"
                         CornerRadius="15"

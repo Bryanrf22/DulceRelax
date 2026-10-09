@@ -1,10 +1,13 @@
+using DulceRelax.App.Cliente.ViewModels;
+
 namespace DulceRelax.App.Cliente.Views;
 
 public partial class InicioSesionCliente : ContentPage
 {
-    public InicioSesionCliente()
+    public InicioSesionCliente(LoginViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
 
     // TODO: fase posterior - validar credenciales contra la API.
