@@ -13,7 +13,7 @@ namespace DulceRelax.App.Cliente
 
             builder.Services.AddTransient<AuthHandler>();
             builder.Services.AddHttpClient<IAuthService, AuthService>(c =>
-                    c.BaseAddress = new Uri("https://d04w1hrm-7204.use.devtunnels.ms/"))
+                    c.BaseAddress = new Uri("https://jkr8tzhd-7204.use.devtunnels.ms/"))
                 .AddHttpMessageHandler<AuthHandler>();
 
             builder.Services.AddTransient<LoginViewModel>();

@@ -142,7 +142,7 @@
 
                     </Grid>
 
-                    <Label Text="{Binding Error}" TextColor="Red" IsVisible="{Binding Error, Converter={StaticResource IsNotNullConverter}}" />
+                    <Label Text="{Binding Error}" TextColor="Red" />
 
                     <Button
                         x:Name="LoginButton"

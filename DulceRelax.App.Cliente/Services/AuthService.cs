@@ -6,7 +6,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DulceRelax.Shared.DTOs;
-using Kotlin.Contracts;
 
 namespace DulceRelax.App.Cliente.Services
 {
