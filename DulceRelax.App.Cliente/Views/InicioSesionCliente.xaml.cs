@@ -12,6 +12,16 @@ public partial class InicioSesionCliente : ContentPage
 
     private static bool _sesionRevisada;
 
+    private async void OnForgotPasswordClicked(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(RecuperarContraseñaCliente));
+    }
+
+    private async void OnRegisterClicked(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(RegistroCliente));
+    }
+
     protected override async void OnAppearing()
     {
         base.OnAppearing();

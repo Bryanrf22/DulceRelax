@@ -11,9 +11,12 @@ namespace DulceRelax.App.Cliente
         {
             var builder = MauiApp.CreateBuilder();
 
+            var apiUrl = new Uri("https://jkr8tzhd-7204.use.devtunnels.ms/");
+
             builder.Services.AddTransient<AuthHandler>();
-            builder.Services.AddHttpClient<IAuthService, AuthService>(c =>
-                    c.BaseAddress = new Uri("https://jkr8tzhd-7204.use.devtunnels.ms/"))
+            builder.Services.AddHttpClient<IAuthService, AuthService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddHttpClient<IMasajeService, MasajeService>(c => c.BaseAddress = apiUrl)
                 .AddHttpMessageHandler<AuthHandler>();
 
             builder.Services.AddTransient<LoginViewModel>();
@@ -22,6 +25,8 @@ namespace DulceRelax.App.Cliente
             builder.Services.AddTransient<RegistroCliente>();
             builder.Services.AddTransient<RecuperarPasswordViewModel>();
             builder.Services.AddTransient<RecuperarContraseñaCliente>();
+            builder.Services.AddTransient<PrincipalViewModel>();
+            builder.Services.AddTransient<PrincipalCliente>();
 
             builder
                 .UseMauiApp<App>()
@@ -32,7 +37,7 @@ namespace DulceRelax.App.Cliente
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

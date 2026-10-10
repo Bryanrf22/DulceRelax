@@ -25,5 +25,11 @@ namespace DulceRelax.Shared.DTOs
         [FirestoreProperty]
         public double Precio {  get; set; }
 
+        [FirestoreProperty]
+        public int DuracionMinutos { get; set; }
+
+        [FirestoreProperty]
+        public string? ImagenUrl { get; set; }
+
     }
 }

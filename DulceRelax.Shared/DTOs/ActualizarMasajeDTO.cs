@@ -12,5 +12,7 @@ namespace DulceRelax.Shared.DTOs
         public string Descripcion { get; set; }
         public bool Disponible { get; set; }
         public double Precio { get; set; }
+        public int DuracionMinutos { get; set; }
+        public string? ImagenUrl { get; set; }
     }
 }

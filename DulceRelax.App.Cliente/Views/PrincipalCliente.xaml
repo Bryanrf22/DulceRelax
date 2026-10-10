@@ -3,7 +3,10 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dto="clr-namespace:DulceRelax.Shared.DTOs;assembly=DulceRelax.Shared"
+    xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
     x:Class="DulceRelax.App.Cliente.Views.PrincipalCliente"
+    x:DataType="vm:PrincipalViewModel"
     BackgroundColor="#F5F4F0"
     Shell.NavBarIsVisible="False">
 
@@ -12,7 +15,7 @@
         <ScrollView Grid.Row="0">
 
             <VerticalStackLayout
-                Padding="20,30,20,20"
+                Padding="10,30,10,20"
                 Spacing="0">
 
                 <Image
@@ -26,7 +29,7 @@
                 <Border
                     BackgroundColor="White"
                     StrokeThickness="0"
-                    Padding="18,15,18,20"
+                    Padding="10,15,10,20"
                     HorizontalOptions="Fill">
 
                     <Border.StrokeShape>
@@ -35,15 +38,12 @@
 
                     <VerticalStackLayout Spacing="5">
 
-
                         <Label
                             Text="Masajes"
                             FontSize="25"
                             FontAttributes="Bold"
                             HorizontalOptions="Center"
-                            TextColor="#262626"
-                            Margin="0,0,0,0" />
-
+                            TextColor="#262626" />
 
                         <Label
                             Text="Masajes Disponibles"
@@ -52,205 +52,143 @@
                             TextColor="#888888"
                             Margin="0,0,0,18" />
 
+                        <ActivityIndicator
+                            IsRunning="{Binding Cargando}"
+                            IsVisible="{Binding Cargando}"
+                            Color="#3F8758" />
 
-                        <Border
-                            BackgroundColor="White"
-                            Stroke="#E0E0E0"
-                            StrokeThickness="1"
-                            Padding="0"
-                            HeightRequest="145"
-                            HorizontalOptions="Fill">
+                        <VerticalStackLayout IsVisible="{Binding HayError}" Spacing="8">
+                            <Label
+                                Text="{Binding Error}"
+                                FontSize="13"
+                                TextColor="#B3261E"
+                                HorizontalOptions="Center" />
+                            <Button
+                                Text="Reintentar"
+                                Command="{Binding CargarCommand}"
+                                BackgroundColor="#3F8758"
+                                TextColor="White"
+                                CornerRadius="8"
+                                HorizontalOptions="Center" />
+                        </VerticalStackLayout>
 
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="15" />
-                            </Border.StrokeShape>
+                        <Label
+                            Text="No hay masajes disponibles por el momento"
+                            IsVisible="{Binding SinMasajes}"
+                            FontSize="13"
+                            TextColor="#888888"
+                            HorizontalOptions="Center" />
 
-                            <Grid ColumnDefinitions="103,*">
+                        <VerticalStackLayout
+                            Spacing="12"
+                            BindableLayout.ItemsSource="{Binding Masajes}">
 
-                            
-                                <Border
-                                    Grid.Column="0"
-                                    BackgroundColor="#D2E5D5"
-                                    StrokeThickness="0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="dto:MasajeDTO">
 
-                                    <Border.StrokeShape>
-                                        <RoundRectangle
-                                            CornerRadius="15,0,0,15" />
-                                    </Border.StrokeShape>
+                                    <Border
+                                        BackgroundColor="White"
+                                        Stroke="#E0E0E0"
+                                        StrokeThickness="1"
+                                        Padding="10"
+                                        HorizontalOptions="Fill">
 
-                                    <Image
-                                            Source="masaje1.jpg"
-                                            Aspect="AspectFill"
-                                            HorizontalOptions="Fill"
-                                            VerticalOptions="Fill" />
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="15" />
+                                        </Border.StrokeShape>
 
-                                </Border>
+                                        <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
 
+                                            <Border
+                                                Grid.Column="0"
+                                                WidthRequest="100"
+                                                HeightRequest="100"
+                                                VerticalOptions="Start"
+                                                BackgroundColor="#D2E5D5"
+                                                StrokeThickness="0"
+                                                Padding="0">
 
-                                <VerticalStackLayout
-                                    Grid.Column="1"
-                                    Padding="14,10,12,10"
-                                    Spacing="3">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="12" />
+                                                </Border.StrokeShape>
 
+                                                <Image
+                                                    Source="{Binding ImagenUrl, TargetNullValue=masaje1.jpg, FallbackValue=masaje1.jpg}"
+                                                    WidthRequest="100"
+                                                    HeightRequest="100"
+                                                    Aspect="AspectFill" />
+                                            </Border>
 
-                                    <Grid ColumnDefinitions="*,Auto">
+                                            <VerticalStackLayout
+                                                Grid.Column="1"
+                                                Spacing="4">
 
-                                        <Label
-                                            Text="Relajante"
-                                            FontSize="16"
-                                            FontAttributes="Bold"
-                                            TextColor="#292929"
-                                            VerticalOptions="Center" />
+                                                <Label
+                                                    Text="{Binding Nombre}"
+                                                    FontSize="16"
+                                                    FontAttributes="Bold"
+                                                    TextColor="#292929"
+                                                    LineBreakMode="TailTruncation"
+                                                    MaxLines="2" />
 
-                                        <Border
-                                            Grid.Column="1"
-                                            BackgroundColor="#EAF4EC"
-                                            StrokeThickness="0"
-                                            Padding="10,4">
+                                                <Border
+                                                    BackgroundColor="#EAF4EC"
+                                                    StrokeThickness="0"
+                                                    Padding="10,4"
+                                                    HorizontalOptions="Start">
 
-                                            <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="12" />
-                                            </Border.StrokeShape>
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="12" />
+                                                    </Border.StrokeShape>
 
-                                            <Label
-                                                Text="Precio: 200 C$"
-                                                FontSize="11"
-                                                FontAttributes="Bold"
-                                                TextColor="#3F8758" />
+                                                    <Label
+                                                        Text="{Binding Precio, StringFormat='Precio: {0:0.##} C$'}"
+                                                        FontSize="11"
+                                                        FontAttributes="Bold"
+                                                        TextColor="#3F8758" />
+                                                </Border>
 
-                                        </Border>
+                                                <Label
+                                                    Text="{Binding DuracionMinutos, StringFormat='◷ Duración: {0} min'}"
+                                                    FontSize="11"
+                                                    TextColor="#777777">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding DuracionMinutos}" Value="0">
+                                                            <Setter Property="IsVisible" Value="False" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
 
-                                    </Grid>
+                                                <Label
+                                                    Text="{Binding Descripcion}"
+                                                    FontSize="10.5"
+                                                    TextColor="#777777"
+                                                    LineBreakMode="TailTruncation"
+                                                    MaxLines="3" />
 
-                                    <Label
-                                        Text="◷ Duración: 1 hora"
-                                        FontSize="11"
-                                        TextColor="#777777" />
+                                                <Button
+                                                    Text="Solicitar cita"
+                                                    FontSize="11"
+                                                    FontAttributes="Bold"
+                                                    HeightRequest="30"
+                                                    CornerRadius="8"
+                                                    Padding="0"
+                                                    Margin="0,4,0,0"
+                                                    BackgroundColor="#3F8758"
+                                                    TextColor="White"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PrincipalViewModel}}, x:DataType=vm:PrincipalViewModel, Path=SolicitarCitaCommand}"
+                                                    CommandParameter="{Binding .}" />
 
+                                            </VerticalStackLayout>
 
-                                    <Label
-                                        Text="Reduce el estrés y alivia la tensión muscular"
-                                        FontSize="10.5"
-                                        TextColor="#777777"
-                                        LineBreakMode="WordWrap"
-                                        MaxLines="2" />
+                                        </Grid>
 
-                                    <Button
-                                        x:Name="RelaxButton"
-                                        Text="Solicitar cita"
-                                        FontSize="11"
-                                        FontAttributes="Bold"
-                                        HeightRequest="30"
-                                        CornerRadius="8"
-                                        Padding="0"
-                                        BackgroundColor="#3F8758"
-                                        TextColor="White"
-                                        Clicked="OnRelaxClicked" />
+                                    </Border>
 
-                                </VerticalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
 
-                            </Grid>
-
-                        </Border>
-
-                        <BoxView
-                            HeightRequest="12"
-                            BackgroundColor="Transparent" />
-
-                        <Border
-                            BackgroundColor="White"
-                            Stroke="#E0E0E0"
-                            StrokeThickness="1"
-                            Padding="0"
-                            HeightRequest="145"
-                            HorizontalOptions="Fill">
-
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="15" />
-                            </Border.StrokeShape>
-
-                            <Grid ColumnDefinitions="103,*">
-
-                                <Border
-                                    Grid.Column="0"
-                                    BackgroundColor="#D2E5D5"
-                                    StrokeThickness="0">
-
-                                    <Border.StrokeShape>
-                                        <RoundRectangle
-                                            CornerRadius="15,0,0,15" />
-                                    </Border.StrokeShape>
-
-                                    <Image
-                                             Source="masaje2.jpg"
-                                             Aspect="AspectFill"
-                                             HorizontalOptions="Fill"
-                                             VerticalOptions="Fill" />
-
-                                </Border>
-
-                                <VerticalStackLayout
-                                    Grid.Column="1"
-                                    Padding="14,10,12,10"
-                                    Spacing="3">
-
-                                    <Grid ColumnDefinitions="*,Auto">
-
-                                        <Label
-                                            Text="Profundo"
-                                            FontSize="16"
-                                            FontAttributes="Bold"
-                                            TextColor="#292929"
-                                            VerticalOptions="Center" />
-
-                                        <Border
-                                            Grid.Column="1"
-                                            BackgroundColor="#EAF4EC"
-                                            StrokeThickness="0"
-                                            Padding="10,4">
-
-                                            <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="12" />
-                                            </Border.StrokeShape>
-
-                                            <Label
-                                                Text="Precio: 250 C$"
-                                                FontSize="11"
-                                                FontAttributes="Bold"
-                                                TextColor="#3F8758" />
-
-                                        </Border>
-
-                                    </Grid>
-
-                                    <Label
-                                        Text="◷ Duración: 1 hora"
-                                        FontSize="11"
-                                        TextColor="#777777" />
-                                    <Label
-                                        Text="Aplica presión firme e intensa para llegar a las capas musculares profundas y aliviar nudos o dolores crónicos"
-                                        FontSize="10.5"
-                                        TextColor="#777777"
-                                        LineBreakMode="WordWrap"
-                                        MaxLines="3" />
-
-                                    <Button
-                                        x:Name="DeepButton"
-                                        Text="Solicitar cita"
-                                        FontSize="11"
-                                        FontAttributes="Bold"
-                                        HeightRequest="30"
-                                        CornerRadius="8"
-                                        Padding="0"
-                                        BackgroundColor="#3F8758"
-                                        TextColor="White"
-                                        Clicked="OnDeepClicked" />
-
-                                </VerticalStackLayout>
-
-                            </Grid>
-
-                        </Border>
+                        </VerticalStackLayout>
 
                     </VerticalStackLayout>
 
@@ -303,9 +241,7 @@
                         HorizontalOptions="Center" />
 
                     <VerticalStackLayout.GestureRecognizers>
-
                         <TapGestureRecognizer Tapped="OnHomeClicked" />
-
                     </VerticalStackLayout.GestureRecognizers>
 
                 </VerticalStackLayout>
@@ -343,33 +279,30 @@
                         HorizontalOptions="Center" />
 
                     <VerticalStackLayout.GestureRecognizers>
-
                         <TapGestureRecognizer Tapped="OnCalendarTapped" />
-
                     </VerticalStackLayout.GestureRecognizers>
 
                 </VerticalStackLayout>
 
                 <VerticalStackLayout
-    Grid.Column="2"
-    HorizontalOptions="Center"
-    Spacing="2">
+                    Grid.Column="2"
+                    HorizontalOptions="Center"
+                    Spacing="2">
 
                     <Image
-        x:Name="ProfileIcon"
-        Source="icono.png"
-        HeightRequest="23"
-        WidthRequest="23" />
+                        x:Name="ProfileIcon"
+                        Source="icono.png"
+                        HeightRequest="23"
+                        WidthRequest="23" />
 
                     <Label
-        x:Name="ProfileLabel"
-        Text="Perfil"
-        FontSize="10"
-        TextColor="#333333"
-        HorizontalOptions="Center" />
+                        x:Name="ProfileLabel"
+                        Text="Perfil"
+                        FontSize="10"
+                        TextColor="#333333"
+                        HorizontalOptions="Center" />
 
                     <VerticalStackLayout.GestureRecognizers>
-
                         <TapGestureRecognizer Tapped="OnProfileTapped" />
                     </VerticalStackLayout.GestureRecognizers>
 
