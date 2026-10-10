@@ -88,8 +88,9 @@ namespace DulceRelax.API.Controllers
 
             var resultado = await response.Content.ReadFromJsonAsync<JsonElement>();
             var idToken = resultado.GetProperty("idToken").GetString();
+            var refreshToken = resultado.GetProperty("refreshToken").GetString();
 
-            return Ok(new { idToken });
+            return Ok(new { idToken, refreshToken });
 
         }
 
@@ -144,6 +145,32 @@ namespace DulceRelax.API.Controllers
                 return Ok();
 
             return StatusCode(502, new { error = "No se pudo enviar el correo de recuperación." });
+        }
+
+        [HttpPost("refresh")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Refresh(RefreshTokenDTO dto)
+        {
+            var webApiKey = _configuration["Firebase:WebApiKey"];
+            var client = _httpClientFactory.CreateClient();
+
+            var response = await client.PostAsync(
+                $"https://securetoken.googleapis.com/v1/token?key={webApiKey}",
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["grant_type"] = "refresh_token",
+                    ["refresh_token"] = dto.RefreshToken
+                }));
+
+            if (!response.IsSuccessStatusCode)
+                return Unauthorized(new { error = "Sesión expirada." });
+
+            var r = await response.Content.ReadFromJsonAsync<JsonElement>();
+            return Ok(new
+            {
+                idToken = r.GetProperty("id_token").GetString(),
+                refreshToken = r.GetProperty("refresh_token").GetString()
+            });
         }
     }
 }

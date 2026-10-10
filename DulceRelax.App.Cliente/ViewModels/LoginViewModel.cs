@@ -17,12 +17,20 @@ namespace DulceRelax.App.Cliente.ViewModels
         [ObservableProperty] private string email = "";
         [ObservableProperty] private string password = "";
         [ObservableProperty] private string? error;
+        [ObservableProperty] private bool recordarme;
 
         [RelayCommand]
         private async Task LoginAsync()
         {
-            Error = await auth.LoginAsync(new LoginDTO { Email = Email, Password = Password });
+            Error = await auth.LoginAsync(new LoginDTO { Email = Email.Trim(), Password = Password }, Recordarme);
             if (Error is null)
+                await Shell.Current.GoToAsync(nameof(PrincipalCliente));
+        }
+
+        [RelayCommand]
+        private async Task RestaurarSesionAsync()
+        {
+            if (await auth.RestaurarSesionAsync())
                 await Shell.Current.GoToAsync(nameof(PrincipalCliente));
         }
     }

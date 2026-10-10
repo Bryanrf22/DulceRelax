@@ -10,22 +10,15 @@ public partial class InicioSesionCliente : ContentPage
         BindingContext = vm;
     }
 
-    // TODO: fase posterior - validar credenciales contra la API.
-    // Por ahora el acceso es libre, sin validación de credenciales.
-    private async void OnLoginClicked(object sender, EventArgs e)
-    {
-        MessageLabel.Text = string.Empty;
+    private static bool _sesionRevisada;
 
-        await Shell.Current.GoToAsync(nameof(PrincipalCliente));
-    }
-
-    private async void OnForgotPasswordClicked(object sender, EventArgs e)
+    protected override async void OnAppearing()
     {
-        await Shell.Current.GoToAsync(nameof(RecuperarContraseñaCliente));
-    }
+        base.OnAppearing();
+        if (_sesionRevisada) return;
+        _sesionRevisada = true;
 
-    private async void OnRegisterClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(RegistroCliente));
+        if (BindingContext is LoginViewModel vm)
+            await vm.RestaurarSesionCommand.ExecuteAsync(null);
     }
 }
