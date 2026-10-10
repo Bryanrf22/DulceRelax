@@ -20,6 +20,8 @@ namespace DulceRelax.App.Cliente
             builder.Services.AddTransient<InicioSesionCliente>();
             builder.Services.AddTransient<RegistroViewModel>();
             builder.Services.AddTransient<RegistroCliente>();
+            builder.Services.AddTransient<RecuperarPasswordViewModel>();
+            builder.Services.AddTransient<RecuperarContraseñaCliente>();
 
             builder
                 .UseMauiApp<App>()

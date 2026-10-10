@@ -11,6 +11,7 @@ namespace DulceRelax.App.Cliente.Services
 {
     public interface IAuthService
     {
+        Task<string?> RecuperarPasswordAsync(string email);
         Task<string?> LoginAsync(LoginDTO dto);
         Task<string?> RegistrarAsync(RegistrarUsuarioDTO dto);
     }
@@ -38,6 +39,17 @@ namespace DulceRelax.App.Cliente.Services
         {
             var res = await http.PostAsJsonAsync("api/usuario/registrar", dto);
             return res.IsSuccessStatusCode ? null : await LeerError(res);
+        }
+
+        public async Task<string?> RecuperarPasswordAsync(string email)
+        {
+            try
+            {
+                var res = await http.PostAsJsonAsync("api/usuario/recuperar-password",
+                    new RecuperarPasswordDTO { Email = email });
+                return res.IsSuccessStatusCode ? null : await LeerError(res);
+            }
+            catch (HttpRequestException) { return "No se pudo conectar con el servidor."; }
         }
 
         static async Task<string> LeerError(HttpResponseMessage res)
