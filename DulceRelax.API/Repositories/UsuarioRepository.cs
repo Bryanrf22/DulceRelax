@@ -31,7 +31,8 @@ namespace DulceRelax.API.Repositories
             await _db.Collection("usuarios").Document(id).UpdateAsync(new Dictionary<string, object>
             {
                 {"NombreCompleto", dto.NombreCompleto },
-                {"NumTelefono", dto.NumTelefono }
+                {"NumTelefono", dto.NumTelefono },
+                { "Direccion", dto.Direccion }
             });
         }
 

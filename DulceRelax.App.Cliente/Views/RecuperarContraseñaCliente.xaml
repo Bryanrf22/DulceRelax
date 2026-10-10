@@ -39,12 +39,17 @@
                            TextColor="#777777"
                            Margin="0,0,0,15" />
 
-                    <Label x:Name="MessageLabel"
-                           Text=""
+					<Label Text="{Binding Mensaje}"
                            HorizontalTextAlignment="Center"
                            TextColor="#27AE60"
                            FontSize="14"
-                           Margin="0,0,0,5" />
+                           Margin="0,0,0,5">
+						<Label.Triggers>
+							<DataTrigger TargetType="Label" Binding="{Binding EsError}" Value="True">
+								<Setter Property="TextColor" Value="Red" />
+							</DataTrigger>
+						</Label.Triggers>
+					</Label>
 
                     <Label Text="Correo electrónico"
                            FontSize="14"
@@ -61,7 +66,8 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
                         <Entry Placeholder="ejemplo@email.com"
-                               Keyboard="Email"
+                               Text="{Binding Email}"
+							   Keyboard="Email"
                                ClearButtonVisibility="WhileEditing"
                                FontSize="14"
                                TextColor="#333333"
@@ -77,7 +83,7 @@
                             TextColor="White"
                             FontSize="15"
                             FontAttributes="Bold"
-                            Clicked="OnSendClicked"
+                            Command="{Binding EnviarCommand}"
                             Margin="0,5,0,8" />
 
                     <Button x:Name="BackButton"
@@ -88,7 +94,7 @@
                             TextColor="White"
                             FontSize="14"
                             FontAttributes="Bold"
-                            Clicked="OnBackClicked" />
+                            Command="{Binding VolverCommand}" />
 
                 </VerticalStackLayout>
             </Border>

@@ -21,5 +21,8 @@ namespace DulceRelax.Shared.DTOs
 
         [FirestoreProperty]
         public string Correo {  get; set; }
+
+        [FirestoreProperty]
+        public string Direccion { get; set; }
     }
 }

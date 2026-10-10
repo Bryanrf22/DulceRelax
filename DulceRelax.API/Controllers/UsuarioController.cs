@@ -54,7 +54,8 @@ namespace DulceRelax.API.Controllers
                     Id = userRecord.Uid,
                     NombreCompleto = dto.NombreCompleto,
                     NumTelefono = dto.NumTelefono,
-                    Correo = dto.Correo
+                    Correo = dto.Correo,
+                    Direccion = dto.Direccion
                 };
                 await _repository.SetAsync(userRecord.Uid, usuario);
 
@@ -83,12 +84,13 @@ namespace DulceRelax.API.Controllers
                 new { email = dto.Email, password = dto.Password, returnSecureToken = true });
 
             if (!response.IsSuccessStatusCode)
-                return Unauthorized(new { error = "Correo o contraseña incorrectos."});
+                return Unauthorized(new { error = "Correo o contraseña incorrectos." });
 
             var resultado = await response.Content.ReadFromJsonAsync<JsonElement>();
             var idToken = resultado.GetProperty("idToken").GetString();
+            var refreshToken = resultado.GetProperty("refreshToken").GetString();
 
-            return Ok(new { idToken });
+            return Ok(new { idToken, refreshToken });
 
         }
 
@@ -122,6 +124,53 @@ namespace DulceRelax.API.Controllers
             await _repository.DeleteAsync(uid);
             await FirebaseAuth.DefaultInstance.DeleteUserAsync(uid);
             return NoContent();
+        }
+
+        [HttpPost("recuperar-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RecuperarPassword(RecuperarPasswordDTO dto)
+        {
+            var webApiKey = _configuration["Firebase:WebApiKey"];
+            var client = _httpClientFactory.CreateClient();
+
+            var response = await client.PostAsJsonAsync(
+                $"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={webApiKey}",
+                new { requestType = "PASSWORD_RESET", email = dto.Email });
+
+            if (response.IsSuccessStatusCode)
+                return Ok();
+
+            var detalle = await response.Content.ReadAsStringAsync();
+            if (detalle.Contains("EMAIL_NOT_FOUND"))
+                return Ok();
+
+            return StatusCode(502, new { error = "No se pudo enviar el correo de recuperación." });
+        }
+
+        [HttpPost("refresh")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Refresh(RefreshTokenDTO dto)
+        {
+            var webApiKey = _configuration["Firebase:WebApiKey"];
+            var client = _httpClientFactory.CreateClient();
+
+            var response = await client.PostAsync(
+                $"https://securetoken.googleapis.com/v1/token?key={webApiKey}",
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["grant_type"] = "refresh_token",
+                    ["refresh_token"] = dto.RefreshToken
+                }));
+
+            if (!response.IsSuccessStatusCode)
+                return Unauthorized(new { error = "Sesión expirada." });
+
+            var r = await response.Content.ReadFromJsonAsync<JsonElement>();
+            return Ok(new
+            {
+                idToken = r.GetProperty("id_token").GetString(),
+                refreshToken = r.GetProperty("refresh_token").GetString()
+            });
         }
     }
 }

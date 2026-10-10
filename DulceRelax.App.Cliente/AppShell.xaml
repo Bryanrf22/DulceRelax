@@ -8,9 +8,6 @@
     Title="DulceRelax">
 
     <!-- Pantalla inicial: inicio de sesión (raíz de la navegación) -->
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate views:InicioSesionCliente}"
-        Route="InicioSesionCliente" />
+    <ShellContent ContentTemplate="{DataTemplate views:InicioSesionCliente}" Route="InicioSesion" />
 
 </Shell>
