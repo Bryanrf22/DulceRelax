@@ -51,11 +51,12 @@ namespace DulceRelax.API.Controllers
             return cita is null ? NotFound() : Ok(cita);
         }
 
+        //agendar citas
         [HttpPost]
         public async Task<IActionResult> Crear(RegistrarCitaDTO dto)
         {
-            if (dto.FechaHora.ToUniversalTime() <= DateTime.UtcNow)
-                return BadRequest(new { error = "La fecha debe ser futura." });
+            if (dto.FechaHora.ToUniversalTime() < DateTime.UtcNow.AddDays(5))
+                return BadRequest(new { error = "La cita debe solicitarse con al menos 5 días de anticipación." });
 
             dto.UsuarioId = User.FindFirst("user_id")?.Value;
 

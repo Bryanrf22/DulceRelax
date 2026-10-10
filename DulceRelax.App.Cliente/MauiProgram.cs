@@ -28,6 +28,14 @@ namespace DulceRelax.App.Cliente
             builder.Services.AddTransient<PrincipalViewModel>();
             builder.Services.AddTransient<PrincipalCliente>();
 
+            builder.Services.AddHttpClient<ICitaService, CitaService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddHttpClient<IUsuarioService, UsuarioService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+
+            builder.Services.AddTransient<ReservaViewModel>();
+            builder.Services.AddTransient<ReservaMasajeCliente>();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
