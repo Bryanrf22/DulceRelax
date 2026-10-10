@@ -35,6 +35,8 @@ namespace DulceRelax.App.Cliente
 
             builder.Services.AddTransient<ReservaViewModel>();
             builder.Services.AddTransient<ReservaMasajeCliente>();
+            builder.Services.AddTransient<MisCitasViewModel>();
+            builder.Services.AddTransient<MisCitasCliente>();
 
             builder
                 .UseMauiApp<App>()

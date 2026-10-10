@@ -14,6 +14,11 @@ namespace DulceRelax.API.Controllers
 
         public CitaController(CitaRepository repository) => _repository = repository;
 
+        private string? Uid => User.FindFirst("user_id")?.Value;
+
+        private bool EsAdmin =>
+            User.FindFirst("admin")?.Value.Equals("true", StringComparison.OrdinalIgnoreCase) == true;
+
         [HttpGet]
         public async Task<IActionResult> GetByFecha([FromQuery] DateTime fecha)
             => Ok(await _repository.GetByFechaAsync(fecha));
@@ -29,10 +34,7 @@ namespace DulceRelax.API.Controllers
 
         [HttpGet("mias")]
         public async Task<IActionResult> GetMias()
-        {
-            var uid = User.FindFirst("user_id")?.Value;
-            return Ok(await _repository.GetByUsuarioAsync(uid));
-        }
+            => Ok(await _repository.GetByUsuarioAsync(Uid));
 
         [HttpGet("agendadas")]
         public async Task<IActionResult> GetAgendadas(
@@ -51,14 +53,13 @@ namespace DulceRelax.API.Controllers
             return cita is null ? NotFound() : Ok(cita);
         }
 
-        //agendar citas
         [HttpPost]
         public async Task<IActionResult> Crear(RegistrarCitaDTO dto)
         {
             if (dto.FechaHora.ToUniversalTime() < DateTime.UtcNow.AddDays(5))
                 return BadRequest(new { error = "La cita debe solicitarse con al menos 5 días de anticipación." });
 
-            dto.UsuarioId = User.FindFirst("user_id")?.Value;
+            dto.UsuarioId = Uid;
 
             var id = await _repository.CrearAsync(dto);
             if (id is null)
@@ -73,6 +74,23 @@ namespace DulceRelax.API.Controllers
             if (dto.Id != id)
                 return BadRequest(new { error = "El Id no coincide." });
 
+            var cita = await _repository.GetByIdAsync(id);
+            if (cita is null) return NotFound();
+
+            if (!EsAdmin)
+            {
+                if (cita.UsuarioId != Uid) return Forbid();
+
+                if (cita.Estado != EstadoCita.Pendiente)
+                    return BadRequest(new { error = "Solo se pueden editar citas pendientes." });
+
+                var cambioFecha = Math.Abs((dto.FechaHora.ToUniversalTime() - cita.FechaHora.ToUniversalTime()).TotalMinutes) >= 1;
+                if (cambioFecha && dto.FechaHora.ToUniversalTime() < DateTime.UtcNow.AddDays(5))
+                    return BadRequest(new { error = "La cita debe solicitarse con al menos 5 días de anticipación." });
+
+                dto.Estado = EstadoCita.Pendiente;
+            }
+
             var resultado = await _repository.ActualizarAsync(id, dto);
             return resultado switch
             {
@@ -85,8 +103,14 @@ namespace DulceRelax.API.Controllers
         [HttpPatch("{id}/estado")]
         public async Task<IActionResult> CambiarEstado(string id, [FromQuery] EstadoCita estado)
         {
-            var ok = await _repository.CambiarEstadoAsync(id, estado);
-            return ok ? NoContent() : NotFound();
+            var cita = await _repository.GetByIdAsync(id);
+            if (cita is null) return NotFound();
+
+            if (!EsAdmin && (cita.UsuarioId != Uid || estado != EstadoCita.Cancelada))
+                return Forbid();
+
+            await _repository.CambiarEstadoAsync(id, estado);
+            return NoContent();
         }
     }
 }
