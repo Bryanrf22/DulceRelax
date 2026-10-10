@@ -19,12 +19,19 @@ namespace DulceRelax.App.Cliente.Services
     {
         public async Task<string?> LoginAsync(LoginDTO dto)
         {
-            var res = await http.PostAsJsonAsync("api/usuario/login", dto);
-            if (!res.IsSuccessStatusCode) return await LeerError(res);
+            try
+            {
+                var res = await http.PostAsJsonAsync("api/usuario/login", dto);
+                var body = await res.Content.ReadAsStringAsync();
 
-            var json = await res.Content.ReadFromJsonAsync<JsonElement>();
-            await SecureStorage.SetAsync("idToken", json.GetProperty("idToken").GetString()!);
-            return null;
+                if (!res.IsSuccessStatusCode) return await LeerError(res);
+
+                var json = await res.Content.ReadFromJsonAsync<JsonElement>();
+                await SecureStorage.SetAsync("idToken", json.GetProperty("idToken").GetString()!);
+                return null;
+            }
+            catch (HttpRequestException ex) { return $"Sin conexión: {ex.Message}"; }
+            catch (TaskCanceledException) { return "Tiempo de espera agotado"; }
         }
 
         public async Task<string?> RegistrarAsync(RegistrarUsuarioDTO dto)

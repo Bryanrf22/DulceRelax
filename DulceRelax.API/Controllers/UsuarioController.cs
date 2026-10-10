@@ -83,7 +83,7 @@ namespace DulceRelax.API.Controllers
                 new { email = dto.Email, password = dto.Password, returnSecureToken = true });
 
             if (!response.IsSuccessStatusCode)
-                return Unauthorized(new { error = "Correo o contraseña incorrectos."});
+                return Unauthorized(new { error = "Correo o contraseña incorrectos." });
 
             var resultado = await response.Content.ReadFromJsonAsync<JsonElement>();
             var idToken = resultado.GetProperty("idToken").GetString();
