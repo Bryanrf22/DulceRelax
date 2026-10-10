@@ -54,7 +54,8 @@ namespace DulceRelax.API.Controllers
                     Id = userRecord.Uid,
                     NombreCompleto = dto.NombreCompleto,
                     NumTelefono = dto.NumTelefono,
-                    Correo = dto.Correo
+                    Correo = dto.Correo,
+                    Direccion = dto.Direccion
                 };
                 await _repository.SetAsync(userRecord.Uid, usuario);
 

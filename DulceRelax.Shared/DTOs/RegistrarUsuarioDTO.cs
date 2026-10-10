@@ -6,5 +6,6 @@
         public string Password { get; set; }
         public string NombreCompleto { get; set; }
         public string NumTelefono { get; set; }
+        public string Direccion { get; set; }
     }
 }

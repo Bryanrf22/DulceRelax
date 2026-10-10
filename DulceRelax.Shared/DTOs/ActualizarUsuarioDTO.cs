@@ -10,5 +10,6 @@ namespace DulceRelax.Shared.DTOs
     {
         public string NombreCompleto { get; set; }
         public string NumTelefono { get; set; }
+        public string Direccion { get; set; }
     }
 }
