@@ -36,7 +36,9 @@ namespace DulceRelax.API.Repositories
                 { "Nombre", dto.Nombre },
                 { "Descripcion", dto.Descripcion },
                 { "Disponible", dto.Disponible },
-                { "Precio", dto.Precio }
+                { "Precio", dto.Precio },
+                { "DuracionMinutos", dto.DuracionMinutos },
+                { "ImagenUrl", (object?)dto.ImagenUrl ?? FieldValue.Delete }
             });
         }
 

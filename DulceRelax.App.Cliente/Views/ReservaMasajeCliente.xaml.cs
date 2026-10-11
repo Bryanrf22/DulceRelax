@@ -1,20 +1,17 @@
+using DulceRelax.App.Cliente.ViewModels;
+
 namespace DulceRelax.App.Cliente.Views;
 
 public partial class ReservaMasajeCliente : ContentPage
 {
-    public ReservaMasajeCliente()
+    public ReservaMasajeCliente(ReservaViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
 
     private async void OnBackClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("..");
-    }
-
-    private async void OnReserveClicked(object sender, EventArgs e)
-    {
-        // TODO: validar datos y registrar cita en la API (fase posterior)
         await Shell.Current.GoToAsync("..");
     }
 }

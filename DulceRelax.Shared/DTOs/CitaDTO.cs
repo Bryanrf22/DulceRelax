@@ -39,6 +39,9 @@ namespace DulceRelax.Shared.DTOs
 
         [FirestoreProperty]
         public EstadoCita Estado { get; set; }
+
+        [FirestoreProperty]
+        public int DuracionMinutos { get; set; }
     }
 
     public enum EstadoCita { Pendiente, Confirmada, Cancelada }

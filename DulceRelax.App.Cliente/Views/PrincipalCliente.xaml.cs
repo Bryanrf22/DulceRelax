@@ -1,25 +1,25 @@
+using DulceRelax.App.Cliente.ViewModels;
+
 namespace DulceRelax.App.Cliente.Views;
 
 public partial class PrincipalCliente : ContentPage
 {
-    public PrincipalCliente()
+    private readonly PrincipalViewModel _vm;
+
+    public PrincipalCliente(PrincipalViewModel vm)
     {
         InitializeComponent();
+        BindingContext = _vm = vm;
     }
 
-    private async void OnRelaxClicked(object sender, EventArgs e)
+    protected override async void OnAppearing()
     {
-        await Shell.Current.GoToAsync(nameof(ReservaMasajeCliente));
-    }
-
-    private async void OnDeepClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(ReservaMasajeCliente));
+        base.OnAppearing();
+        await _vm.CargarCommand.ExecuteAsync(null);
     }
 
     private async void OnHomeClicked(object sender, EventArgs e)
     {
-        // Si ya está en Principal no hace nada; desde otra vista vuelve a ella.
         if (Shell.Current.CurrentPage is not PrincipalCliente)
         {
             await Shell.Current.GoToAsync("..");

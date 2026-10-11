@@ -1,46 +1,164 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
              x:Class="DulceRelax.App.Cliente.Views.MisCitasCliente"
+             x:DataType="vm:MisCitasViewModel"
              Title="Mis Citas"
              BackgroundColor="#FBF6F2"
              Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+	<RefreshView IsRefreshing="{Binding Cargando}"
+                 Command="{Binding CargarCommand}"
+                 RefreshColor="#3F8758">
 
-            <HorizontalStackLayout HorizontalOptions="FillAndExpand" Spacing="10">
-                <Button x:Name="BackButton"
-                        Text="← Atrás"
-                        BackgroundColor="#3F8758"
-                        TextColor="White"
-                        Padding="15,10"
-                        CornerRadius="12"
-                        FontSize="14"
-                        Clicked="OnBackClicked"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Start" />
-                <Label Text="Mis Citas"
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       TextColor="#222222"
-                       VerticalOptions="Center" />
-            </HorizontalStackLayout>
+		<ScrollView>
+			<VerticalStackLayout Padding="20" Spacing="15">
 
-            <Border BackgroundColor="White"
-                    StrokeThickness="0"
-                    Padding="25"
-                    HorizontalOptions="Fill">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="20" />
-                </Border.StrokeShape>
+				<HorizontalStackLayout Spacing="10">
+					<Button Text="← Atrás"
+                            BackgroundColor="#3F8758"
+                            TextColor="White"
+                            Padding="15,10"
+                            CornerRadius="12"
+                            FontSize="14"
+                            Clicked="OnBackClicked"
+                            VerticalOptions="Center" />
+					<Label Text="Mis Citas"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="#222222"
+                           VerticalOptions="Center" />
+				</HorizontalStackLayout>
 
-                <Label Text="No hay citas registradas"
-                       HorizontalTextAlignment="Center"
-                       FontSize="16"
-                       TextColor="#777777"
-                       Margin="0,30" />
-            </Border>
-        </VerticalStackLayout>
-    </ScrollView>
+				<Border BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="25"
+                        IsVisible="{Binding HayError}">
+					<Border.StrokeShape>
+						<RoundRectangle CornerRadius="20" />
+					</Border.StrokeShape>
+					<VerticalStackLayout Spacing="12">
+						<Label Text="{Binding Error}"
+                               FontSize="14"
+                               TextColor="#B3261E"
+                               HorizontalTextAlignment="Center" />
+						<Button Text="Reintentar"
+                                Command="{Binding CargarCommand}"
+                                BackgroundColor="#3F8758"
+                                TextColor="White"
+                                CornerRadius="10"
+                                HorizontalOptions="Center" />
+					</VerticalStackLayout>
+				</Border>
+
+				<Border BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="25"
+                        IsVisible="{Binding SinCitas}">
+					<Border.StrokeShape>
+						<RoundRectangle CornerRadius="20" />
+					</Border.StrokeShape>
+					<Label Text="Aún no tienes citas. Solicita una desde el menú principal."
+                           HorizontalTextAlignment="Center"
+                           FontSize="15"
+                           TextColor="#777777"
+                           Margin="0,20" />
+				</Border>
+
+				<VerticalStackLayout Spacing="12"
+                                     BindableLayout.ItemsSource="{Binding Citas}">
+					<BindableLayout.ItemTemplate>
+						<DataTemplate x:DataType="vm:CitaItem">
+
+							<Border BackgroundColor="White"
+									Stroke="#E0E0E0"
+									StrokeThickness="1"
+									Padding="16"
+									HorizontalOptions="Fill">
+								<Border.StrokeShape>
+									<RoundRectangle CornerRadius="16" />
+								</Border.StrokeShape>
+
+								<VerticalStackLayout Spacing="6">
+
+									<Label Text="{Binding MasajeNombre}"
+										   FontSize="16"
+										   FontAttributes="Bold"
+										   TextColor="#292929"
+										   LineBreakMode="TailTruncation"
+										   MaxLines="2" />
+
+									<Border BackgroundColor="{Binding EstadoFondo}"
+											StrokeThickness="0"
+											Padding="10,4"
+											HorizontalOptions="Start">
+										<Border.StrokeShape>
+											<RoundRectangle CornerRadius="12" />
+										</Border.StrokeShape>
+										<Label Text="{Binding EstadoTexto}"
+											   FontSize="11"
+											   FontAttributes="Bold"
+											   TextColor="{Binding EstadoColor}" />
+									</Border>
+
+									<Label Text="{Binding FechaHoraTexto}"
+										   FontSize="13"
+										   TextColor="#555555"
+										   Margin="0,4,0,0" />
+
+									<Label Text="{Binding Direccion}"
+										   FontSize="12"
+										   TextColor="#777777" />
+
+									<Label Text="{Binding Detalle}"
+										   IsVisible="{Binding TieneDetalle}"
+										   FontSize="11"
+										   TextColor="#999999" />
+
+									<HorizontalStackLayout Spacing="10"
+														   Margin="0,8,0,0"
+														   IsVisible="{Binding TieneAcciones}">
+
+										<Button Text="Editar"
+												IsVisible="{Binding PuedeEditar}"
+												HeightRequest="36"
+												Padding="18,0"
+												CornerRadius="10"
+												FontSize="12"
+												FontAttributes="Bold"
+												BackgroundColor="Transparent"
+												BorderColor="#3F8758"
+												BorderWidth="1"
+												TextColor="#3F8758"
+												Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MisCitasViewModel}}, x:DataType=vm:MisCitasViewModel, Path=EditarCommand}"
+												CommandParameter="{Binding .}" />
+
+										<Button Text="Cancelar"
+												IsVisible="{Binding PuedeCancelar}"
+												HeightRequest="36"
+												Padding="18,0"
+												CornerRadius="10"
+												FontSize="12"
+												FontAttributes="Bold"
+												BackgroundColor="Transparent"
+												BorderColor="#B3261E"
+												BorderWidth="1"
+												TextColor="#B3261E"
+												Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MisCitasViewModel}}, x:DataType=vm:MisCitasViewModel, Path=CancelarCommand}"
+												CommandParameter="{Binding .}" />
+
+									</HorizontalStackLayout>
+
+								</VerticalStackLayout>
+							</Border>
+
+						</DataTemplate>
+					</BindableLayout.ItemTemplate>
+				</VerticalStackLayout>
+
+			</VerticalStackLayout>
+		</ScrollView>
+
+	</RefreshView>
 </ContentPage>

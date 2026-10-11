@@ -1,11 +1,21 @@
+using DulceRelax.App.Cliente.ViewModels;
+
 namespace DulceRelax.App.Cliente.Views;
 
 public partial class MisCitasCliente : ContentPage
 {
-    public MisCitasCliente()
+    private readonly MisCitasViewModel _vm;
+
+    public MisCitasCliente(MisCitasViewModel vm)
     {
         InitializeComponent();
-        // TODO: cargar citas del usuario desde la API (fase posterior)
+        BindingContext = _vm = vm;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _vm.CargarCommand.ExecuteAsync(null);
     }
 
     private async void OnBackClicked(object sender, EventArgs e)

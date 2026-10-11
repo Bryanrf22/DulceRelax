@@ -7,12 +7,20 @@ namespace DulceRelax.API.Repositories
 
     public class CitaRepository
     {
-        private static readonly TimeSpan Duracion = TimeSpan.FromHours(1);
+        private static readonly TimeSpan Descanso = TimeSpan.FromHours(1);
+        private static readonly TimeSpan DuracionPorDefecto = TimeSpan.FromHours(1);
+        private static readonly TimeSpan BloqueoMaximo = TimeSpan.FromHours(5);
+
         private readonly FirestoreDb _db;
 
         public CitaRepository(FirestoreDb db) => _db = db;
 
         private CollectionReference Citas => _db.Collection("citas");
+
+        private static TimeSpan Bloque(int minutos) =>
+            (minutos > 0 ? TimeSpan.FromMinutes(minutos) : DuracionPorDefecto) + Descanso;
+
+        private static bool Bloquea(CitaDTO c) => c.Estado == EstadoCita.Confirmada;
 
         public async Task<RespuestaCitaDTO?> GetByIdAsync(string id)
         {
@@ -56,7 +64,27 @@ namespace DulceRelax.API.Repositories
                 .ToList();
         }
 
-        public async Task<string?> CrearAsync(RegistrarCitaDTO dto)
+        public async Task<List<(DateTime Inicio, DateTime Fin)>> GetBloqueosAsync(DateTime desdeUtc, DateTime hastaUtc)
+        {
+            var snap = await Citas
+                .WhereGreaterThan("FechaHora", Timestamp.FromDateTime(desdeUtc - BloqueoMaximo))
+                .WhereLessThan("FechaHora", Timestamp.FromDateTime(hastaUtc))
+                .GetSnapshotAsync();
+
+            return snap.Documents
+                .Select(d => d.ConvertTo<CitaDTO>())
+                .Where(Bloquea)
+                .Select(c =>
+                {
+                    var ini = c.FechaHora.ToDateTime();
+                    return (Inicio: ini, Fin: ini + Bloque(c.DuracionMinutos));
+                })
+                .Where(b => b.Fin > desdeUtc)
+                .OrderBy(b => b.Inicio)
+                .ToList();
+        }
+
+        public async Task<string?> CrearAsync(RegistrarCitaDTO dto, int duracionMinutos)
         {
             var inicio = dto.FechaHora.ToUniversalTime();
             var docRef = Citas.Document();
@@ -69,13 +97,14 @@ namespace DulceRelax.API.Repositories
                 DetalleDireccion = dto.DetalleDireccion,
                 MasajeId = dto.MasajeId,
                 MasajeNombre = dto.MasajeNombre,
+                DuracionMinutos = duracionMinutos,
                 FechaHora = Timestamp.FromDateTime(inicio),
                 Estado = EstadoCita.Pendiente
             };
 
             var creada = await _db.RunTransactionAsync(async tx =>
             {
-                if (await HayConflictoAsync(tx, inicio, null)) return false;
+                if (await HayConflictoAsync(tx, inicio, duracionMinutos, null)) return false;
                 tx.Create(docRef, cita);
                 return true;
             });
@@ -83,7 +112,7 @@ namespace DulceRelax.API.Repositories
             return creada ? docRef.Id : null;
         }
 
-        public async Task<ResultadoCita> ActualizarAsync(string id, ActualizarCitaDTO dto)
+        public async Task<ResultadoCita> ActualizarAsync(string id, ActualizarCitaDTO dto, int duracionMinutos)
         {
             var docRef = Citas.Document(id);
             var inicio = dto.FechaHora.ToUniversalTime();
@@ -93,7 +122,8 @@ namespace DulceRelax.API.Repositories
                 var doc = await tx.GetSnapshotAsync(docRef);
                 if (!doc.Exists) return ResultadoCita.NoEncontrada;
 
-                if (dto.Estado != EstadoCita.Cancelada && await HayConflictoAsync(tx, inicio, id))
+                if (dto.Estado != EstadoCita.Cancelada &&
+                    await HayConflictoAsync(tx, inicio, duracionMinutos, id))
                     return ResultadoCita.HorarioOcupado;
 
                 tx.Update(docRef, new Dictionary<string, object>
@@ -102,6 +132,7 @@ namespace DulceRelax.API.Repositories
                     { "DetalleDireccion", dto.DetalleDireccion ?? "" },
                     { "MasajeId", dto.MasajeId },
                     { "MasajeNombre", dto.MasajeNombre },
+                    { "DuracionMinutos", duracionMinutos },
                     { "FechaHora", Timestamp.FromDateTime(inicio) },
                     { "Estado", dto.Estado }
                 });
@@ -109,25 +140,45 @@ namespace DulceRelax.API.Repositories
             });
         }
 
-        public async Task<bool> CambiarEstadoAsync(string id, EstadoCita estado)
+        public async Task<ResultadoCita> CambiarEstadoAsync(string id, EstadoCita estado)
         {
             var docRef = Citas.Document(id);
-            var doc = await docRef.GetSnapshotAsync();
-            if (!doc.Exists) return false;
-            await docRef.UpdateAsync("Estado", estado);
-            return true;
+
+            return await _db.RunTransactionAsync(async tx =>
+            {
+                var doc = await tx.GetSnapshotAsync(docRef);
+                if (!doc.Exists) return ResultadoCita.NoEncontrada;
+
+                if (estado == EstadoCita.Confirmada)
+                {
+                    var c = doc.ConvertTo<CitaDTO>();
+                    if (await HayConflictoAsync(tx, c.FechaHora.ToDateTime(), c.DuracionMinutos, id))
+                        return ResultadoCita.HorarioOcupado;
+                }
+
+                tx.Update(docRef, new Dictionary<string, object> { { "Estado", estado } });
+                return ResultadoCita.Ok;
+            });
         }
 
-        private async Task<bool> HayConflictoAsync(Transaction tx, DateTime inicio, string? excluirId)
+        private async Task<bool> HayConflictoAsync(Transaction tx, DateTime inicio, int duracionMinutos, string? excluirId)
         {
+            var finBloque = inicio + Bloque(duracionMinutos);
             var query = Citas
-                .WhereGreaterThan("FechaHora", Timestamp.FromDateTime(inicio - Duracion))
-                .WhereLessThan("FechaHora", Timestamp.FromDateTime(inicio + Duracion));
+                .WhereGreaterThan("FechaHora", Timestamp.FromDateTime(inicio - BloqueoMaximo))
+                .WhereLessThan("FechaHora", Timestamp.FromDateTime(finBloque));
 
             var snap = await tx.GetSnapshotAsync(query);
             return snap.Documents.Any(d =>
-                d.Id != excluirId &&
-                d.ConvertTo<CitaDTO>().Estado != EstadoCita.Cancelada);
+            {
+                if (d.Id == excluirId) return false;
+
+                var c = d.ConvertTo<CitaDTO>();
+                if (!Bloquea(c)) return false;
+
+                var ini = c.FechaHora.ToDateTime();
+                return ini < finBloque && ini + Bloque(c.DuracionMinutos) > inicio;
+            });
         }
 
         private static RespuestaCitaDTO ToRespuesta(CitaDTO c) => new()

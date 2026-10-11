@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
              x:Class="DulceRelax.App.Cliente.Views.PerfilClienteEdit"
+             x:DataType="vm:PerfilEditViewModel"
              Title="Editar Perfil"
              BackgroundColor="#FBF6F2"
              Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <Style x:Key="Etiqueta" TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#333333" />
+        </Style>
+
+        <Style x:Key="Campo" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="Stroke" Value="#DDDDD9" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="Padding" Value="12,0" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+            <Setter Property="StrokeShape">
+                <Setter.Value>
+                    <RoundRectangle CornerRadius="12" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
@@ -25,143 +49,92 @@
 
                 <VerticalStackLayout Spacing="8">
 
-                    <Label Text="Nombre"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="#333333" />
-
-                    <Border BackgroundColor="White"
-                            Stroke="#DDDDD9"
-                            StrokeThickness="1"
-                            HeightRequest="48"
-                            Padding="12,0"
-                            Margin="0,0,0,10">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
-                        </Border.StrokeShape>
-                        <Entry x:Name="NombreEntry"
+                    <Label Text="Nombre" Style="{StaticResource Etiqueta}" />
+                    <Border Style="{StaticResource Campo}">
+                        <Entry Text="{Binding Nombre}"
                                Placeholder="Nombre completo"
+                               MaxLength="80"
+                               IsSpellCheckEnabled="False"
+                               IsTextPredictionEnabled="False"
                                FontSize="14"
                                TextColor="#333333"
                                PlaceholderColor="#999999"
                                BackgroundColor="Transparent" />
                     </Border>
 
-                    <Label Text="Correo Electrónico"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="#333333" />
-
-                    <Border BackgroundColor="White"
-                            Stroke="#DDDDD9"
-                            StrokeThickness="1"
-                            HeightRequest="48"
-                            Padding="12,0"
-                            Margin="0,0,0,10">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
-                        </Border.StrokeShape>
-                        <Entry x:Name="EmailEntry"
-                               Placeholder="correo@ejemplo.com"
-                               Keyboard="Email"
-                               FontSize="14"
-                               TextColor="#333333"
-                               PlaceholderColor="#999999"
-                               BackgroundColor="Transparent" />
-                    </Border>
-
-                    <Label Text="Teléfono"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="#333333" />
-
-                    <Border BackgroundColor="White"
-                            Stroke="#DDDDD9"
-                            StrokeThickness="1"
-                            HeightRequest="48"
-                            Padding="12,0"
-                            Margin="0,0,0,10">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
-                        </Border.StrokeShape>
-                        <Entry x:Name="TelefonoEntry"
+                    <Label Text="Teléfono" Style="{StaticResource Etiqueta}" />
+                    <Border Style="{StaticResource Campo}">
+                        <Entry Text="{Binding Telefono}"
                                Placeholder="Teléfono"
                                Keyboard="Telephone"
+                               MaxLength="20"
                                FontSize="14"
                                TextColor="#333333"
                                PlaceholderColor="#999999"
                                BackgroundColor="Transparent" />
                     </Border>
 
-                    <Label Text="Dirección"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="#333333" />
-
-                    <Border BackgroundColor="White"
-                            Stroke="#DDDDD9"
-                            StrokeThickness="1"
-                            HeightRequest="48"
-                            Padding="12,0"
-                            Margin="0,0,0,10">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
-                        </Border.StrokeShape>
-                        <Entry x:Name="DireccionEntry"
+                    <Label Text="Dirección" Style="{StaticResource Etiqueta}" />
+                    <Border Style="{StaticResource Campo}">
+                        <Entry Text="{Binding Direccion}"
                                Placeholder="Dirección"
+                               MaxLength="200"
+                               IsSpellCheckEnabled="False"
+                               IsTextPredictionEnabled="False"
                                FontSize="14"
                                TextColor="#333333"
                                PlaceholderColor="#999999"
                                BackgroundColor="Transparent" />
                     </Border>
 
-                    <Label Text="Contraseña"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="#333333" />
-
-                    <Border BackgroundColor="White"
-                            Stroke="#DDDDD9"
-                            StrokeThickness="1"
-                            HeightRequest="48"
-                            Padding="12,0"
-                            Margin="0,0,0,10">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
-                        </Border.StrokeShape>
-                        <Entry x:Name="PasswordEntry"
-                               IsPassword="True"
-                               Placeholder="Contraseña"
+                    <Label Text="Correo electrónico" Style="{StaticResource Etiqueta}" />
+                    <Border Style="{StaticResource Campo}" BackgroundColor="#F5F5F5" Stroke="Transparent">
+                        <Label Text="{Binding Correo}"
                                FontSize="14"
-                               TextColor="#333333"
-                               PlaceholderColor="#999999"
-                               BackgroundColor="Transparent" />
+                               TextColor="#777777"
+                               VerticalOptions="Center"
+                               LineBreakMode="TailTruncation" />
                     </Border>
+                    <Label Text="El correo identifica tu cuenta y no se puede cambiar aquí."
+                           FontSize="11"
+                           TextColor="#999999" />
 
-                    <HorizontalStackLayout Spacing="10" Margin="0,20">
-                        <Button x:Name="SaveButton"
-                                Text="💾 Guardar"
-                                HeightRequest="50"
-                                CornerRadius="15"
-                                BackgroundColor="#3F8758"
-                                TextColor="White"
-                                FontSize="15"
-                                FontAttributes="Bold"
-                                Clicked="OnSaveClicked"
-                                HorizontalOptions="FillAndExpand" />
-                        <Button x:Name="CancelButton"
-                                Text="✕ Cancelar"
-                                HeightRequest="50"
-                                CornerRadius="15"
-                                BackgroundColor="#C9423F"
-                                TextColor="White"
-                                FontSize="15"
-                                FontAttributes="Bold"
-                                Clicked="OnCancelClicked"
-                                HorizontalOptions="FillAndExpand" />
-                    </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Border>
+
+            <Label Text="{Binding Error}"
+                   IsVisible="{Binding HayError}"
+                   FontSize="13"
+                   TextColor="#B3261E"
+                   HorizontalTextAlignment="Center" />
+
+            <ActivityIndicator IsRunning="{Binding Guardando}"
+                               IsVisible="{Binding Guardando}"
+                               Color="#3F8758" />
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="Guardar"
+                        Command="{Binding GuardarCommand}"
+                        HeightRequest="50"
+                        CornerRadius="15"
+                        BackgroundColor="#3F8758"
+                        TextColor="White"
+                        FontSize="15"
+                        FontAttributes="Bold" />
+                <Button Grid.Column="1"
+                        Text="Cancelar"
+                        Command="{Binding CancelarCommand}"
+                        HeightRequest="50"
+                        CornerRadius="15"
+                        BackgroundColor="Transparent"
+                        BorderColor="#999999"
+                        BorderWidth="1"
+                        TextColor="#555555"
+                        FontSize="15"
+                        FontAttributes="Bold" />
+            </Grid>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

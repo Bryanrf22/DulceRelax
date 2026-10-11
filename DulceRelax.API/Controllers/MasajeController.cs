@@ -36,6 +36,8 @@ namespace DulceRelax.API.Controllers
                 Nombre = dto.Nombre,
                 Descripcion = dto.Descripcion,
                 Precio = dto.Precio,
+                DuracionMinutos = dto.DuracionMinutos,
+                ImagenUrl = dto.ImagenUrl,
                 Disponible = true
             };
 

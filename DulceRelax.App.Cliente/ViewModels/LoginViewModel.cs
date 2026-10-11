@@ -24,7 +24,10 @@ namespace DulceRelax.App.Cliente.ViewModels
         {
             Error = await auth.LoginAsync(new LoginDTO { Email = Email.Trim(), Password = Password }, Recordarme);
             if (Error is null)
+            {
+                Password = "";
                 await Shell.Current.GoToAsync(nameof(PrincipalCliente));
+            }
         }
 
         [RelayCommand]

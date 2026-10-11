@@ -11,10 +11,15 @@ namespace DulceRelax.App.Cliente
         {
             var builder = MauiApp.CreateBuilder();
 
+            var apiUrl = new Uri("https://jkr8tzhd-7204.use.devtunnels.ms/");
+
             builder.Services.AddTransient<AuthHandler>();
-            builder.Services.AddHttpClient<IAuthService, AuthService>(c =>
-                    c.BaseAddress = new Uri("https://jkr8tzhd-7204.use.devtunnels.ms/"))
+            builder.Services.AddHttpClient<IAuthService, AuthService>(c => c.BaseAddress = apiUrl)
                 .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddHttpClient<IMasajeService, MasajeService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+
+            builder.Services.AddHttpClient("refresh", c => c.BaseAddress = apiUrl);
 
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<InicioSesionCliente>();
@@ -22,6 +27,22 @@ namespace DulceRelax.App.Cliente
             builder.Services.AddTransient<RegistroCliente>();
             builder.Services.AddTransient<RecuperarPasswordViewModel>();
             builder.Services.AddTransient<RecuperarContraseñaCliente>();
+            builder.Services.AddTransient<PrincipalViewModel>();
+            builder.Services.AddTransient<PrincipalCliente>();
+
+            builder.Services.AddHttpClient<ICitaService, CitaService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddHttpClient<IUsuarioService, UsuarioService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+
+            builder.Services.AddTransient<ReservaViewModel>();
+            builder.Services.AddTransient<ReservaMasajeCliente>();
+            builder.Services.AddTransient<MisCitasViewModel>();
+            builder.Services.AddTransient<MisCitasCliente>();
+            builder.Services.AddTransient<PerfilViewModel>();
+            builder.Services.AddTransient<PerfilCliente>();
+            builder.Services.AddTransient<PerfilEditViewModel>();
+            builder.Services.AddTransient<PerfilClienteEdit>();
 
             builder
                 .UseMauiApp<App>()
@@ -32,7 +53,7 @@ namespace DulceRelax.App.Cliente
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
