@@ -1,22 +1,34 @@
+using DulceRelax.App.Cliente.ViewModels;
+
 namespace DulceRelax.App.Cliente.Views;
 
 public partial class PerfilCliente : ContentPage
 {
-    public PerfilCliente()
+    private readonly PerfilViewModel _vm;
+
+    public PerfilCliente(PerfilViewModel vm)
     {
         InitializeComponent();
-
-        // TODO: cargar datos reales del usuario desde la API (fase posterior)
-        EmailEntry.Text = "cliente@gmail.com";
-        PasswordEntry.Text = "123456";
-        NombreEntry.Text = "Nombre del cliente";
-        TelefonoEntry.Text = "6769-4201";
-        DireccionEntry.Text = "De los helados El pepe 67m al sur pegado a donde vivia doña Mary";
+        BindingContext = _vm = vm;
     }
 
-    private async void OnEditClicked(object sender, EventArgs e)
+    protected override async void OnAppearing()
     {
-        await Shell.Current.GoToAsync(nameof(PerfilClienteEdit));
+        base.OnAppearing();
+    #if ANDROID
+        Microsoft.Maui.ApplicationModel.Platform.CurrentActivity?.Window?
+            .SetFlags(Android.Views.WindowManagerFlags.Secure, Android.Views.WindowManagerFlags.Secure);
+    #endif
+        await _vm.CargarCommand.ExecuteAsync(null);
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+    #if ANDROID
+        Microsoft.Maui.ApplicationModel.Platform.CurrentActivity?.Window?
+            .ClearFlags(Android.Views.WindowManagerFlags.Secure);
+    #endif
     }
 
     private async void OnBackClicked(object sender, EventArgs e)

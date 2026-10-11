@@ -113,6 +113,12 @@ namespace DulceRelax.API.Controllers
         public async Task<IActionResult> UpdateMe(ActualizarUsuarioDTO dto)
         {
             var uid = User.FindFirst("user_id")?.Value;
+            if (uid is null) return Unauthorized();
+
+            dto.NombreCompleto = dto.NombreCompleto.Trim();
+            dto.NumTelefono = dto.NumTelefono.Trim();
+            dto.Direccion = dto.Direccion.Trim();
+
             await _repository.UpdateAsync(uid, dto);
             return NoContent();
         }
