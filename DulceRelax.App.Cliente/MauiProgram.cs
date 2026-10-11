@@ -19,6 +19,8 @@ namespace DulceRelax.App.Cliente
             builder.Services.AddHttpClient<IMasajeService, MasajeService>(c => c.BaseAddress = apiUrl)
                 .AddHttpMessageHandler<AuthHandler>();
 
+            builder.Services.AddHttpClient("refresh", c => c.BaseAddress = apiUrl);
+
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<InicioSesionCliente>();
             builder.Services.AddTransient<RegistroViewModel>();

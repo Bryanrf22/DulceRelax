@@ -40,7 +40,9 @@ FirebaseApp.Create(new AppOptions
     Credential = GoogleCredential.FromJson(credentialsJson)
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("Admin", p => p.RequireAssertion(ctx =>
+        ctx.User.FindFirst("admin")?.Value.Equals("true", StringComparison.OrdinalIgnoreCase) == true));
 
 builder.Services.AddScoped<UsuarioRepository>();
 builder.Services.AddScoped<MasajeRepository>();

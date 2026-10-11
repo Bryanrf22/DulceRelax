@@ -10,26 +10,39 @@ namespace DulceRelax.API.Controllers
     [Authorize]
     public class CitaController : ControllerBase
     {
-        private readonly CitaRepository _repository;
+        private const int MinutosPorDefecto = 60;
 
-        public CitaController(CitaRepository repository) => _repository = repository;
+        private readonly CitaRepository _repository;
+        private readonly MasajeRepository _masajes;
+
+        public CitaController(CitaRepository repository, MasajeRepository masajes)
+        {
+            _repository = repository;
+            _masajes = masajes;
+        }
 
         private string? Uid => User.FindFirst("user_id")?.Value;
 
         private bool EsAdmin =>
             User.FindFirst("admin")?.Value.Equals("true", StringComparison.OrdinalIgnoreCase) == true;
 
+        private static int Minutos(MasajeDTO? masaje) =>
+            masaje is { DuracionMinutos: > 0 } ? masaje.DuracionMinutos : MinutosPorDefecto;
+
         [HttpGet]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetByFecha([FromQuery] DateTime fecha)
             => Ok(await _repository.GetByFechaAsync(fecha));
 
         [HttpGet("disponibilidad")]
-        public async Task<IActionResult> GetOcupados([FromQuery] DateTime fecha)
+        public async Task<IActionResult> GetBloqueos(
+            [FromQuery] DateTimeOffset desde, [FromQuery] DateTimeOffset hasta)
         {
-            var citas = await _repository.GetByFechaAsync(fecha);
-            return Ok(citas
-                .Where(c => c.Estado != EstadoCita.Cancelada)
-                .Select(c => c.FechaHora));
+            if (hasta <= desde || hasta - desde > TimeSpan.FromDays(7))
+                return BadRequest(new { error = "Rango inválido." });
+
+            var bloqueos = await _repository.GetBloqueosAsync(desde.UtcDateTime, hasta.UtcDateTime);
+            return Ok(bloqueos.Select(b => new { inicio = b.Inicio, fin = b.Fin }));
         }
 
         [HttpGet("mias")]
@@ -37,6 +50,7 @@ namespace DulceRelax.API.Controllers
             => Ok(await _repository.GetByUsuarioAsync(Uid));
 
         [HttpGet("agendadas")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetAgendadas(
             [FromQuery] DateTimeOffset desde, [FromQuery] DateTimeOffset hasta)
         {
@@ -50,7 +64,9 @@ namespace DulceRelax.API.Controllers
         public async Task<IActionResult> GetById(string id)
         {
             var cita = await _repository.GetByIdAsync(id);
-            return cita is null ? NotFound() : Ok(cita);
+            if (cita is null) return NotFound();
+            if (!EsAdmin && cita.UsuarioId != Uid) return Forbid();
+            return Ok(cita);
         }
 
         [HttpPost]
@@ -59,9 +75,14 @@ namespace DulceRelax.API.Controllers
             if (dto.FechaHora.ToUniversalTime() < DateTime.UtcNow.AddDays(5))
                 return BadRequest(new { error = "La cita debe solicitarse con al menos 5 días de anticipación." });
 
-            dto.UsuarioId = Uid;
+            var masaje = await _masajes.GetById(dto.MasajeId);
+            if (masaje is null || !masaje.Disponible)
+                return BadRequest(new { error = "El masaje seleccionado no está disponible." });
 
-            var id = await _repository.CrearAsync(dto);
+            dto.UsuarioId = Uid;
+            dto.MasajeNombre = masaje.Nombre;
+
+            var id = await _repository.CrearAsync(dto, Minutos(masaje));
             if (id is null)
                 return Conflict(new { error = "Horario no disponible." });
 
@@ -89,9 +110,16 @@ namespace DulceRelax.API.Controllers
                     return BadRequest(new { error = "La cita debe solicitarse con al menos 5 días de anticipación." });
 
                 dto.Estado = EstadoCita.Pendiente;
+                dto.MasajeId = cita.MasajeId;
             }
 
-            var resultado = await _repository.ActualizarAsync(id, dto);
+            var masaje = await _masajes.GetById(dto.MasajeId);
+            if (masaje is null && dto.MasajeId != cita.MasajeId)
+                return BadRequest(new { error = "El masaje seleccionado no existe." });
+
+            dto.MasajeNombre = masaje?.Nombre ?? cita.MasajeNombre;
+
+            var resultado = await _repository.ActualizarAsync(id, dto, Minutos(masaje));
             return resultado switch
             {
                 ResultadoCita.NoEncontrada => NotFound(),
@@ -109,8 +137,16 @@ namespace DulceRelax.API.Controllers
             if (!EsAdmin && (cita.UsuarioId != Uid || estado != EstadoCita.Cancelada))
                 return Forbid();
 
-            await _repository.CambiarEstadoAsync(id, estado);
-            return NoContent();
+            var resultado = await _repository.CambiarEstadoAsync(id, estado);
+            return resultado switch
+            {
+                ResultadoCita.NoEncontrada => NotFound(),
+                ResultadoCita.HorarioOcupado => Conflict(new
+                {
+                    error = "Se cruza con una cita ya confirmada (incluye 1 hora de descanso)."
+                }),
+                _ => NoContent()
+            };
         }
     }
 }
