@@ -1,22 +1,15 @@
-﻿using DulceRelax.Shared.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using DulceRelax.Shared.DTOs;
 
 namespace DulceRelax.App.Admin.Services
 {
     public interface IAuthService
     {
-        Task<string?> RecuperarPasswordAsync(string email);
         Task<string?> LoginAsync(LoginDTO dto, bool recordar = false);
         Task<bool> RestaurarSesionAsync();
         void CerrarSesion();
-        Task<string?> RegistrarAsync(RegistrarUsuarioDTO dto);
     }
 
     public class AuthService(HttpClient http) : IAuthService
@@ -29,38 +22,14 @@ namespace DulceRelax.App.Admin.Services
                 if (!res.IsSuccessStatusCode) return await LeerError(res);
 
                 var json = await res.Content.ReadFromJsonAsync<JsonElement>();
+                if (!EsAdmin(json.GetProperty("idToken").GetString()!))
+                    return "Esta cuenta no tiene permisos de administrador.";
+
                 await GuardarTokensAsync(json, recordar);
                 return null;
             }
             catch (HttpRequestException ex) { return $"Sin conexión: {ex.Message}"; }
             catch (TaskCanceledException) { return "Tiempo de espera agotado"; }
-        }
-
-        public async Task<string?> RegistrarAsync(RegistrarUsuarioDTO dto)
-        {
-            var res = await http.PostAsJsonAsync("api/usuario/registrar", dto);
-            return res.IsSuccessStatusCode ? null : await LeerError(res);
-        }
-
-        public async Task<string?> RecuperarPasswordAsync(string email)
-        {
-            try
-            {
-                var res = await http.PostAsJsonAsync("api/usuario/recuperar-password",
-                    new RecuperarPasswordDTO { Email = email });
-                return res.IsSuccessStatusCode ? null : await LeerError(res);
-            }
-            catch (HttpRequestException) { return "No se pudo conectar con el servidor."; }
-        }
-
-        static async Task<string> LeerError(HttpResponseMessage res)
-        {
-            try
-            {
-                var json = await res.Content.ReadFromJsonAsync<JsonElement>();
-                return json.GetProperty("error").GetString() ?? "Error desconocido";
-            }
-            catch { return "Error de conexion con el servidor"; }
         }
 
         public async Task<bool> RestaurarSesionAsync()
@@ -80,6 +49,12 @@ namespace DulceRelax.App.Admin.Services
                 }
 
                 var json = await res.Content.ReadFromJsonAsync<JsonElement>();
+                if (!EsAdmin(json.GetProperty("idToken").GetString()!))
+                {
+                    CerrarSesion();
+                    return false;
+                }
+
                 await GuardarTokensAsync(json, recordar: true);
                 return true;
             }
@@ -90,6 +65,31 @@ namespace DulceRelax.App.Admin.Services
         {
             SecureStorage.Remove("idToken");
             SecureStorage.Remove("refreshToken");
+        }
+
+        static bool EsAdmin(string jwt)
+        {
+            try
+            {
+                var p = jwt.Split('.')[1].Replace('-', '+').Replace('_', '/');
+                p = p.PadRight(p.Length + (4 - p.Length % 4) % 4, '=');
+                using var doc = JsonDocument.Parse(Convert.FromBase64String(p));
+                return doc.RootElement.TryGetProperty("admin", out var a)
+                    && (a.ValueKind == JsonValueKind.True
+                        || (a.ValueKind == JsonValueKind.String
+                            && a.GetString()!.Equals("true", StringComparison.OrdinalIgnoreCase)));
+            }
+            catch { return false; }
+        }
+
+        static async Task<string> LeerError(HttpResponseMessage res)
+        {
+            try
+            {
+                var json = await res.Content.ReadFromJsonAsync<JsonElement>();
+                return json.GetProperty("error").GetString() ?? "Error desconocido";
+            }
+            catch { return "Error de conexion con el servidor"; }
         }
 
         static async Task GuardarTokensAsync(JsonElement json, bool recordar)

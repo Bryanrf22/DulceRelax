@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DulceRelax.App.Admin.Views.PrincipalAdmin"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F5F4F0">
+
+    <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+        <Label Text="Agenda" FontSize="25" FontAttributes="Bold"
+               HorizontalOptions="Center" TextColor="#262626" />
+        <Button Text="Cerrar sesión" Clicked="OnCerrarSesion"
+                BackgroundColor="#3F8758" TextColor="White" CornerRadius="15" HeightRequest="50" />
+    </VerticalStackLayout>
+</ContentPage>

@@ -17,4 +17,12 @@
     <Color x:Key="Gray950">#212121</Color>
     <Color x:Key="White">#FFFFFF</Color>
 
+    <Color x:Key="Fondo">#F5F4F0</Color>
+    <Color x:Key="Verde">#3F8758</Color>
+    <Color x:Key="VerdeSuave">#EAF4EC</Color>
+    <Color x:Key="Texto">#262626</Color>
+    <Color x:Key="TextoSecundario">#888888</Color>
+    <Color x:Key="Borde">#E0E0E0</Color>
+    <Color x:Key="Error">#B3261E</Color>
+
 </ResourceDictionary>

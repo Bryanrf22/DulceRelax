@@ -72,8 +72,15 @@
 
 	<ItemGroup>
 	  <Folder Include="Services\" />
-	  <Folder Include="ViewModels\" />
-	  <Folder Include="Views\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\InicioSesionAdmin.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PrincipalAdmin.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
