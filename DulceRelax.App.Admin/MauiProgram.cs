@@ -23,6 +23,8 @@ namespace DulceRelax.App.Admin
             builder.Services.AddTransient<InicioSesionAdmin>();
             builder.Services.AddTransient<PrincipalAdmin>();
 
+            builder.Services.AddTransient<AppShell>();
+
 
             builder
                 .UseMauiApp<App>()

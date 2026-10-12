@@ -1,20 +1,12 @@
-using DulceRelax.App.Admin.Services;
+using DulceRelax.App.Admin.ViewModels;
 
 namespace DulceRelax.App.Admin.Views;
 
-public partial class PrincipalAdmin : ContentPage
+public partial class InicioSesionAdmin : ContentPage
 {
-    private readonly IAuthService _auth;
-
-    public PrincipalAdmin(IAuthService auth)
+    public InicioSesionAdmin(LoginViewModel viewModel)
     {
         InitializeComponent();
-        _auth = auth;
-    }
-
-    private async void OnCerrarSesion(object sender, EventArgs e)
-    {
-        _auth.CerrarSesion();
-        await Shell.Current.GoToAsync("..");
+        BindingContext = viewModel;
     }
 }

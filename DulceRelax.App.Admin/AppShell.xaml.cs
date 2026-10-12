@@ -1,13 +1,21 @@
 ﻿using DulceRelax.App.Admin.Views;
 
-namespace DulceRelax.App.Admin
+namespace DulceRelax.App.Admin;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell(InicioSesionAdmin inicioSesion)
     {
-        public AppShell()
+        InitializeComponent();
+
+        Items.Add(new ShellContent
         {
-            InitializeComponent();
-            Routing.RegisterRoute(nameof(PrincipalAdmin), typeof(PrincipalAdmin));
-        }
+            Route = "InicioSesion",
+            Content = inicioSesion
+        });
+
+        Routing.RegisterRoute(
+            nameof(PrincipalAdmin),
+            typeof(PrincipalAdmin));
     }
 }
