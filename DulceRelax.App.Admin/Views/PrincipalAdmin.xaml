@@ -20,10 +20,6 @@
                             BackgroundColor="Transparent" BorderColor="#3F8758" BorderWidth="1"
                             TextColor="#3F8758" CornerRadius="10" HeightRequest="36"
                             Padding="14,0" FontSize="12" FontAttributes="Bold" />
-                    <Button Grid.Column="2" Text="Salir" Clicked="OnCerrarSesion"
-                            BackgroundColor="Transparent" BorderColor="#B3261E" BorderWidth="1"
-                            TextColor="#B3261E" CornerRadius="10" HeightRequest="36"
-                            Padding="14,0" FontSize="12" FontAttributes="Bold" />
                 </Grid>
 
                 <Border BackgroundColor="White" StrokeThickness="0" Padding="8">

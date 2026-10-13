@@ -47,6 +47,7 @@ builder.Services.AddAuthorizationBuilder()
 builder.Services.AddScoped<UsuarioRepository>();
 builder.Services.AddScoped<MasajeRepository>();
 builder.Services.AddSingleton<CitaRepository>();
+builder.Services.AddScoped<HorarioRepository>();
 
 // --- Build ---
 

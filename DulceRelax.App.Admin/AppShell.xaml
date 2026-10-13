@@ -17,6 +17,7 @@
         <ShellContent Title="Solicitudes" ContentTemplate="{DataTemplate views:SolicitudesAdmin}" Route="Solicitudes" />
         <ShellContent Title="Masajes" ContentTemplate="{DataTemplate views:MasajesAdmin}" Route="Masajes" />
         <ShellContent Title="Clientes" ContentTemplate="{DataTemplate views:ClientesAdmin}" Route="Clientes" />
+        <ShellContent Title="Ajustes" ContentTemplate="{DataTemplate views:AjustesAdmin}" Route="Ajustes" />
     </TabBar>
 
 </Shell>
