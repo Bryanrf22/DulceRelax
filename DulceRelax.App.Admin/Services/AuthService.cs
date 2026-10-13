@@ -1,0 +1,104 @@
+﻿using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
+using DulceRelax.Shared.DTOs;
+
+namespace DulceRelax.App.Admin.Services
+{
+    public interface IAuthService
+    {
+        Task<string?> LoginAsync(LoginDTO dto, bool recordar = false);
+        Task<bool> RestaurarSesionAsync();
+        void CerrarSesion();
+    }
+
+    public class AuthService(HttpClient http) : IAuthService
+    {
+        public async Task<string?> LoginAsync(LoginDTO dto, bool recordar = false)
+        {
+            try
+            {
+                var res = await http.PostAsJsonAsync("api/usuario/login", dto);
+                if (!res.IsSuccessStatusCode) return await LeerError(res);
+
+                var json = await res.Content.ReadFromJsonAsync<JsonElement>();
+                if (!EsAdmin(json.GetProperty("idToken").GetString()!))
+                    return "Esta cuenta no tiene permisos de administrador.";
+
+                await GuardarTokensAsync(json, recordar);
+                return null;
+            }
+            catch (HttpRequestException ex) { return $"Sin conexión: {ex.Message}"; }
+            catch (TaskCanceledException) { return "Tiempo de espera agotado"; }
+        }
+
+        public async Task<bool> RestaurarSesionAsync()
+        {
+            try
+            {
+                var refresh = await SecureStorage.GetAsync("refreshToken");
+                if (string.IsNullOrEmpty(refresh)) return false;
+
+                var res = await http.PostAsJsonAsync("api/usuario/refresh",
+                    new RefreshTokenDTO { RefreshToken = refresh });
+
+                if (!res.IsSuccessStatusCode)
+                {
+                    if (res.StatusCode == HttpStatusCode.Unauthorized) CerrarSesion();
+                    return false;
+                }
+
+                var json = await res.Content.ReadFromJsonAsync<JsonElement>();
+                if (!EsAdmin(json.GetProperty("idToken").GetString()!))
+                {
+                    CerrarSesion();
+                    return false;
+                }
+
+                await GuardarTokensAsync(json, recordar: true);
+                return true;
+            }
+            catch { return false; }
+        }
+
+        public void CerrarSesion()
+        {
+            SecureStorage.Remove("idToken");
+            SecureStorage.Remove("refreshToken");
+        }
+
+        static bool EsAdmin(string jwt)
+        {
+            try
+            {
+                var p = jwt.Split('.')[1].Replace('-', '+').Replace('_', '/');
+                p = p.PadRight(p.Length + (4 - p.Length % 4) % 4, '=');
+                using var doc = JsonDocument.Parse(Convert.FromBase64String(p));
+                return doc.RootElement.TryGetProperty("admin", out var a)
+                    && (a.ValueKind == JsonValueKind.True
+                        || (a.ValueKind == JsonValueKind.String
+                            && a.GetString()!.Equals("true", StringComparison.OrdinalIgnoreCase)));
+            }
+            catch { return false; }
+        }
+
+        static async Task<string> LeerError(HttpResponseMessage res)
+        {
+            try
+            {
+                var json = await res.Content.ReadFromJsonAsync<JsonElement>();
+                return json.GetProperty("error").GetString() ?? "Error desconocido";
+            }
+            catch { return "Error de conexion con el servidor"; }
+        }
+
+        static async Task GuardarTokensAsync(JsonElement json, bool recordar)
+        {
+            await SecureStorage.SetAsync("idToken", json.GetProperty("idToken").GetString()!);
+            if (recordar)
+                await SecureStorage.SetAsync("refreshToken", json.GetProperty("refreshToken").GetString()!);
+            else
+                SecureStorage.Remove("refreshToken");
+        }
+    }
+}

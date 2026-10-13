@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DulceRelax.App.Admin.Views.InicioSesionAdmin"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FBF6F2">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" VerticalOptions="Center">
+
+            <Image Source="logo.png" HeightRequest="120" WidthRequest="120"
+                   Aspect="AspectFit" HorizontalOptions="Center" Margin="0,0,0,20" />
+
+            <Border BackgroundColor="White" StrokeThickness="0" Padding="25">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label Text="Panel de administración" FontSize="26" FontAttributes="Bold"
+                           HorizontalOptions="Center" TextColor="#222222" Margin="0,0,0,5" />
+                    <Label Text="Inicie sesión para continuar" FontSize="15"
+                           HorizontalOptions="Center" TextColor="#777777" Margin="0,0,0,20" />
+
+                    <Label Text="Correo electrónico" FontSize="14" FontAttributes="Bold" TextColor="#333333" />
+                    <Border BackgroundColor="White" Stroke="#DDDDD9" StrokeThickness="1"
+                            HeightRequest="48" Padding="12,0" Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry Text="{Binding Email}" Placeholder="ejemplo@email.com"
+                               Keyboard="Email" ClearButtonVisibility="WhileEditing"
+                               FontSize="14" TextColor="#333333" PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Contraseña" FontSize="14" FontAttributes="Bold" TextColor="#333333" />
+                    <Border BackgroundColor="White" Stroke="#DDDDD9" StrokeThickness="1"
+                            HeightRequest="48" Padding="12,0" Margin="0,0,0,8">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry Text="{Binding Password}" Placeholder="Contraseña" IsPassword="True"
+                               FontSize="14" TextColor="#333333" PlaceholderColor="#999999"
+                               BackgroundColor="Transparent" />
+                    </Border>
+
+                    <HorizontalStackLayout Spacing="8" Margin="0,0,0,10">
+                        <CheckBox IsChecked="{Binding Recordarme}" Color="#3F8758" VerticalOptions="Center" />
+                        <Label Text="Recordarme" FontSize="13" TextColor="#888888" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <Label Text="{Binding Error}" TextColor="#B3261E" FontSize="13"
+                           HorizontalOptions="Center" />
+
+                    <Button Text="Iniciar sesión" Command="{Binding LoginCommand}"
+                            BackgroundColor="#3F8758" TextColor="White" CornerRadius="15"
+                            HeightRequest="50" FontSize="15" FontAttributes="Bold" />
+
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:DulceRelax.App.Admin.ViewModels"
+             x:Class="DulceRelax.App.Admin.Views.SolicitudesAdmin"
+             x:DataType="vm:SolicitudesViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FBF6F2">
+
+    <RefreshView IsRefreshing="{Binding Cargando}"
+                 Command="{Binding CargarCommand}"
+                 RefreshColor="#3F8758">
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <Label Text="Solicitudes" FontSize="24" FontAttributes="Bold" TextColor="#222222" />
+
+                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                        IsVisible="{Binding HayError}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="{Binding Error}" FontSize="14" TextColor="#B3261E"
+                               HorizontalTextAlignment="Center" />
+                        <Button Text="Reintentar" Command="{Binding CargarCommand}"
+                                BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
+                                HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                        IsVisible="{Binding SinSolicitudes}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <Label Text="No hay solicitudes pendientes." HorizontalTextAlignment="Center"
+                           FontSize="15" TextColor="#777777" Margin="0,20" />
+                </Border>
+
+                <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Citas}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:CitaItem">
+                            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1"
+                                    Padding="16" HorizontalOptions="Fill">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="16" />
+                                </Border.StrokeShape>
+
+                                <VerticalStackLayout Spacing="6">
+
+                                    <Label Text="{Binding FechaHoraTexto}" FontSize="18"
+                                           FontAttributes="Bold" TextColor="#3F8758" />
+                                    <Label Text="{Binding MasajeNombre}" FontSize="16"
+                                           FontAttributes="Bold" TextColor="#292929"
+                                           LineBreakMode="TailTruncation" MaxLines="2" />
+                                    <Label Text="{Binding Cliente}" FontSize="14" TextColor="#555555" />
+                                    <Label Text="{Binding Telefono}" FontSize="12" TextColor="#777777" />
+                                    <Label Text="{Binding Direccion}" FontSize="12" TextColor="#777777" />
+                                    <Label Text="{Binding Detalle}" IsVisible="{Binding TieneDetalle}"
+                                           FontSize="11" TextColor="#999999" />
+
+                                    <HorizontalStackLayout Spacing="10" Margin="0,8,0,0">
+                                        <Button Text="Confirmar" HeightRequest="36" Padding="18,0"
+                                                CornerRadius="10" FontSize="12" FontAttributes="Bold"
+                                                BackgroundColor="#3F8758" TextColor="White"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SolicitudesViewModel}}, x:DataType=vm:SolicitudesViewModel, Path=ConfirmarCommand}"
+                                                CommandParameter="{Binding .}" />
+                                        <Button Text="Rechazar" HeightRequest="36" Padding="18,0"
+                                                CornerRadius="10" FontSize="12" FontAttributes="Bold"
+                                                BackgroundColor="Transparent" BorderColor="#B3261E"
+                                                BorderWidth="1" TextColor="#B3261E"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SolicitudesViewModel}}, x:DataType=vm:SolicitudesViewModel, Path=RechazarCommand}"
+                                                CommandParameter="{Binding .}" />
+                                    </HorizontalStackLayout>
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
