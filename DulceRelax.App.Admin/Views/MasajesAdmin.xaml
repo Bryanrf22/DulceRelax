@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:DulceRelax.App.Admin.ViewModels"
+             x:Class="DulceRelax.App.Admin.Views.MasajesAdmin"
+             x:DataType="vm:MasajesViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FBF6F2">
+
+    <RefreshView IsRefreshing="{Binding Cargando}"
+                 Command="{Binding CargarCommand}"
+                 RefreshColor="#3F8758">
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Masajes" FontSize="24" FontAttributes="Bold"
+                           TextColor="#222222" VerticalOptions="Center" />
+                    <Button Grid.Column="1" Text="+ Nuevo" Command="{Binding NuevoCommand}"
+                            BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
+                            HeightRequest="36" Padding="16,0" FontSize="12" FontAttributes="Bold" />
+                </Grid>
+
+                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                        IsVisible="{Binding HayError}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="{Binding Error}" FontSize="14" TextColor="#B3261E"
+                               HorizontalTextAlignment="Center" />
+                        <Button Text="Reintentar" Command="{Binding CargarCommand}"
+                                BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
+                                HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                        IsVisible="{Binding SinMasajes}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <Label Text="Aún no hay masajes registrados." HorizontalTextAlignment="Center"
+                           FontSize="15" TextColor="#777777" Margin="0,20" />
+                </Border>
+
+                <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Masajes}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:MasajeItem">
+                            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1"
+                                    Padding="16" HorizontalOptions="Fill">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="16" />
+                                </Border.StrokeShape>
+
+                                <VerticalStackLayout Spacing="6">
+
+                                    <Label Text="{Binding Nombre}" FontSize="16" FontAttributes="Bold"
+                                           TextColor="#292929" LineBreakMode="TailTruncation" MaxLines="2" />
+
+                                    <Border BackgroundColor="{Binding EstadoFondo}" StrokeThickness="0"
+                                            Padding="10,4" HorizontalOptions="Start">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <Label Text="{Binding EstadoTexto}" FontSize="11"
+                                               FontAttributes="Bold" TextColor="{Binding EstadoColor}" />
+                                    </Border>
+
+                                    <Label Text="{Binding PrecioTexto}" FontSize="13" TextColor="#555555"
+                                           Margin="0,4,0,0" />
+                                    <Label Text="{Binding DuracionTexto}" FontSize="12" TextColor="#777777" />
+
+                                    <HorizontalStackLayout Spacing="10" Margin="0,8,0,0">
+                                        <Button Text="Editar" HeightRequest="36" Padding="18,0"
+                                                CornerRadius="10" FontSize="12" FontAttributes="Bold"
+                                                BackgroundColor="Transparent" BorderColor="#3F8758"
+                                                BorderWidth="1" TextColor="#3F8758"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MasajesViewModel}}, x:DataType=vm:MasajesViewModel, Path=EditarCommand}"
+                                                CommandParameter="{Binding .}" />
+                                        <Button Text="{Binding AccionTexto}" HeightRequest="36" Padding="18,0"
+                                                CornerRadius="10" FontSize="12" FontAttributes="Bold"
+                                                BackgroundColor="Transparent" BorderWidth="1"
+                                                BorderColor="{Binding AccionColor}" TextColor="{Binding AccionColor}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MasajesViewModel}}, x:DataType=vm:MasajesViewModel, Path=AlternarCommand}"
+                                                CommandParameter="{Binding .}" />
+                                    </HorizontalStackLayout>
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

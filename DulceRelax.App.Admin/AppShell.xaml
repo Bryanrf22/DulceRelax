@@ -15,6 +15,7 @@
     <TabBar Route="Principal">
         <ShellContent Title="Agenda" ContentTemplate="{DataTemplate views:PrincipalAdmin}" Route="Agenda" />
         <ShellContent Title="Solicitudes" ContentTemplate="{DataTemplate views:SolicitudesAdmin}" Route="Solicitudes" />
+        <ShellContent Title="Masajes" ContentTemplate="{DataTemplate views:MasajesAdmin}" Route="Masajes" />
     </TabBar>
 
 </Shell>

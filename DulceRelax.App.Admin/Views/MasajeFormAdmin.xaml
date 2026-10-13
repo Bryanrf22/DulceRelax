@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:DulceRelax.App.Admin.ViewModels"
+             x:Class="DulceRelax.App.Admin.Views.MasajeFormAdmin"
+             x:DataType="vm:MasajeFormViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FBF6F2">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="← Atrás" Command="{Binding VolverCommand}"
+                        BackgroundColor="#3F8758" TextColor="White" Padding="15,10"
+                        CornerRadius="12" FontSize="14" VerticalOptions="Center" />
+                <Label Text="{Binding Titulo}" FontSize="24" FontAttributes="Bold"
+                       TextColor="#222222" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+            <Border BackgroundColor="White" StrokeThickness="0" Padding="25">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label Text="Nombre" FontSize="14" FontAttributes="Bold" TextColor="#333333" />
+                    <Border BackgroundColor="White" Stroke="#DDDDD9" StrokeThickness="1"
+                            HeightRequest="48" Padding="12,0" Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry Text="{Binding Nombre}" Placeholder="Nombre del masaje" FontSize="14"
+                               TextColor="#333333" PlaceholderColor="#999999" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Descripción" FontSize="14" FontAttributes="Bold" TextColor="#333333" />
+                    <Border BackgroundColor="White" Stroke="#DDDDD9" StrokeThickness="1"
+                            Padding="12,4" Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Editor Text="{Binding Descripcion}" Placeholder="Descripción" HeightRequest="100"
+                                FontSize="14" TextColor="#333333" PlaceholderColor="#999999"
+                                BackgroundColor="Transparent" AutoSize="TextChanges" />
+                    </Border>
+
+                    <Label Text="Precio (C$)" FontSize="14" FontAttributes="Bold" TextColor="#333333" />
+                    <Border BackgroundColor="White" Stroke="#DDDDD9" StrokeThickness="1"
+                            HeightRequest="48" Padding="12,0" Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry Text="{Binding PrecioTexto}" Placeholder="0" Keyboard="Numeric" FontSize="14"
+                               TextColor="#333333" PlaceholderColor="#999999" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Duración (minutos)" FontSize="14" FontAttributes="Bold" TextColor="#333333" />
+                    <Border BackgroundColor="White" Stroke="#DDDDD9" StrokeThickness="1"
+                            HeightRequest="48" Padding="12,0" Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry Text="{Binding DuracionTexto}" Placeholder="60" Keyboard="Numeric" FontSize="14"
+                               TextColor="#333333" PlaceholderColor="#999999" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="URL de la imagen (opcional)" FontSize="14" FontAttributes="Bold"
+                           TextColor="#333333" />
+                    <Border BackgroundColor="White" Stroke="#DDDDD9" StrokeThickness="1"
+                            HeightRequest="48" Padding="12,0" Margin="0,0,0,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry Text="{Binding ImagenUrl}" Placeholder="https://..." Keyboard="Url" FontSize="14"
+                               TextColor="#333333" PlaceholderColor="#999999" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <HorizontalStackLayout Spacing="10" Margin="0,0,0,10" IsVisible="{Binding EsEdicion}">
+                        <Switch IsToggled="{Binding Disponible}" OnColor="#3F8758" VerticalOptions="Center" />
+                        <Label Text="Disponible para los clientes" FontSize="13" TextColor="#555555"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <Label Text="{Binding Error}" TextColor="#B3261E" FontSize="13"
+                           HorizontalTextAlignment="Center" />
+
+                    <Button Text="Guardar" Command="{Binding GuardarCommand}"
+                            BackgroundColor="#3F8758" TextColor="White" CornerRadius="15"
+                            HeightRequest="50" FontSize="15" FontAttributes="Bold" />
+
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
