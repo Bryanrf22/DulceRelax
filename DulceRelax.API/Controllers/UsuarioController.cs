@@ -28,6 +28,7 @@ namespace DulceRelax.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var usuarios = await _repository.GetAllAsync();
@@ -103,6 +104,7 @@ namespace DulceRelax.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetById(string id)
         {
             var usuario = await _repository.GetByIdAsync(id);

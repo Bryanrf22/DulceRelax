@@ -37,6 +37,11 @@ namespace DulceRelax.App.Admin
             builder.Services.AddTransient<MasajeFormViewModel>();
             builder.Services.AddTransient<MasajeFormAdmin>();
 
+            builder.Services.AddHttpClient<IUsuarioService, UsuarioService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddTransient<ClientesViewModel>();
+            builder.Services.AddTransient<ClientesAdmin>();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
