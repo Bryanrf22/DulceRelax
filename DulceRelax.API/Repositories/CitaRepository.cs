@@ -194,5 +194,31 @@ namespace DulceRelax.API.Repositories
             FechaHora = c.FechaHora.ToDateTime(),
             Estado = c.Estado
         };
+
+        public async Task<List<RespuestaCitaDTO>> GetByRangoAsync(DateTime desdeUtc, DateTime hastaUtc)
+        {
+            var snap = await Citas
+                .WhereGreaterThanOrEqualTo("FechaHora", Timestamp.FromDateTime(desdeUtc))
+                .WhereLessThan("FechaHora", Timestamp.FromDateTime(hastaUtc))
+                .GetSnapshotAsync();
+
+            return snap.Documents
+                .Select(d => ToRespuesta(d.ConvertTo<CitaDTO>()))
+                .OrderBy(c => c.FechaHora)
+                .ToList();
+        }
+
+        public async Task<List<RespuestaCitaDTO>> GetPendientesAsync()
+        {
+            var snap = await Citas
+                .WhereGreaterThanOrEqualTo("FechaHora", Timestamp.FromDateTime(DateTime.UtcNow))
+                .GetSnapshotAsync();
+
+            return snap.Documents
+                .Select(d => ToRespuesta(d.ConvertTo<CitaDTO>()))
+                .Where(c => c.Estado == EstadoCita.Pendiente)
+                .OrderBy(c => c.FechaHora)
+                .ToList();
+        }
     }
 }

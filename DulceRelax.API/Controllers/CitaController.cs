@@ -148,5 +148,21 @@ namespace DulceRelax.API.Controllers
                 _ => NoContent()
             };
         }
+
+        [HttpGet("rango")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> GetRango(
+            [FromQuery] DateTimeOffset desde, [FromQuery] DateTimeOffset hasta)
+        {
+            if (hasta <= desde || hasta - desde > TimeSpan.FromDays(7))
+                return BadRequest(new { error = "Rango inválido." });
+
+            return Ok(await _repository.GetByRangoAsync(desde.UtcDateTime, hasta.UtcDateTime));
+        }
+
+        [HttpGet("pendientes")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> GetPendientes()
+            => Ok(await _repository.GetPendientesAsync());
     }
 }

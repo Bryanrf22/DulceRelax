@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DulceRelax.App.Admin.Services;
-using DulceRelax.App.Admin.Views;
 using DulceRelax.Shared.DTOs;
 
 namespace DulceRelax.App.Admin.ViewModels
@@ -20,7 +19,7 @@ namespace DulceRelax.App.Admin.ViewModels
             if (Error is null)
             {
                 Password = "";
-                await Shell.Current.GoToAsync(nameof(PrincipalAdmin));
+                await Shell.Current.GoToAsync("//Principal");
             }
         }
 
@@ -28,7 +27,7 @@ namespace DulceRelax.App.Admin.ViewModels
         private async Task RestaurarSesionAsync()
         {
             if (await auth.RestaurarSesionAsync())
-                await Shell.Current.GoToAsync(nameof(PrincipalAdmin));
+                await Shell.Current.GoToAsync("//Principal");
         }
     }
 }

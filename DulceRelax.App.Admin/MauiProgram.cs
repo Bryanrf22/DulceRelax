@@ -24,7 +24,11 @@ namespace DulceRelax.App.Admin
             builder.Services.AddTransient<PrincipalAdmin>();
 
             builder.Services.AddTransient<AppShell>();
-
+            builder.Services.AddHttpClient<ICitaService, CitaService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddTransient<AgendaViewModel>();
+            builder.Services.AddTransient<SolicitudesViewModel>();
+            builder.Services.AddTransient<SolicitudesAdmin>();
 
             builder
                 .UseMauiApp<App>()

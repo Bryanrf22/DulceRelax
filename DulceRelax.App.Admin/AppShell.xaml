@@ -5,8 +5,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:DulceRelax.App.Admin.Views"
     Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarBackgroundColor="White"
+    Shell.TabBarTitleColor="#3F8758"
+    Shell.TabBarUnselectedColor="#888888"
     Title="DulceRelax Admin">
 
     <ShellContent ContentTemplate="{DataTemplate views:InicioSesionAdmin}" Route="InicioSesion" />
+
+    <TabBar Route="Principal">
+        <ShellContent Title="Agenda" ContentTemplate="{DataTemplate views:PrincipalAdmin}" Route="Agenda" />
+        <ShellContent Title="Solicitudes" ContentTemplate="{DataTemplate views:SolicitudesAdmin}" Route="Solicitudes" />
+    </TabBar>
 
 </Shell>
