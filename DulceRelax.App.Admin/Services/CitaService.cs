@@ -10,10 +10,18 @@ namespace DulceRelax.App.Admin.Services
         Task<(List<RespuestaCitaDTO> Lista, string? Error)> ObtenerPorDiaAsync(DateTime dia);
         Task<(List<RespuestaCitaDTO> Lista, string? Error)> ObtenerPendientesAsync();
         Task<string?> CambiarEstadoAsync(string id, EstadoCita estado);
+        Task<(List<RespuestaCitaDTO> Lista, string? Error)> ObtenerAgendadasAsync();
     }
 
     public class CitaService(HttpClient http) : ICitaService
     {
+
+        public const string SinConexion = "Sin conexión con el servidor";
+        public const string TiempoAgotado = "Tiempo de espera agotado";
+
+        public static bool EsErrorDeRed(string? error) => error is SinConexion or TiempoAgotado;
+
+
         public async Task<(List<RespuestaCitaDTO> Lista, string? Error)> ObtenerPorDiaAsync(DateTime dia)
         {
             var desde = new DateTimeOffset(dia.Date);
@@ -55,8 +63,8 @@ namespace DulceRelax.App.Admin.Services
                 var lista = await res.Content.ReadFromJsonAsync<List<RespuestaCitaDTO>>() ?? [];
                 return (lista, null);
             }
-            catch (HttpRequestException) { return ([], "Sin conexión con el servidor"); }
-            catch (TaskCanceledException) { return ([], "Tiempo de espera agotado"); }
+            catch (HttpRequestException) { return ([], SinConexion); }
+            catch (TaskCanceledException) { return ([], TiempoAgotado); }
         }
 
         static async Task<string> LeerError(HttpResponseMessage res, string porDefecto)
@@ -67,6 +75,15 @@ namespace DulceRelax.App.Admin.Services
                 return json.GetProperty("error").GetString() ?? porDefecto;
             }
             catch { return porDefecto; }
+        }
+
+        public Task<(List<RespuestaCitaDTO> Lista, string? Error)> ObtenerAgendadasAsync()
+        {
+            var desde = new DateTimeOffset(DateTime.Today);
+            var hasta = desde.AddDays(2);
+            return ObtenerListaAsync(
+                $"api/cita/agendadas?desde={Uri.EscapeDataString(desde.ToString("o"))}" +
+                $"&hasta={Uri.EscapeDataString(hasta.ToString("o"))}");
         }
     }
 }

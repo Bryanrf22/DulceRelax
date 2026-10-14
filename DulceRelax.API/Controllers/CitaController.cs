@@ -14,13 +14,6 @@ namespace DulceRelax.API.Controllers
 
         private readonly CitaRepository _repository;
         private readonly MasajeRepository _masajes;
-
-        public CitaController(CitaRepository repository, MasajeRepository masajes)
-        {
-            _repository = repository;
-            _masajes = masajes;
-        }
-
         private readonly HorarioRepository _horario;
 
         public CitaController(CitaRepository repository, MasajeRepository masajes, HorarioRepository horario)

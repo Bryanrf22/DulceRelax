@@ -58,6 +58,10 @@ namespace DulceRelax.App.Admin.Services
                 await GuardarTokensAsync(json, recordar: true);
                 return true;
             }
+            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+            {
+                return true;
+            }
             catch { return false; }
         }
 

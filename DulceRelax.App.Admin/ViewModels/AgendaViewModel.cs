@@ -1,14 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DulceRelax.App.Admin.Services;
 using DulceRelax.Shared.DTOs;
-using System.Collections.ObjectModel;
-using System.Security.Cryptography;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DulceRelax.App.Admin.ViewModels
 {
-    public partial class AgendaViewModel(ICitaService citaService) : ObservableObject
+    public partial class AgendaViewModel(ICitaService citaService, ICitaCacheService cache)
+        : ObservableObject
     {
         public ObservableCollection<CitaItem> Citas { get; } = [];
 
@@ -17,6 +16,8 @@ namespace DulceRelax.App.Admin.ViewModels
 
         [ObservableProperty] private bool cargando;
         [ObservableProperty] private bool sinCitas;
+        [ObservableProperty] private bool sinConexion;
+        [ObservableProperty] private string avisoSinConexion = "";
 
         [ObservableProperty, NotifyPropertyChangedFor(nameof(HayError))]
         private string? error;
@@ -31,15 +32,39 @@ namespace DulceRelax.App.Admin.ViewModels
         {
             Cargando = true;
             Error = null;
+            SinConexion = false;
 
             var (lista, err) = await citaService.ObtenerPorDiaAsync(Dia);
 
+            if (err is not null && CitaService.EsErrorDeRed(err) && cache.CubreDia(Dia))
+            {
+                lista = await cache.ObtenerDiaAsync(Dia);
+                SinConexion = true;
+                err = null;
+
+                var sync = cache.UltimaSincronizacion?.ToLocalTime();
+                AvisoSinConexion = "Sin conexión · se muestran solo las citas confirmadas " +
+                                   $"guardadas (actualizado {sync:ddd d MMM, h:mm tt}).";
+            }
+
             Citas.Clear();
-            foreach (var c in lista) Citas.Add(new CitaItem(c));
+            foreach (var c in lista) Citas.Add(new CitaItem(c, soloLectura: SinConexion));
 
             Error = err;
             SinCitas = err is null && Citas.Count == 0;
             Cargando = false;
+
+            if (err is null && !SinConexion) _ = SincronizarCacheAsync();
+        }
+
+        private async Task SincronizarCacheAsync()
+        {
+            try
+            {
+                var (lista, err) = await citaService.ObtenerAgendadasAsync();
+                if (err is null) await cache.GuardarAsync(lista);
+            }
+            catch { }
         }
 
         [RelayCommand]

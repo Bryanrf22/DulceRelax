@@ -47,6 +47,8 @@ namespace DulceRelax.App.Admin
             builder.Services.AddTransient<AjustesViewModel>();
             builder.Services.AddTransient<AjustesAdmin>();
 
+            builder.Services.AddSingleton<ICitaCacheService, CitaCacheService>();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
