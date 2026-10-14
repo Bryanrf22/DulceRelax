@@ -44,6 +44,9 @@ namespace DulceRelax.App.Cliente
             builder.Services.AddTransient<PerfilEditViewModel>();
             builder.Services.AddTransient<PerfilClienteEdit>();
 
+            builder.Services.AddHttpClient<IHorarioService, HorarioService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>

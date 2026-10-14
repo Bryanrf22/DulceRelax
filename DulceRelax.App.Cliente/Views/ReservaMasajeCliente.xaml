@@ -127,48 +127,61 @@
 
 				<VerticalStackLayout Spacing="8">
 
-					<Label Text="Fecha" Style="{StaticResource Etiqueta}" />
-					<Border Style="{StaticResource Campo}">
-						<DatePicker MinimumDate="{Binding FechaMinima}"
-                                    Date="{Binding Fecha}"
-                                    Format="dd/MM/yyyy"
-                                    BackgroundColor="Transparent"
-                                    FontSize="14" />
-					</Border>
+                    <Label Text="Fecha" Style="{StaticResource Etiqueta}" />
+                    <Border Style="{StaticResource Campo}">
+                        <DatePicker MinimumDate="{Binding FechaMinima}"
+                            Date="{Binding Fecha}"
+                            Format="dd/MM/yyyy"
+                            TextColor="#333333"
+                            BackgroundColor="Transparent"
+                            FontSize="14" />
+                    </Border>
 
-					<Label Text="Hora" Style="{StaticResource Etiqueta}" />
-					<Border Style="{StaticResource Campo}">
-						<TimePicker Time="{Binding Hora}"
-                                    BackgroundColor="Transparent"
-                                    FontSize="14" />
-					</Border>
+                    <Label Text="Hora" Style="{StaticResource Etiqueta}" />
+                    <Border Style="{StaticResource Campo}">
+                        <TimePicker Time="{Binding Hora}"
+                            TextColor="#333333"
+                            BackgroundColor="Transparent"
+                            FontSize="14" />
+                    </Border>
 
-					<Label Text="Teléfono" Style="{StaticResource Etiqueta}" />
-					<Border Style="{StaticResource Campo}">
-						<Entry Text="{Binding Telefono}"
-                               Placeholder="Número de contacto"
-                               Keyboard="Telephone"
-                               BackgroundColor="Transparent"
-                               FontSize="14" />
-					</Border>
+                    <Label Text="{Binding HorarioDiaTexto}"
+                       IsVisible="{Binding HayHorarioDia}"
+                       FontSize="12"
+                       TextColor="#888888" />
 
-					<Label Text="Dirección exacta" Style="{StaticResource Etiqueta}" />
-					<Border Style="{StaticResource Campo}">
-						<Entry Text="{Binding Direccion}"
-                               Placeholder="Dónde será el masaje"
-                               BackgroundColor="Transparent"
-                               FontSize="14" />
-					</Border>
+                    <Label Text="Teléfono" Style="{StaticResource Etiqueta}" />
+                    <Border Style="{StaticResource Campo}">
+                        <Entry Text="{Binding Telefono}"
+                           Placeholder="Número de contacto"
+                           Keyboard="Telephone"
+                           TextColor="#333333"
+                           PlaceholderColor="#999999"
+                           BackgroundColor="Transparent"
+                           FontSize="14" />
+                    </Border>
 
-					<Label Text="Referencias (opcional)" Style="{StaticResource Etiqueta}" />
-					<Border Style="{StaticResource Campo}">
-						<Entry Text="{Binding Detalle}"
-                               Placeholder="Casa azul, portón negro..."
-                               BackgroundColor="Transparent"
-                               FontSize="14" />
-					</Border>
+                    <Label Text="Dirección exacta" Style="{StaticResource Etiqueta}" />
+                    <Border Style="{StaticResource Campo}">
+                        <Entry Text="{Binding Direccion}"
+                           Placeholder="Dónde será el masaje"
+                           TextColor="#333333"
+                           PlaceholderColor="#999999"
+                           BackgroundColor="Transparent"
+                           FontSize="14" />
+                    </Border>
 
-				</VerticalStackLayout>
+                    <Label Text="Referencias (opcional)" Style="{StaticResource Etiqueta}" />
+                    <Border Style="{StaticResource Campo}">
+                        <Entry Text="{Binding Detalle}"
+                           Placeholder="Casa azul, portón negro..."
+                           TextColor="#333333"
+                           PlaceholderColor="#999999"
+                           BackgroundColor="Transparent"
+                           FontSize="14" />
+                    </Border>
+
+                </VerticalStackLayout>
 			</Border>
 
 			<Label Text="{Binding Error}"
