@@ -1,3 +1,4 @@
+using DulceRelax.App.Admin.Services;
 using DulceRelax.App.Admin.ViewModels;
 
 namespace DulceRelax.App.Admin.Views;
@@ -15,6 +16,6 @@ public partial class MasajesAdmin : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _vm.CargarCommand.ExecuteAsync(null);
+        await _vm.CargarCommand.EjecutarSeguroAsync();
     }
 }

@@ -6,8 +6,7 @@ using DulceRelax.Shared.DTOs;
 
 namespace DulceRelax.App.Admin.ViewModels
 {
-    public partial class AgendaViewModel(ICitaService citaService, ICitaCacheService cache)
-        : ObservableObject
+    public partial class AgendaViewModel(ICitaService citaService, ICitaCacheService cache, ISincronizadorService sync) : ObservableObject
     {
         public ObservableCollection<CitaItem> Citas { get; } = [];
 
@@ -36,7 +35,7 @@ namespace DulceRelax.App.Admin.ViewModels
 
             var (lista, err) = await citaService.ObtenerPorDiaAsync(Dia);
 
-            if (err is not null && CitaService.EsErrorDeRed(err) && cache.CubreDia(Dia))
+            if (err is not null && Red.EsError(err) && cache.CubreDia(Dia))
             {
                 lista = await cache.ObtenerDiaAsync(Dia);
                 SinConexion = true;
@@ -54,17 +53,7 @@ namespace DulceRelax.App.Admin.ViewModels
             SinCitas = err is null && Citas.Count == 0;
             Cargando = false;
 
-            if (err is null && !SinConexion) _ = SincronizarCacheAsync();
-        }
-
-        private async Task SincronizarCacheAsync()
-        {
-            try
-            {
-                var (lista, err) = await citaService.ObtenerAgendadasAsync();
-                if (err is null) await cache.GuardarAsync(lista);
-            }
-            catch { }
+            if (err is null && !SinConexion) _ = sync.SincronizarAsync();
         }
 
         [RelayCommand]

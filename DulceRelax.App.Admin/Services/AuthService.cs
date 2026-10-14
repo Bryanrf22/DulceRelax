@@ -62,6 +62,8 @@ namespace DulceRelax.App.Admin.Services
                 var res = await http.PostAsJsonAsync("api/usuario/refresh",
                     new RefreshTokenDTO { RefreshToken = refresh });
 
+                if (Red.NoDisponible(res.StatusCode)) return true;
+
                 if (!res.IsSuccessStatusCode)
                 {
                     if (res.StatusCode == HttpStatusCode.Unauthorized) CerrarSesion();

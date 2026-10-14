@@ -26,6 +26,8 @@ namespace DulceRelax.App.Admin.Services
 
     public class CitaCacheService(LocalDb local) : ICitaCacheService
     {
+        private const string ClaveSync = "citas_cache_sync";
+        
         public DateTime? UltimaSincronizacion =>
             DateTime.TryParse(Preferences.Get(ClaveSync, ""), CultureInfo.InvariantCulture,
                 DateTimeStyles.RoundtripKind, out var f) ? f : null;
@@ -56,7 +58,7 @@ namespace DulceRelax.App.Admin.Services
                 })
                 .ToList();
 
-            var db = await DbAsync();
+            var db = await local.GetAsync();
             await db.RunInTransactionAsync(conn =>
             {
                 conn.DeleteAll<CitaCache>();
@@ -71,7 +73,7 @@ namespace DulceRelax.App.Admin.Services
             var desde = new DateTimeOffset(dia.Date).UtcDateTime;
             var hasta = desde.AddDays(1);
 
-            var db = await DbAsync();
+            var db = await local.GetAsync();
             var filas = await db.Table<CitaCache>()
                 .Where(c => c.FechaHoraUtc >= desde && c.FechaHoraUtc < hasta)
                 .OrderBy(c => c.FechaHoraUtc)
@@ -90,23 +92,5 @@ namespace DulceRelax.App.Admin.Services
             }).ToList();
         }
 
-        private async Task<SQLiteAsyncConnection> DbAsync()
-        {
-            if (_db is not null) return _db;
-
-            await _init.WaitAsync();
-            try
-            {
-                if (_db is null)
-                {
-                    var db = new SQLiteAsyncConnection(
-                        Path.Combine(FileSystem.AppDataDirectory, "dulcerelax_admin.db3"));
-                    await db.CreateTableAsync<CitaCache>();
-                    _db = db;
-                }
-                return _db;
-            }
-            finally { _init.Release(); }
-        }
     }
 }
