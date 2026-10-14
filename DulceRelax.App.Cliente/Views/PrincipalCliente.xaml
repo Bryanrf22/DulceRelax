@@ -212,28 +212,12 @@
                     HorizontalOptions="Center"
                     Spacing="2">
 
-                    <!-- PLACEHOLDER: reemplazar por home.png definitivo -->
-                    <Border
-                        x:Name="HomeIcon"
-                        BackgroundColor="#FFF3CD"
-                        Stroke="#F0AD4E"
-                        StrokeThickness="2"
-                        StrokeDashArray="4,2"
-                        StrokeShape="RoundRectangle 6"
-                        HeightRequest="40"
-                        WidthRequest="40"
-                        HorizontalOptions="Center">
-                        <Label
-                            Text="IMG"
-                            FontSize="9"
-                            FontAttributes="Bold"
-                            TextColor="#8A6D3B"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center" />
-                    </Border>
+                    <Label
+                        Text="{StaticResource IconoInicio}"
+                        Style="{StaticResource IconoNav}"
+                        TextColor="#3F8758" />
 
                     <Label
-                        x:Name="HomeLabel"
                         Text="Inicio"
                         FontSize="10"
                         FontAttributes="Bold"
@@ -251,28 +235,12 @@
                     HorizontalOptions="Center"
                     Spacing="2">
 
-                    <!-- PLACEHOLDER: reemplazar por calendar.png definitivo -->
-                    <Border
-                        x:Name="CalendarIcon"
-                        BackgroundColor="#CFF4FC"
-                        Stroke="#0EA5E9"
-                        StrokeThickness="2"
-                        StrokeDashArray="4,2"
-                        StrokeShape="RoundRectangle 6"
-                        HeightRequest="40"
-                        WidthRequest="40"
-                        HorizontalOptions="Center">
-                        <Label
-                            Text="IMG"
-                            FontSize="9"
-                            FontAttributes="Bold"
-                            TextColor="#075985"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center" />
-                    </Border>
+                    <Label
+                        Text="{StaticResource IconoAgenda}"
+                        Style="{StaticResource IconoNav}"
+                        TextColor="#333333" />
 
                     <Label
-                        x:Name="CalendarLabel"
                         Text="Mis Citas"
                         FontSize="10"
                         TextColor="#333333"
@@ -289,14 +257,12 @@
                     HorizontalOptions="Center"
                     Spacing="2">
 
-                    <Image
-                        x:Name="ProfileIcon"
-                        Source="icono.png"
-                        HeightRequest="23"
-                        WidthRequest="23" />
+                    <Label
+                        Text="{StaticResource IconoPerfil}"
+                        Style="{StaticResource IconoNav}"
+                        TextColor="#333333" />
 
                     <Label
-                        x:Name="ProfileLabel"
                         Text="Perfil"
                         FontSize="10"
                         TextColor="#333333"

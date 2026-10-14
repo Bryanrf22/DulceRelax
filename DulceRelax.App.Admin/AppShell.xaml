@@ -7,17 +7,48 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.TabBarBackgroundColor="White"
     Shell.TabBarTitleColor="#3F8758"
+    Shell.TabBarForegroundColor="#3F8758"
     Shell.TabBarUnselectedColor="#888888"
     Title="DulceRelax Admin">
 
     <ShellContent ContentTemplate="{DataTemplate views:InicioSesionAdmin}" Route="InicioSesion" />
 
     <TabBar Route="Principal">
-        <ShellContent Title="Agenda" ContentTemplate="{DataTemplate views:PrincipalAdmin}" Route="Agenda" />
-        <ShellContent Title="Solicitudes" ContentTemplate="{DataTemplate views:SolicitudesAdmin}" Route="Solicitudes" />
-        <ShellContent Title="Masajes" ContentTemplate="{DataTemplate views:MasajesAdmin}" Route="Masajes" />
-        <ShellContent Title="Clientes" ContentTemplate="{DataTemplate views:ClientesAdmin}" Route="Clientes" />
-        <ShellContent Title="Ajustes" ContentTemplate="{DataTemplate views:AjustesAdmin}" Route="Ajustes" />
+        <ShellContent Title="Agenda" ContentTemplate="{DataTemplate views:PrincipalAdmin}" Route="Agenda">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="MaterialIcons"
+                                 Glyph="{StaticResource IconoAgenda}"
+                                 Size="24" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Solicitudes" ContentTemplate="{DataTemplate views:SolicitudesAdmin}" Route="Solicitudes">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="MaterialIcons"
+                                 Glyph="{StaticResource IconoSolicitudes}"
+                                 Size="24" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Masajes" ContentTemplate="{DataTemplate views:MasajesAdmin}" Route="Masajes">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="MaterialIcons"
+                                 Glyph="{StaticResource IconoMasaje}"
+                                 Size="24" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Clientes" ContentTemplate="{DataTemplate views:ClientesAdmin}" Route="Clientes">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="MaterialIcons"
+                                 Glyph="{StaticResource IconoClientes}"
+                                 Size="24" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Ajustes" ContentTemplate="{DataTemplate views:AjustesAdmin}" Route="Ajustes">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="MaterialIcons"
+                                 Glyph="{StaticResource IconoAjustes}"
+                                 Size="24" />
+            </ShellContent.Icon>
+        </ShellContent>
     </TabBar>
 
 </Shell>
