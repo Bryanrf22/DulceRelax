@@ -16,14 +16,22 @@
 			<VerticalStackLayout Padding="20" Spacing="15">
 
 				<HorizontalStackLayout Spacing="10">
-					<Button Text="← Atrás"
+					<Button Text="Atrás"
                             BackgroundColor="#3F8758"
                             TextColor="White"
                             Padding="15,10"
                             CornerRadius="12"
                             FontSize="14"
+                            ContentLayout="Left,8"
                             Clicked="OnBackClicked"
-                            VerticalOptions="Center" />
+                            VerticalOptions="Center">
+						<Button.ImageSource>
+							<FontImageSource FontFamily="MaterialIcons"
+                                             Glyph="{StaticResource IconoAtras}"
+                                             Color="White"
+                                             Size="18" />
+						</Button.ImageSource>
+					</Button>
 					<Label Text="Mis Citas"
                            FontSize="24"
                            FontAttributes="Bold"
@@ -48,7 +56,15 @@
                                 BackgroundColor="#3F8758"
                                 TextColor="White"
                                 CornerRadius="10"
-                                HorizontalOptions="Center" />
+                                ContentLayout="Left,6"
+                                HorizontalOptions="Center">
+							<Button.ImageSource>
+								<FontImageSource FontFamily="MaterialIcons"
+                                                 Glyph="{StaticResource IconoReintentar}"
+                                                 Color="White"
+                                                 Size="16" />
+							</Button.ImageSource>
+						</Button>
 					</VerticalStackLayout>
 				</Border>
 
@@ -102,14 +118,26 @@
 											   TextColor="{Binding EstadoColor}" />
 									</Border>
 
-									<Label Text="{Binding FechaHoraTexto}"
-										   FontSize="13"
-										   TextColor="#555555"
-										   Margin="0,4,0,0" />
+									<HorizontalStackLayout Spacing="4" Margin="0,4,0,0">
+										<Label Text="{StaticResource IconoReloj}"
+											   Style="{StaticResource Icono}"
+											   FontSize="13"
+											   TextColor="#555555" />
+										<Label Text="{Binding FechaHoraTexto}"
+											   FontSize="13"
+											   TextColor="#555555"
+											   VerticalOptions="Center" />
+									</HorizontalStackLayout>
 
-									<Label Text="{Binding Direccion}"
-										   FontSize="12"
-										   TextColor="#777777" />
+									<HorizontalStackLayout Spacing="4">
+										<Label Text="{StaticResource IconoUbicacion}"
+											   Style="{StaticResource Icono}"
+											   FontSize="13" />
+										<Label Text="{Binding Direccion}"
+											   FontSize="12"
+											   TextColor="#777777"
+											   VerticalOptions="Center" />
+									</HorizontalStackLayout>
 
 									<Label Text="{Binding Detalle}"
 										   IsVisible="{Binding TieneDetalle}"
@@ -127,12 +155,20 @@
 												CornerRadius="10"
 												FontSize="12"
 												FontAttributes="Bold"
+												ContentLayout="Left,6"
 												BackgroundColor="Transparent"
 												BorderColor="#3F8758"
 												BorderWidth="1"
 												TextColor="#3F8758"
 												Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MisCitasViewModel}}, x:DataType=vm:MisCitasViewModel, Path=EditarCommand}"
-												CommandParameter="{Binding .}" />
+												CommandParameter="{Binding .}">
+											<Button.ImageSource>
+												<FontImageSource FontFamily="MaterialIcons"
+																 Glyph="{StaticResource IconoEditar}"
+																 Color="#3F8758"
+																 Size="16" />
+											</Button.ImageSource>
+										</Button>
 
 										<Button Text="Cancelar"
 												IsVisible="{Binding PuedeCancelar}"
@@ -141,12 +177,20 @@
 												CornerRadius="10"
 												FontSize="12"
 												FontAttributes="Bold"
+												ContentLayout="Left,6"
 												BackgroundColor="Transparent"
 												BorderColor="#B3261E"
 												BorderWidth="1"
 												TextColor="#B3261E"
 												Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MisCitasViewModel}}, x:DataType=vm:MisCitasViewModel, Path=CancelarCommand}"
-												CommandParameter="{Binding .}" />
+												CommandParameter="{Binding .}">
+											<Button.ImageSource>
+												<FontImageSource FontFamily="MaterialIcons"
+																 Glyph="{StaticResource IconoCerrar}"
+																 Color="#B3261E"
+																 Size="16" />
+											</Button.ImageSource>
+										</Button>
 
 									</HorizontalStackLayout>
 

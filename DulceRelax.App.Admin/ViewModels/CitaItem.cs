@@ -10,7 +10,8 @@ namespace DulceRelax.App.Admin.ViewModels
         public RespuestaCitaDTO Cita => cita;
         public string MasajeNombre => cita.MasajeNombre;
         public string Cliente => cita.UsuarioNombre;
-        public string Telefono => $"☎ {cita.UsuarioTelefono}";
+        public string Telefono => cita.UsuarioTelefono;
+        public bool TieneTelefono => !string.IsNullOrWhiteSpace(cita.UsuarioTelefono);
         public string HoraTexto => $"{_local:h:mm tt}";
         public string FechaHoraTexto => $"{_local:ddd d MMM} · {_local:h:mm tt}";
         public string Direccion => cita.DireccionExacta;

@@ -60,12 +60,24 @@
 
                 <Button Text="Guardar horario" Command="{Binding GuardarCommand}"
                         BackgroundColor="#3F8758" TextColor="White" CornerRadius="15"
-                        HeightRequest="50" FontSize="15" FontAttributes="Bold" />
+                        HeightRequest="50" FontSize="15" FontAttributes="Bold" ContentLayout="Left,8">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons"
+                                         Glyph="{StaticResource IconoConfirmar}"
+                                         Color="White" Size="18" />
+                    </Button.ImageSource>
+                </Button>
 
                 <Button Text="Cerrar sesión" Command="{Binding CerrarSesionCommand}"
                         BackgroundColor="Transparent" BorderColor="#B3261E" BorderWidth="1"
                         TextColor="#B3261E" CornerRadius="15" HeightRequest="50"
-                        FontSize="15" FontAttributes="Bold" Margin="0,20,0,0" />
+                        FontSize="15" FontAttributes="Bold" Margin="0,20,0,0" ContentLayout="Left,8">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons"
+                                         Glyph="{StaticResource IconoSalir}"
+                                         Color="#B3261E" Size="18" />
+                    </Button.ImageSource>
+                </Button>
 
             </VerticalStackLayout>
         </ScrollView>
