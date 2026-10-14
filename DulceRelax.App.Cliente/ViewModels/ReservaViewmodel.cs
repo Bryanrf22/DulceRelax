@@ -5,8 +5,7 @@ using DulceRelax.Shared.DTOs;
 
 namespace DulceRelax.App.Cliente.ViewModels
 {
-    public partial class ReservaViewModel(ICitaService citas, IUsuarioService usuarios, IMasajeService masajes)
-        : ObservableObject, IQueryAttributable
+    public partial class ReservaViewModel(ICitaService citas, IUsuarioService usuarios, IMasajeService masajes, IHorarioService horarios) : ObservableObject, IQueryAttributable
     {
         private UsuarioDTO? _usuario;
         private RespuestaCitaDTO? _cita;
@@ -18,11 +17,15 @@ namespace DulceRelax.App.Cliente.ViewModels
         public bool TieneDuracion => Masaje?.DuracionMinutos > 0;
         public bool HayError => Error is not null;
 
+        private HorarioAtencionDTO? _horario;
+        public bool HayHorarioDia => HorarioDiaTexto.Length > 0;
+
         [ObservableProperty, NotifyPropertyChangedFor(nameof(TieneDuracion))]
         private MasajeDTO? masaje;
 
         [ObservableProperty] private DateTime fechaMinima = DateTime.Today.AddDays(5);
-        [ObservableProperty] private DateTime fecha = DateTime.Today.AddDays(5);
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(HorarioDiaTexto)), NotifyPropertyChangedFor(nameof(HayHorarioDia))]
+        private DateTime fecha = DateTime.Today.AddDays(5);
         [ObservableProperty] private TimeSpan hora = new(10, 0, 0);
         [ObservableProperty] private string telefono = "";
         [ObservableProperty] private string direccion = "";
@@ -32,8 +35,26 @@ namespace DulceRelax.App.Cliente.ViewModels
         [ObservableProperty, NotifyPropertyChangedFor(nameof(HayError))]
         private string? error;
 
+        public string HorarioDiaTexto
+        {
+            get
+            {
+                if (_horario?.Dias is null || _horario.Dias.Count == 0) return "";
+
+                if (!_horario.Dias.TryGetValue(Fecha.DayOfWeek.ToString(), out var d) || !d.Activo)
+                    return "No hay atención ese día.";
+
+                return $"Horario de atención ese día: {Formato(d.HoraInicio)} – {Formato(d.HoraFin)}";
+            }
+        }
+
+        private static string Formato(string hhmm) =>
+            TimeSpan.TryParse(hhmm, out var t) ? DateTime.Today.Add(t).ToString("h:mm tt") : hhmm;
+
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
+            _ = CargarHorarioAsync();
+
             if (query.TryGetValue("Cita", out var c) && c is RespuestaCitaDTO cita)
             {
                 _ = CargarEdicionAsync(cita);
@@ -44,6 +65,28 @@ namespace DulceRelax.App.Cliente.ViewModels
                 Masaje = seleccionado;
 
             _ = CargarPerfilAsync();
+        }
+
+        private async Task CargarHorarioAsync()
+        {
+            _horario = await horarios.ObtenerAsync();
+            OnPropertyChanged(nameof(HorarioDiaTexto));
+            OnPropertyChanged(nameof(HayHorarioDia));
+        }
+
+        private bool DentroDeHorario(DateTime inicio, int minutos)
+        {
+            if (_horario?.Dias is null || _horario.Dias.Count == 0) return true;
+
+            if (!_horario.Dias.TryGetValue(inicio.DayOfWeek.ToString(), out var d) || !d.Activo)
+                return false;
+
+            if (!TimeSpan.TryParse(d.HoraInicio, out var abre) ||
+                !TimeSpan.TryParse(d.HoraFin, out var cierra))
+                return false;
+
+            var fin = inicio.AddMinutes(minutos);
+            return fin.Date == inicio.Date && inicio.TimeOfDay >= abre && fin.TimeOfDay <= cierra;
         }
 
         private async Task CargarEdicionAsync(RespuestaCitaDTO cita)
@@ -103,6 +146,13 @@ namespace DulceRelax.App.Cliente.ViewModels
             if (cambioFecha && local < DateTime.Now.AddDays(5))
             {
                 Error = "La cita debe solicitarse con al menos 5 días de anticipación.";
+                return;
+            }
+
+            var minutos = Masaje.DuracionMinutos > 0 ? Masaje.DuracionMinutos : 60;
+            if (cambioFecha && !DentroDeHorario(local, minutos))
+            {
+                Error = $"La cita ({minutos} min) debe quedar dentro del horario de atención. {HorarioDiaTexto}".Trim();
                 return;
             }
 
