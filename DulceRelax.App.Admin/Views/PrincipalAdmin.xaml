@@ -97,7 +97,13 @@
                                            FontAttributes="Bold" TextColor="#292929"
                                            LineBreakMode="TailTruncation" MaxLines="2" />
                                     <Label Text="{Binding Cliente}" FontSize="14" TextColor="#555555" />
-                                    <Label Text="{Binding Telefono}" FontSize="12" TextColor="#777777" />
+                                    <HorizontalStackLayout Spacing="4" IsVisible="{Binding TieneTelefono}">
+                                        <Label Text="{StaticResource IconoTelefono}"
+                                               Style="{StaticResource Icono}"
+                                               FontSize="13" />
+                                        <Label Text="{Binding Telefono}" FontSize="12"
+                                               TextColor="#777777" VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
                                     <Label Text="{Binding Direccion}" FontSize="12" TextColor="#777777" />
                                     <Label Text="{Binding Detalle}" IsVisible="{Binding TieneDetalle}"
                                            FontSize="11" TextColor="#999999" />

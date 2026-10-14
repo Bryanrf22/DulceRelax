@@ -14,7 +14,7 @@ namespace DulceRelax.App.Cliente.ViewModels
 
         public RespuestaCitaDTO Cita => cita;
         public string MasajeNombre => cita.MasajeNombre;
-        public string FechaHoraTexto => $"◷ {_local:ddd d MMM yyyy} · {_local:h:mm tt}";
+        public string FechaHoraTexto => $"{_local:ddd d MMM yyyy} · {_local:h:mm tt}";
         public string Direccion => $"{cita.DireccionExacta}";
         public string? Detalle => cita.DetalleDireccion;
         public bool TieneDetalle => !string.IsNullOrWhiteSpace(cita.DetalleDireccion);

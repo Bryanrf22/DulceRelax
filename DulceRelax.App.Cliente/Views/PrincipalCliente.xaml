@@ -148,16 +148,22 @@
                                                         TextColor="#3F8758" />
                                                 </Border>
 
-                                                <Label
-                                                    Text="{Binding DuracionMinutos, StringFormat='◷ Duración: {0} min'}"
-                                                    FontSize="11"
-                                                    TextColor="#777777">
-                                                    <Label.Triggers>
-                                                        <DataTrigger TargetType="Label" Binding="{Binding DuracionMinutos}" Value="0">
+                                                <HorizontalStackLayout Spacing="4">
+                                                    <HorizontalStackLayout.Triggers>
+                                                        <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding DuracionMinutos}" Value="0">
                                                             <Setter Property="IsVisible" Value="False" />
                                                         </DataTrigger>
-                                                    </Label.Triggers>
-                                                </Label>
+                                                    </HorizontalStackLayout.Triggers>
+                                                    <Label
+                                                        Text="{StaticResource IconoReloj}"
+                                                        Style="{StaticResource Icono}"
+                                                        FontSize="12" />
+                                                    <Label
+                                                        Text="{Binding DuracionMinutos, StringFormat='Duración: {0} min'}"
+                                                        FontSize="11"
+                                                        TextColor="#777777"
+                                                        VerticalOptions="Center" />
+                                                </HorizontalStackLayout>
 
                                                 <Label
                                                     Text="{Binding Descripcion}"

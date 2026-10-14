@@ -6,7 +6,7 @@ namespace DulceRelax.App.Admin.ViewModels
     {
         public string Nombre => usuario.NombreCompleto;
         public string Telefono => usuario.NumTelefono;
-        public string TelefonoTexto => $"☎ {usuario.NumTelefono}";
+        public string TelefonoTexto => usuario.NumTelefono;
         public string Correo => usuario.Correo;
         public string Direccion => usuario.Direccion;
         public bool TieneTelefono => !string.IsNullOrWhiteSpace(usuario.NumTelefono);

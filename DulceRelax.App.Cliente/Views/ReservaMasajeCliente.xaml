@@ -97,10 +97,15 @@
                                    TextColor="#3F8758" />
 						</Border>
 
-						<Label Text="{Binding Masaje.DuracionMinutos, StringFormat='◷ Duración: {0} min'}"
-                               IsVisible="{Binding TieneDuracion}"
-                               FontSize="11"
-                               TextColor="#777777" />
+						<HorizontalStackLayout Spacing="4" IsVisible="{Binding TieneDuracion}">
+							<Label Text="{StaticResource IconoReloj}"
+                                   Style="{StaticResource Icono}"
+                                   FontSize="12" />
+							<Label Text="{Binding Masaje.DuracionMinutos, StringFormat='Duración: {0} min'}"
+                                   FontSize="11"
+                                   TextColor="#777777"
+                                   VerticalOptions="Center" />
+						</HorizontalStackLayout>
 					</VerticalStackLayout>
 
 				</Grid>
@@ -112,9 +117,16 @@
 				<Border.StrokeShape>
 					<RoundRectangle CornerRadius="12" />
 				</Border.StrokeShape>
-				<Label Text="ⓘ Las citas deben solicitarse con al menos 5 días de anticipación."
-                       FontSize="12"
-                       TextColor="#3F8758" />
+				<HorizontalStackLayout Spacing="6">
+					<Label Text="{StaticResource IconoInfo}"
+                           Style="{StaticResource Icono}"
+                           FontSize="14"
+                           TextColor="#3F8758" />
+					<Label Text="Las citas deben solicitarse con al menos 5 días de anticipación."
+                           FontSize="12"
+                           TextColor="#3F8758"
+                           VerticalOptions="Center" />
+				</HorizontalStackLayout>
 			</Border>
 
 			<Border BackgroundColor="White"

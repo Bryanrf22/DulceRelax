@@ -102,10 +102,16 @@
 											   TextColor="{Binding EstadoColor}" />
 									</Border>
 
-									<Label Text="{Binding FechaHoraTexto}"
-										   FontSize="13"
-										   TextColor="#555555"
-										   Margin="0,4,0,0" />
+									<HorizontalStackLayout Spacing="4" Margin="0,4,0,0">
+										<Label Text="{StaticResource IconoReloj}"
+											   Style="{StaticResource Icono}"
+											   FontSize="13"
+											   TextColor="#555555" />
+										<Label Text="{Binding FechaHoraTexto}"
+											   FontSize="13"
+											   TextColor="#555555"
+											   VerticalOptions="Center" />
+									</HorizontalStackLayout>
 
 									<Label Text="{Binding Direccion}"
 										   FontSize="12"
