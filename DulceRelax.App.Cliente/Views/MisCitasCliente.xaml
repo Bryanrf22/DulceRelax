@@ -129,9 +129,15 @@
 											   VerticalOptions="Center" />
 									</HorizontalStackLayout>
 
-									<Label Text="{Binding Direccion}"
-										   FontSize="12"
-										   TextColor="#777777" />
+									<HorizontalStackLayout Spacing="4">
+										<Label Text="{StaticResource IconoUbicacion}"
+											   Style="{StaticResource Icono}"
+											   FontSize="13" />
+										<Label Text="{Binding Direccion}"
+											   FontSize="12"
+											   TextColor="#777777"
+											   VerticalOptions="Center" />
+									</HorizontalStackLayout>
 
 									<Label Text="{Binding Detalle}"
 										   IsVisible="{Binding TieneDetalle}"

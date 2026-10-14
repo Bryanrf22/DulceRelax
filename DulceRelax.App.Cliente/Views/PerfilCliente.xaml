@@ -114,10 +114,15 @@
                                HorizontalTextAlignment="Center"
                                Margin="0,6,0,0" />
 
-                        <Label Text="{Binding Correo}"
-                               FontSize="13"
-                               TextColor="#777777"
-                               HorizontalTextAlignment="Center" />
+                        <HorizontalStackLayout Spacing="4" HorizontalOptions="Center">
+                            <Label Text="{StaticResource IconoCorreo}"
+                                   Style="{StaticResource Icono}"
+                                   FontSize="14" />
+                            <Label Text="{Binding Correo}"
+                                   FontSize="13"
+                                   TextColor="#777777"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Border>
 
@@ -140,7 +145,13 @@
 
                         <VerticalStackLayout Spacing="2">
                             <Label Text="Dirección" Style="{StaticResource Caption}" />
-                            <Label Text="{Binding Direccion}" Style="{StaticResource Valor}" />
+                            <HorizontalStackLayout Spacing="4">
+                                <Label Text="{StaticResource IconoUbicacion}"
+                                       Style="{StaticResource Icono}"
+                                       FontSize="16" />
+                                <Label Text="{Binding Direccion}" Style="{StaticResource Valor}"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
                         </VerticalStackLayout>
 
                     </VerticalStackLayout>

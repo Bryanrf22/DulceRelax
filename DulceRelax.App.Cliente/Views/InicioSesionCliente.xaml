@@ -65,15 +65,24 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Entry Text="{Binding Email}"
-                            x:Name="EmailEntry"
-                            Placeholder="ejemplo@email.com"
-                            Keyboard="Email"
-                            ClearButtonVisibility="WhileEditing"
-                            FontSize="14"
-                            TextColor="#333333"
-                            PlaceholderColor="#999999"
-                            BackgroundColor="Transparent" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                Text="{StaticResource IconoCorreo}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18" />
+
+                            <Entry Grid.Column="1"
+                                Text="{Binding Email}"
+                                x:Name="EmailEntry"
+                                Placeholder="ejemplo@email.com"
+                                Keyboard="Email"
+                                ClearButtonVisibility="WhileEditing"
+                                FontSize="14"
+                                TextColor="#333333"
+                                PlaceholderColor="#999999"
+                                VerticalOptions="Center"
+                                BackgroundColor="Transparent" />
+                        </Grid>
 
                     </Border>
 
@@ -95,14 +104,38 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Entry Text="{Binding Password}"
-                            x:Name="PasswordEntry"
-                            Placeholder="Contraseña"
-                            IsPassword="True"
-                            FontSize="14"
-                            TextColor="#333333"
-                            PlaceholderColor="#999999"
-                            BackgroundColor="Transparent" />
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                Text="{StaticResource IconoCandado}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18" />
+
+                            <Entry Grid.Column="1"
+                                Text="{Binding Password}"
+                                x:Name="PasswordEntry"
+                                Placeholder="Contraseña"
+                                IsPassword="True"
+                                FontSize="14"
+                                TextColor="#333333"
+                                PlaceholderColor="#999999"
+                                VerticalOptions="Center"
+                                BackgroundColor="Transparent" />
+
+                            <Label Grid.Column="2"
+                                x:Name="PasswordToggle"
+                                Text="{StaticResource IconoVer}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18"
+                                MinimumWidthRequest="44"
+                                MinimumHeightRequest="44"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center"
+                                SemanticProperties.Description="Mostrar u ocultar contraseña">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTogglePassword" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
 
                     </Border>
 

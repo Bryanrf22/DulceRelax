@@ -14,12 +14,20 @@ public partial class InicioSesionCliente : ContentPage
 
     private async void OnForgotPasswordClicked(object sender, TappedEventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(RecuperarContraseñaCliente));
+        await Shell.Current.GoToAsync(nameof(RecuperarContraseï¿½aCliente));
     }
 
     private async void OnRegisterClicked(object sender, TappedEventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(RegistroCliente));
+    }
+
+    private void OnTogglePassword(object sender, TappedEventArgs e)
+    {
+        PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
+        var clave = PasswordEntry.IsPassword ? "IconoVer" : "IconoOcultar";
+        if (Application.Current?.Resources.TryGetValue(clave, out var glyph) == true && glyph is string texto)
+            PasswordToggle.Text = texto;
     }
 
     protected override async void OnAppearing()

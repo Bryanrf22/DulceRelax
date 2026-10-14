@@ -172,23 +172,39 @@
 
                     <Label Text="Teléfono" Style="{StaticResource Etiqueta}" />
                     <Border Style="{StaticResource Campo}">
-                        <Entry Text="{Binding Telefono}"
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                   Text="{StaticResource IconoTelefono}"
+                                   Style="{StaticResource Icono}"
+                                   FontSize="16" />
+                            <Entry Grid.Column="1"
+                           Text="{Binding Telefono}"
                            Placeholder="Número de contacto"
                            Keyboard="Telephone"
                            TextColor="#333333"
                            PlaceholderColor="#999999"
+                           VerticalOptions="Center"
                            BackgroundColor="Transparent"
                            FontSize="14" />
+                        </Grid>
                     </Border>
 
                     <Label Text="Dirección exacta" Style="{StaticResource Etiqueta}" />
                     <Border Style="{StaticResource Campo}">
-                        <Entry Text="{Binding Direccion}"
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                   Text="{StaticResource IconoUbicacion}"
+                                   Style="{StaticResource Icono}"
+                                   FontSize="16" />
+                            <Entry Grid.Column="1"
+                           Text="{Binding Direccion}"
                            Placeholder="Dónde será el masaje"
                            TextColor="#333333"
                            PlaceholderColor="#999999"
+                           VerticalOptions="Center"
                            BackgroundColor="Transparent"
                            FontSize="14" />
+                        </Grid>
                     </Border>
 
                     <Label Text="Referencias (opcional)" Style="{StaticResource Etiqueta}" />

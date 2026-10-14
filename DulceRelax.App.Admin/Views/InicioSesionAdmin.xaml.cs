@@ -21,4 +21,12 @@ public partial class InicioSesionAdmin : ContentPage
         _sesionRevisada = true;
         await _vm.RestaurarSesionCommand.EjecutarSeguroAsync();
     }
+
+    private void OnTogglePassword(object sender, TappedEventArgs e)
+    {
+        PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
+        var clave = PasswordEntry.IsPassword ? "IconoVer" : "IconoOcultar";
+        if (Application.Current?.Resources.TryGetValue(clave, out var glyph) == true && glyph is string texto)
+            PasswordToggle.Text = texto;
+    }
 }

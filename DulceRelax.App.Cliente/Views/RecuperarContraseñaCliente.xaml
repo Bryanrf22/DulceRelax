@@ -65,14 +65,22 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
-                        <Entry Placeholder="ejemplo@email.com"
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                Text="{StaticResource IconoCorreo}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18" />
+                            <Entry Grid.Column="1"
+                               Placeholder="ejemplo@email.com"
                                Text="{Binding Email}"
-							   Keyboard="Email"
+                               Keyboard="Email"
                                ClearButtonVisibility="WhileEditing"
                                FontSize="14"
                                TextColor="#333333"
                                PlaceholderColor="#999999"
+                               VerticalOptions="Center"
                                BackgroundColor="Transparent" />
+                        </Grid>
                     </Border>
 
                     <Button x:Name="SendButton"

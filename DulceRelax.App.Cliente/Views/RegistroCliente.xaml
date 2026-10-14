@@ -65,16 +65,23 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Entry
-                            Text="{Binding Email}"
-                            x:Name="EmailEntry"
-                            Placeholder="ejemplo@email.com"
-                            Keyboard="Email"
-                            ClearButtonVisibility="WhileEditing"
-                            FontSize="14"
-                            TextColor="#333333"
-                            PlaceholderColor="#999999"
-                            BackgroundColor="Transparent" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                Text="{StaticResource IconoCorreo}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18" />
+                            <Entry Grid.Column="1"
+                                Text="{Binding Email}"
+                                x:Name="EmailEntry"
+                                Placeholder="ejemplo@email.com"
+                                Keyboard="Email"
+                                ClearButtonVisibility="WhileEditing"
+                                FontSize="14"
+                                TextColor="#333333"
+                                PlaceholderColor="#999999"
+                                VerticalOptions="Center"
+                                BackgroundColor="Transparent" />
+                        </Grid>
                     </Border>
 
                     <Label
@@ -95,15 +102,36 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Entry
-                            Text="{Binding Password}"
-                            x:Name="PasswordEntry"
-                            Placeholder="Contraseña"
-                            IsPassword="True"
-                            FontSize="14"
-                            TextColor="#333333"
-                            PlaceholderColor="#999999"
-                            BackgroundColor="Transparent" />
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                Text="{StaticResource IconoCandado}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18" />
+                            <Entry Grid.Column="1"
+                                Text="{Binding Password}"
+                                x:Name="PasswordEntry"
+                                Placeholder="Contraseña"
+                                IsPassword="True"
+                                FontSize="14"
+                                TextColor="#333333"
+                                PlaceholderColor="#999999"
+                                VerticalOptions="Center"
+                                BackgroundColor="Transparent" />
+                            <Label Grid.Column="2"
+                                x:Name="PasswordToggle"
+                                Text="{StaticResource IconoVer}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18"
+                                MinimumWidthRequest="44"
+                                MinimumHeightRequest="44"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center"
+                                SemanticProperties.Description="Mostrar u ocultar contraseña">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTogglePassword" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
                     </Border>
 
                     <Label
@@ -124,15 +152,22 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Entry
-                            Text="{Binding Nombre}"
-                            x:Name="NombreNuevoRegistro"
-                            Placeholder="Nombre"
-                            ClearButtonVisibility="WhileEditing"
-                            FontSize="14"
-                            TextColor="#333333"
-                            PlaceholderColor="#999999"
-                            BackgroundColor="Transparent" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                Text="{StaticResource IconoPerfil}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18" />
+                            <Entry Grid.Column="1"
+                                Text="{Binding Nombre}"
+                                x:Name="NombreNuevoRegistro"
+                                Placeholder="Nombre"
+                                ClearButtonVisibility="WhileEditing"
+                                FontSize="14"
+                                TextColor="#333333"
+                                PlaceholderColor="#999999"
+                                VerticalOptions="Center"
+                                BackgroundColor="Transparent" />
+                        </Grid>
                     </Border>
 
                     <Label
@@ -153,16 +188,23 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Entry
-                            Text="{Binding Telefono}"
-                            x:Name="TelefonoNuevoRegistro"
-                            Placeholder="Número Telefónico"
-                            Keyboard="Telephone"
-                            ClearButtonVisibility="WhileEditing"
-                            FontSize="14"
-                            TextColor="#333333"
-                            PlaceholderColor="#999999"
-                            BackgroundColor="Transparent" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                Text="{StaticResource IconoTelefono}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18" />
+                            <Entry Grid.Column="1"
+                                Text="{Binding Telefono}"
+                                x:Name="TelefonoNuevoRegistro"
+                                Placeholder="Número Telefónico"
+                                Keyboard="Telephone"
+                                ClearButtonVisibility="WhileEditing"
+                                FontSize="14"
+                                TextColor="#333333"
+                                PlaceholderColor="#999999"
+                                VerticalOptions="Center"
+                                BackgroundColor="Transparent" />
+                        </Grid>
                     </Border>
 
                     <Label
@@ -183,15 +225,22 @@
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Entry
-                            Text="{Binding Direccion}"
-                            x:Name="DirNuevoRegistro"
-                            Placeholder="Su Dirección"
-                            ClearButtonVisibility="WhileEditing"
-                            FontSize="14"
-                            TextColor="#333333"
-                            PlaceholderColor="#999999"
-                            BackgroundColor="Transparent" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                Text="{StaticResource IconoUbicacion}"
+                                Style="{StaticResource Icono}"
+                                FontSize="18" />
+                            <Entry Grid.Column="1"
+                                Text="{Binding Direccion}"
+                                x:Name="DirNuevoRegistro"
+                                Placeholder="Su Dirección"
+                                ClearButtonVisibility="WhileEditing"
+                                FontSize="14"
+                                TextColor="#333333"
+                                PlaceholderColor="#999999"
+                                VerticalOptions="Center"
+                                BackgroundColor="Transparent" />
+                        </Grid>
                     </Border>
 
                     <Label

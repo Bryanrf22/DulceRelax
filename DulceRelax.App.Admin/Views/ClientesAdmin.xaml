@@ -90,9 +90,14 @@
                                         <Label Text="{Binding TelefonoTexto}" FontSize="12"
                                                TextColor="#777777" VerticalOptions="Center" />
                                     </HorizontalStackLayout>
-                                    <Label Text="{Binding Direccion}" FontSize="12" TextColor="#777777"
-                                           IsVisible="{Binding TieneDireccion}"
-                                           LineBreakMode="TailTruncation" MaxLines="2" />
+                                    <HorizontalStackLayout Spacing="4" IsVisible="{Binding TieneDireccion}">
+                                        <Label Text="{StaticResource IconoUbicacion}"
+                                               Style="{StaticResource Icono}"
+                                               FontSize="13" />
+                                        <Label Text="{Binding Direccion}" FontSize="12"
+                                               TextColor="#777777" LineBreakMode="TailTruncation"
+                                               MaxLines="2" VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
 
                                     <Button Text="Llamar" IsVisible="{Binding TieneTelefono}"
                                             HeightRequest="36" Padding="18,0" CornerRadius="10"
