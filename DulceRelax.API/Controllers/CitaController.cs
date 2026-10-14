@@ -14,11 +14,13 @@ namespace DulceRelax.API.Controllers
 
         private readonly CitaRepository _repository;
         private readonly MasajeRepository _masajes;
+        private readonly HorarioRepository _horario;
 
-        public CitaController(CitaRepository repository, MasajeRepository masajes)
+        public CitaController(CitaRepository repository, MasajeRepository masajes, HorarioRepository horario)
         {
             _repository = repository;
             _masajes = masajes;
+            _horario = horario;
         }
 
         private string? Uid => User.FindFirst("user_id")?.Value;
@@ -82,6 +84,9 @@ namespace DulceRelax.API.Controllers
             dto.UsuarioId = Uid;
             dto.MasajeNombre = masaje.Nombre;
 
+            if (!await _horario.EstaDentroAsync(dto.FechaHora.ToUniversalTime(), Minutos(masaje)))
+                return BadRequest(new { error = "La hora seleccionada está fuera del horario de atención." });
+
             var id = await _repository.CrearAsync(dto, Minutos(masaje));
             if (id is null)
                 return Conflict(new { error = "Horario no disponible." });
@@ -116,6 +121,11 @@ namespace DulceRelax.API.Controllers
             var masaje = await _masajes.GetById(dto.MasajeId);
             if (masaje is null && dto.MasajeId != cita.MasajeId)
                 return BadRequest(new { error = "El masaje seleccionado no existe." });
+
+            var fechaCambiada = Math.Abs((dto.FechaHora.ToUniversalTime() - cita.FechaHora.ToUniversalTime()).TotalMinutes) >= 1;
+            if (!EsAdmin && fechaCambiada &&
+                !await _horario.EstaDentroAsync(dto.FechaHora.ToUniversalTime(), Minutos(masaje)))
+                return BadRequest(new { error = "La hora seleccionada está fuera del horario de atención." });
 
             dto.MasajeNombre = masaje?.Nombre ?? cita.MasajeNombre;
 

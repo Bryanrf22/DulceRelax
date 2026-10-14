@@ -12,24 +12,44 @@ namespace DulceRelax.App.Admin.Services
         void CerrarSesion();
     }
 
-    public class AuthService(HttpClient http) : IAuthService
+    public class AuthService(HttpClient http, ICuentaOfflineService offline) : IAuthService
     {
         public async Task<string?> LoginAsync(LoginDTO dto, bool recordar = false)
         {
+            HttpResponseMessage res;
+            try { res = await http.PostAsJsonAsync("api/usuario/login", dto); }
+            catch (Exception) { return await LoginOfflineAsync(dto); }
+
+            if (Red.NoDisponible(res.StatusCode)) return await LoginOfflineAsync(dto);
+            if (!res.IsSuccessStatusCode) return await LeerError(res);
+
             try
             {
-                var res = await http.PostAsJsonAsync("api/usuario/login", dto);
-                if (!res.IsSuccessStatusCode) return await LeerError(res);
-
                 var json = await res.Content.ReadFromJsonAsync<JsonElement>();
                 if (!EsAdmin(json.GetProperty("idToken").GetString()!))
                     return "Esta cuenta no tiene permisos de administrador.";
 
                 await GuardarTokensAsync(json, recordar);
-                return null;
             }
-            catch (HttpRequestException ex) { return $"Sin conexión: {ex.Message}"; }
-            catch (TaskCanceledException) { return "Tiempo de espera agotado"; }
+            catch (Exception) { return "Respuesta inesperada del servidor."; }
+
+            try { await offline.GuardarAsync(dto.Email, dto.Password); } catch { }
+            return null;
+        }
+
+        private async Task<string?> LoginOfflineAsync(LoginDTO dto)
+        {
+            try
+            {
+                return await offline.VerificarAsync(dto.Email, dto.Password) switch
+                {
+                    ResultadoOffline.Ok => null,
+                    ResultadoOffline.Incorrecta => "Correo o contraseña incorrectos.",
+                    _ => "Sin conexión con el servidor. Para entrar sin conexión, esta cuenta de " +
+                         "administrador debe haber iniciado sesión antes en este dispositivo."
+                };
+            }
+            catch { return "No se pudo verificar la cuenta sin conexión."; }
         }
 
         public async Task<bool> RestaurarSesionAsync()
@@ -41,6 +61,8 @@ namespace DulceRelax.App.Admin.Services
 
                 var res = await http.PostAsJsonAsync("api/usuario/refresh",
                     new RefreshTokenDTO { RefreshToken = refresh });
+
+                if (Red.NoDisponible(res.StatusCode)) return true;
 
                 if (!res.IsSuccessStatusCode)
                 {
@@ -56,6 +78,10 @@ namespace DulceRelax.App.Admin.Services
                 }
 
                 await GuardarTokensAsync(json, recordar: true);
+                return true;
+            }
+            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+            {
                 return true;
             }
             catch { return false; }

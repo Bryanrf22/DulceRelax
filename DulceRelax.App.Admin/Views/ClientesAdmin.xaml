@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:DulceRelax.App.Admin.ViewModels"
+             x:Class="DulceRelax.App.Admin.Views.ClientesAdmin"
+             x:DataType="vm:ClientesViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FBF6F2">
+
+    <RefreshView IsRefreshing="{Binding Cargando}"
+                 Command="{Binding CargarCommand}"
+                 RefreshColor="#3F8758">
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <Label Text="Clientes" FontSize="24" FontAttributes="Bold" TextColor="#222222" />
+
+                <Border BackgroundColor="White" Stroke="#DDDDD9" StrokeThickness="1"
+                        HeightRequest="48" Padding="12,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Entry Text="{Binding Busqueda}" Placeholder="Buscar por nombre, teléfono o correo"
+                           ClearButtonVisibility="WhileEditing" FontSize="14" TextColor="#333333"
+                           PlaceholderColor="#999999" BackgroundColor="Transparent" />
+                </Border>
+
+                <Label Text="{Binding Resumen}" FontSize="12" TextColor="#888888" />
+
+                <Border BackgroundColor="#FFF3CD" StrokeThickness="0" Padding="14"
+                        IsVisible="{Binding SinConexion}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Label Text="{Binding AvisoSinConexion}" FontSize="12" TextColor="#8A6D3B" />
+                </Border>
+
+                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                        IsVisible="{Binding HayError}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="{Binding Error}" FontSize="14" TextColor="#B3261E"
+                               HorizontalTextAlignment="Center" />
+                        <Button Text="Reintentar" Command="{Binding CargarCommand}"
+                                BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
+                                HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                        IsVisible="{Binding SinResultados}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <Label Text="No se encontraron clientes." HorizontalTextAlignment="Center"
+                           FontSize="15" TextColor="#777777" Margin="0,20" />
+                </Border>
+
+                <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Clientes}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ClienteItem">
+                            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1"
+                                    Padding="16" HorizontalOptions="Fill">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="16" />
+                                </Border.StrokeShape>
+
+                                <VerticalStackLayout Spacing="6">
+                                    <Label Text="{Binding Nombre}" FontSize="16" FontAttributes="Bold"
+                                           TextColor="#292929" LineBreakMode="TailTruncation" MaxLines="2" />
+                                    <Label Text="{Binding Correo}" FontSize="13" TextColor="#555555" />
+                                    <Label Text="{Binding TelefonoTexto}" FontSize="12" TextColor="#777777"
+                                           IsVisible="{Binding TieneTelefono}" />
+                                    <Label Text="{Binding Direccion}" FontSize="12" TextColor="#777777"
+                                           IsVisible="{Binding TieneDireccion}"
+                                           LineBreakMode="TailTruncation" MaxLines="2" />
+
+                                    <Button Text="Llamar" IsVisible="{Binding TieneTelefono}"
+                                            HeightRequest="36" Padding="18,0" CornerRadius="10"
+                                            FontSize="12" FontAttributes="Bold" HorizontalOptions="Start"
+                                            BackgroundColor="Transparent" BorderColor="#3F8758"
+                                            BorderWidth="1" TextColor="#3F8758" Margin="0,8,0,0"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientesViewModel}}, x:DataType=vm:ClientesViewModel, Path=LlamarCommand}"
+                                            CommandParameter="{Binding .}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

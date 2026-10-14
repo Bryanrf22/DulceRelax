@@ -2,7 +2,7 @@
 
 namespace DulceRelax.App.Admin.ViewModels
 {
-    public class CitaItem(RespuestaCitaDTO cita)
+    public class CitaItem(RespuestaCitaDTO cita, bool soloLectura = false)
     {
         private readonly DateTime _local = cita.FechaHora.ToLocalTime();
         private bool EsFutura => cita.FechaHora.ToUniversalTime() > DateTime.UtcNow;
@@ -18,8 +18,8 @@ namespace DulceRelax.App.Admin.ViewModels
         public bool TieneDetalle => !string.IsNullOrWhiteSpace(cita.DetalleDireccion);
         public string EstadoTexto => cita.Estado.ToString();
 
-        public bool PuedeConfirmar => cita.Estado == EstadoCita.Pendiente && EsFutura;
-        public bool PuedeCancelar => cita.Estado != EstadoCita.Cancelada && EsFutura;
+        public bool PuedeConfirmar => !soloLectura && cita.Estado == EstadoCita.Pendiente && EsFutura;
+        public bool PuedeCancelar => !soloLectura && cita.Estado != EstadoCita.Cancelada && EsFutura;
         public bool TieneAcciones => PuedeConfirmar || PuedeCancelar;
 
         public Color EstadoFondo => cita.Estado switch

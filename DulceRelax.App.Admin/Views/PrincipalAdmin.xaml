@@ -20,10 +20,6 @@
                             BackgroundColor="Transparent" BorderColor="#3F8758" BorderWidth="1"
                             TextColor="#3F8758" CornerRadius="10" HeightRequest="36"
                             Padding="14,0" FontSize="12" FontAttributes="Bold" />
-                    <Button Grid.Column="2" Text="Salir" Clicked="OnCerrarSesion"
-                            BackgroundColor="Transparent" BorderColor="#B3261E" BorderWidth="1"
-                            TextColor="#B3261E" CornerRadius="10" HeightRequest="36"
-                            Padding="14,0" FontSize="12" FontAttributes="Bold" />
                 </Grid>
 
                 <Border BackgroundColor="White" StrokeThickness="0" Padding="8">
@@ -41,6 +37,13 @@
                                 BackgroundColor="Transparent" TextColor="#3F8758"
                                 FontSize="24" WidthRequest="50" />
                     </Grid>
+                </Border>
+                <Border BackgroundColor="#FFF3CD" StrokeThickness="0" Padding="14"
+                        IsVisible="{Binding SinConexion}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Label Text="{Binding AvisoSinConexion}" FontSize="12" TextColor="#8A6D3B" />
                 </Border>
 
                 <Border BackgroundColor="White" StrokeThickness="0" Padding="25"

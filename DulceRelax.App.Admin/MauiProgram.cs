@@ -30,6 +30,32 @@ namespace DulceRelax.App.Admin
             builder.Services.AddTransient<SolicitudesViewModel>();
             builder.Services.AddTransient<SolicitudesAdmin>();
 
+            builder.Services.AddHttpClient<IMasajeService, MasajeService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddTransient<MasajesViewModel>();
+            builder.Services.AddTransient<MasajesAdmin>();
+            builder.Services.AddTransient<MasajeFormViewModel>();
+            builder.Services.AddTransient<MasajeFormAdmin>();
+
+            builder.Services.AddHttpClient<IUsuarioService, UsuarioService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddTransient<ClientesViewModel>();
+            builder.Services.AddTransient<ClientesAdmin>();
+
+            builder.Services.AddHttpClient<IHorarioService, HorarioService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddTransient<AjustesViewModel>();
+            builder.Services.AddTransient<AjustesAdmin>();
+
+            builder.Services.AddSingleton<ICitaCacheService, CitaCacheService>();
+            builder.Services.AddTransient<RedHandler>();
+            builder.Services.ConfigureHttpClientDefaults(b => b.AddHttpMessageHandler<RedHandler>());
+
+            builder.Services.AddSingleton<LocalDb>();
+            builder.Services.AddSingleton<ICuentaOfflineService, CuentaOfflineService>();
+            builder.Services.AddSingleton<IClienteCacheService, ClienteCacheService>();
+            builder.Services.AddTransient<ISincronizadorService, SincronizadorService>();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>

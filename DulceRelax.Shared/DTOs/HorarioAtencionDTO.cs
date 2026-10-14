@@ -11,7 +11,7 @@ namespace DulceRelax.Shared.DTOs
     public class HorarioAtencionDTO
     {
         [FirestoreDocumentId]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [FirestoreProperty]
         public Dictionary<string, DiaHorarioDTO> Dias { get; set; }
