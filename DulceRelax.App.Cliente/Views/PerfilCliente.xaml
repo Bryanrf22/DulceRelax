@@ -23,14 +23,22 @@
         <VerticalStackLayout Padding="20" Spacing="15">
 
             <HorizontalStackLayout Spacing="10">
-                <Button Text="← Atrás"
+                <Button Text="Atrás"
                         BackgroundColor="#3F8758"
                         TextColor="White"
                         Padding="15,10"
                         CornerRadius="12"
                         FontSize="14"
+                        ContentLayout="Left,8"
                         Clicked="OnBackClicked"
-                        VerticalOptions="Center" />
+                        VerticalOptions="Center">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons"
+                                         Glyph="{StaticResource IconoAtras}"
+                                         Color="White"
+                                         Size="18" />
+                    </Button.ImageSource>
+                </Button>
                 <Label Text="Mi Perfil"
                        FontSize="24"
                        FontAttributes="Bold"
@@ -59,7 +67,15 @@
                             BackgroundColor="#3F8758"
                             TextColor="White"
                             CornerRadius="10"
-                            HorizontalOptions="Center" />
+                            ContentLayout="Left,6"
+                            HorizontalOptions="Center">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="MaterialIcons"
+                                             Glyph="{StaticResource IconoReintentar}"
+                                             Color="White"
+                                             Size="16" />
+                        </Button.ImageSource>
+                    </Button>
                 </VerticalStackLayout>
             </Border>
 
@@ -137,7 +153,15 @@
                         BackgroundColor="#3F8758"
                         TextColor="White"
                         FontSize="15"
-                        FontAttributes="Bold" />
+                        FontAttributes="Bold"
+                        ContentLayout="Left,8">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons"
+                                         Glyph="{StaticResource IconoEditar}"
+                                         Color="White"
+                                         Size="18" />
+                    </Button.ImageSource>
+                </Button>
 
                 <Button Text="Cambiar contraseña"
                         Command="{Binding CambiarPasswordCommand}"
@@ -148,7 +172,15 @@
                         BorderWidth="1"
                         TextColor="#3F8758"
                         FontSize="15"
-                        FontAttributes="Bold" />
+                        FontAttributes="Bold"
+                        ContentLayout="Left,8">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons"
+                                         Glyph="{StaticResource IconoCandado}"
+                                         Color="#3F8758"
+                                         Size="18" />
+                    </Button.ImageSource>
+                </Button>
 
                 <Button Text="Cerrar sesión"
                         Command="{Binding CerrarSesionCommand}"
@@ -159,7 +191,15 @@
                         BorderWidth="1"
                         TextColor="#B3261E"
                         FontSize="15"
-                        FontAttributes="Bold" />
+                        FontAttributes="Bold"
+                        ContentLayout="Left,8">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons"
+                                         Glyph="{StaticResource IconoSalir}"
+                                         Color="#B3261E"
+                                         Size="18" />
+                    </Button.ImageSource>
+                </Button>
 
             </VerticalStackLayout>
 

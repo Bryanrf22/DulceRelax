@@ -27,15 +27,19 @@
                         <RoundRectangle CornerRadius="16" />
                     </Border.StrokeShape>
                     <Grid ColumnDefinitions="Auto,*,Auto">
-                        <Button Text="‹" Command="{Binding DiaAnteriorCommand}"
+                        <Button Text="{StaticResource IconoAnterior}" Command="{Binding DiaAnteriorCommand}"
+                                FontFamily="MaterialIcons"
                                 BackgroundColor="Transparent" TextColor="#3F8758"
-                                FontSize="24" WidthRequest="50" />
+                                FontSize="24" WidthRequest="50"
+                                SemanticProperties.Description="Día anterior" />
                         <Label Grid.Column="1" Text="{Binding DiaTexto}" FontSize="16"
                                FontAttributes="Bold" TextColor="#262626"
                                HorizontalTextAlignment="Center" VerticalOptions="Center" />
-                        <Button Grid.Column="2" Text="›" Command="{Binding DiaSiguienteCommand}"
+                        <Button Grid.Column="2" Text="{StaticResource IconoSiguiente}" Command="{Binding DiaSiguienteCommand}"
+                                FontFamily="MaterialIcons"
                                 BackgroundColor="Transparent" TextColor="#3F8758"
-                                FontSize="24" WidthRequest="50" />
+                                FontSize="24" WidthRequest="50"
+                                SemanticProperties.Description="Día siguiente" />
                     </Grid>
                 </Border>
                 <Border BackgroundColor="#FFF3CD" StrokeThickness="0" Padding="14"
@@ -43,7 +47,13 @@
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="12" />
                     </Border.StrokeShape>
-                    <Label Text="{Binding AvisoSinConexion}" FontSize="12" TextColor="#8A6D3B" />
+                    <HorizontalStackLayout Spacing="6">
+                        <Label Text="{StaticResource IconoSinConexion}"
+                               Style="{StaticResource Icono}"
+                               FontSize="14" TextColor="#8A6D3B" />
+                        <Label Text="{Binding AvisoSinConexion}" FontSize="12"
+                               TextColor="#8A6D3B" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
                 </Border>
 
                 <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
@@ -56,7 +66,13 @@
                                HorizontalTextAlignment="Center" />
                         <Button Text="Reintentar" Command="{Binding CargarCommand}"
                                 BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
-                                HorizontalOptions="Center" />
+                                ContentLayout="Left,6" HorizontalOptions="Center">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="MaterialIcons"
+                                                 Glyph="{StaticResource IconoReintentar}"
+                                                 Color="White" Size="16" />
+                            </Button.ImageSource>
+                        </Button>
                     </VerticalStackLayout>
                 </Border>
 
@@ -112,17 +128,29 @@
                                                            IsVisible="{Binding TieneAcciones}">
                                         <Button Text="Confirmar" IsVisible="{Binding PuedeConfirmar}"
                                                 HeightRequest="36" Padding="18,0" CornerRadius="10"
-                                                FontSize="12" FontAttributes="Bold"
+                                                FontSize="12" FontAttributes="Bold" ContentLayout="Left,6"
                                                 BackgroundColor="#3F8758" TextColor="White"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AgendaViewModel}}, x:DataType=vm:AgendaViewModel, Path=ConfirmarCommand}"
-                                                CommandParameter="{Binding .}" />
+                                                CommandParameter="{Binding .}">
+                                            <Button.ImageSource>
+                                                <FontImageSource FontFamily="MaterialIcons"
+                                                                 Glyph="{StaticResource IconoConfirmar}"
+                                                                 Color="White" Size="16" />
+                                            </Button.ImageSource>
+                                        </Button>
                                         <Button Text="Cancelar" IsVisible="{Binding PuedeCancelar}"
                                                 HeightRequest="36" Padding="18,0" CornerRadius="10"
-                                                FontSize="12" FontAttributes="Bold"
+                                                FontSize="12" FontAttributes="Bold" ContentLayout="Left,6"
                                                 BackgroundColor="Transparent" BorderColor="#B3261E"
                                                 BorderWidth="1" TextColor="#B3261E"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AgendaViewModel}}, x:DataType=vm:AgendaViewModel, Path=CancelarCommand}"
-                                                CommandParameter="{Binding .}" />
+                                                CommandParameter="{Binding .}">
+                                            <Button.ImageSource>
+                                                <FontImageSource FontFamily="MaterialIcons"
+                                                                 Glyph="{StaticResource IconoCerrar}"
+                                                                 Color="#B3261E" Size="16" />
+                                            </Button.ImageSource>
+                                        </Button>
                                     </HorizontalStackLayout>
 
                                 </VerticalStackLayout>

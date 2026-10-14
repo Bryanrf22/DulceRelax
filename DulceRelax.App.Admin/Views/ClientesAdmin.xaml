@@ -32,7 +32,13 @@
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="12" />
                     </Border.StrokeShape>
-                    <Label Text="{Binding AvisoSinConexion}" FontSize="12" TextColor="#8A6D3B" />
+                    <HorizontalStackLayout Spacing="6">
+                        <Label Text="{StaticResource IconoSinConexion}"
+                               Style="{StaticResource Icono}"
+                               FontSize="14" TextColor="#8A6D3B" />
+                        <Label Text="{Binding AvisoSinConexion}" FontSize="12"
+                               TextColor="#8A6D3B" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
                 </Border>
 
                 <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
@@ -45,7 +51,13 @@
                                HorizontalTextAlignment="Center" />
                         <Button Text="Reintentar" Command="{Binding CargarCommand}"
                                 BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
-                                HorizontalOptions="Center" />
+                                ContentLayout="Left,6" HorizontalOptions="Center">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="MaterialIcons"
+                                                 Glyph="{StaticResource IconoReintentar}"
+                                                 Color="White" Size="16" />
+                            </Button.ImageSource>
+                        </Button>
                     </VerticalStackLayout>
                 </Border>
 
@@ -85,10 +97,17 @@
                                     <Button Text="Llamar" IsVisible="{Binding TieneTelefono}"
                                             HeightRequest="36" Padding="18,0" CornerRadius="10"
                                             FontSize="12" FontAttributes="Bold" HorizontalOptions="Start"
+                                            ContentLayout="Left,6"
                                             BackgroundColor="Transparent" BorderColor="#3F8758"
                                             BorderWidth="1" TextColor="#3F8758" Margin="0,8,0,0"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientesViewModel}}, x:DataType=vm:ClientesViewModel, Path=LlamarCommand}"
-                                            CommandParameter="{Binding .}" />
+                                            CommandParameter="{Binding .}">
+                                        <Button.ImageSource>
+                                            <FontImageSource FontFamily="MaterialIcons"
+                                                             Glyph="{StaticResource IconoTelefono}"
+                                                             Color="#3F8758" Size="16" />
+                                        </Button.ImageSource>
+                                    </Button>
                                 </VerticalStackLayout>
                             </Border>
                         </DataTemplate>

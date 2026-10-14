@@ -69,7 +69,15 @@
                                 BackgroundColor="#3F8758"
                                 TextColor="White"
                                 CornerRadius="8"
-                                HorizontalOptions="Center" />
+                                ContentLayout="Left,6"
+                                HorizontalOptions="Center">
+                                <Button.ImageSource>
+                                    <FontImageSource FontFamily="MaterialIcons"
+                                                     Glyph="{StaticResource IconoReintentar}"
+                                                     Color="White"
+                                                     Size="16" />
+                                </Button.ImageSource>
+                            </Button>
                         </VerticalStackLayout>
 
                         <Label

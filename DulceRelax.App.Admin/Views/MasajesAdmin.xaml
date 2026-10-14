@@ -16,9 +16,16 @@
                 <Grid ColumnDefinitions="*,Auto">
                     <Label Text="Masajes" FontSize="24" FontAttributes="Bold"
                            TextColor="#222222" VerticalOptions="Center" />
-                    <Button Grid.Column="1" Text="+ Nuevo" Command="{Binding NuevoCommand}"
+                    <Button Grid.Column="1" Text="Nuevo" Command="{Binding NuevoCommand}"
                             BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
-                            HeightRequest="36" Padding="16,0" FontSize="12" FontAttributes="Bold" />
+                            HeightRequest="36" Padding="16,0" FontSize="12" FontAttributes="Bold"
+                            ContentLayout="Left,6">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="MaterialIcons"
+                                             Glyph="{StaticResource IconoAgregar}"
+                                             Color="White" Size="16" />
+                        </Button.ImageSource>
+                    </Button>
                 </Grid>
 
                 <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
@@ -31,7 +38,13 @@
                                HorizontalTextAlignment="Center" />
                         <Button Text="Reintentar" Command="{Binding CargarCommand}"
                                 BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
-                                HorizontalOptions="Center" />
+                                ContentLayout="Left,6" HorizontalOptions="Center">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="MaterialIcons"
+                                                 Glyph="{StaticResource IconoReintentar}"
+                                                 Color="White" Size="16" />
+                            </Button.ImageSource>
+                        </Button>
                     </VerticalStackLayout>
                 </Border>
 
@@ -80,10 +93,17 @@
                                     <HorizontalStackLayout Spacing="10" Margin="0,8,0,0">
                                         <Button Text="Editar" HeightRequest="36" Padding="18,0"
                                                 CornerRadius="10" FontSize="12" FontAttributes="Bold"
+                                                ContentLayout="Left,6"
                                                 BackgroundColor="Transparent" BorderColor="#3F8758"
                                                 BorderWidth="1" TextColor="#3F8758"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MasajesViewModel}}, x:DataType=vm:MasajesViewModel, Path=EditarCommand}"
-                                                CommandParameter="{Binding .}" />
+                                                CommandParameter="{Binding .}">
+                                            <Button.ImageSource>
+                                                <FontImageSource FontFamily="MaterialIcons"
+                                                                 Glyph="{StaticResource IconoEditar}"
+                                                                 Color="#3F8758" Size="16" />
+                                            </Button.ImageSource>
+                                        </Button>
                                         <Button Text="{Binding AccionTexto}" HeightRequest="36" Padding="18,0"
                                                 CornerRadius="10" FontSize="12" FontAttributes="Bold"
                                                 BackgroundColor="Transparent" BorderWidth="1"

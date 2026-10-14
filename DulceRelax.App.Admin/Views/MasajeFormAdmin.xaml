@@ -11,9 +11,16 @@
         <VerticalStackLayout Padding="20" Spacing="15">
 
             <HorizontalStackLayout Spacing="10">
-                <Button Text="← Atrás" Command="{Binding VolverCommand}"
+                <Button Text="Atrás" Command="{Binding VolverCommand}"
                         BackgroundColor="#3F8758" TextColor="White" Padding="15,10"
-                        CornerRadius="12" FontSize="14" VerticalOptions="Center" />
+                        CornerRadius="12" FontSize="14" ContentLayout="Left,8"
+                        VerticalOptions="Center">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons"
+                                         Glyph="{StaticResource IconoAtras}"
+                                         Color="White" Size="18" />
+                    </Button.ImageSource>
+                </Button>
                 <Label Text="{Binding Titulo}" FontSize="24" FontAttributes="Bold"
                        TextColor="#222222" VerticalOptions="Center" />
             </HorizontalStackLayout>
@@ -88,7 +95,13 @@
 
                     <Button Text="Guardar" Command="{Binding GuardarCommand}"
                             BackgroundColor="#3F8758" TextColor="White" CornerRadius="15"
-                            HeightRequest="50" FontSize="15" FontAttributes="Bold" />
+                            HeightRequest="50" FontSize="15" FontAttributes="Bold" ContentLayout="Left,8">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="MaterialIcons"
+                                             Glyph="{StaticResource IconoConfirmar}"
+                                             Color="White" Size="18" />
+                        </Button.ImageSource>
+                    </Button>
 
                 </VerticalStackLayout>
             </Border>

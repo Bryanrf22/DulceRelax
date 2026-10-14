@@ -25,7 +25,13 @@
                                HorizontalTextAlignment="Center" />
                         <Button Text="Reintentar" Command="{Binding CargarCommand}"
                                 BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
-                                HorizontalOptions="Center" />
+                                ContentLayout="Left,6" HorizontalOptions="Center">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="MaterialIcons"
+                                                 Glyph="{StaticResource IconoReintentar}"
+                                                 Color="White" Size="16" />
+                            </Button.ImageSource>
+                        </Button>
                     </VerticalStackLayout>
                 </Border>
 
@@ -69,15 +75,29 @@
                                     <HorizontalStackLayout Spacing="10" Margin="0,8,0,0">
                                         <Button Text="Confirmar" HeightRequest="36" Padding="18,0"
                                                 CornerRadius="10" FontSize="12" FontAttributes="Bold"
+                                                ContentLayout="Left,6"
                                                 BackgroundColor="#3F8758" TextColor="White"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SolicitudesViewModel}}, x:DataType=vm:SolicitudesViewModel, Path=ConfirmarCommand}"
-                                                CommandParameter="{Binding .}" />
+                                                CommandParameter="{Binding .}">
+                                            <Button.ImageSource>
+                                                <FontImageSource FontFamily="MaterialIcons"
+                                                                 Glyph="{StaticResource IconoConfirmar}"
+                                                                 Color="White" Size="16" />
+                                            </Button.ImageSource>
+                                        </Button>
                                         <Button Text="Rechazar" HeightRequest="36" Padding="18,0"
                                                 CornerRadius="10" FontSize="12" FontAttributes="Bold"
+                                                ContentLayout="Left,6"
                                                 BackgroundColor="Transparent" BorderColor="#B3261E"
                                                 BorderWidth="1" TextColor="#B3261E"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SolicitudesViewModel}}, x:DataType=vm:SolicitudesViewModel, Path=RechazarCommand}"
-                                                CommandParameter="{Binding .}" />
+                                                CommandParameter="{Binding .}">
+                                            <Button.ImageSource>
+                                                <FontImageSource FontFamily="MaterialIcons"
+                                                                 Glyph="{StaticResource IconoCerrar}"
+                                                                 Color="#B3261E" Size="16" />
+                                            </Button.ImageSource>
+                                        </Button>
                                     </HorizontalStackLayout>
 
                                 </VerticalStackLayout>

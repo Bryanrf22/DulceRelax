@@ -34,14 +34,22 @@
 		<VerticalStackLayout Padding="20" Spacing="15">
 
 			<HorizontalStackLayout Spacing="10">
-				<Button Text="← Atrás"
+				<Button Text="Atrás"
                         BackgroundColor="#3F8758"
                         TextColor="White"
                         Padding="15,10"
                         CornerRadius="12"
                         FontSize="14"
+                        ContentLayout="Left,8"
                         Clicked="OnBackClicked"
-                        VerticalOptions="Center" />
+                        VerticalOptions="Center">
+					<Button.ImageSource>
+						<FontImageSource FontFamily="MaterialIcons"
+                                         Glyph="{StaticResource IconoAtras}"
+                                         Color="White"
+                                         Size="18" />
+					</Button.ImageSource>
+				</Button>
 				<Label Text="Solicitar cita"
                        FontSize="24"
                        FontAttributes="Bold"
