@@ -16,12 +16,6 @@ namespace DulceRelax.App.Admin.Services
     public class CitaService(HttpClient http) : ICitaService
     {
 
-        public const string SinConexion = "Sin conexión con el servidor";
-        public const string TiempoAgotado = "Tiempo de espera agotado";
-
-        public static bool EsErrorDeRed(string? error) => error is SinConexion or TiempoAgotado;
-
-
         public async Task<(List<RespuestaCitaDTO> Lista, string? Error)> ObtenerPorDiaAsync(DateTime dia)
         {
             var desde = new DateTimeOffset(dia.Date);
@@ -58,13 +52,14 @@ namespace DulceRelax.App.Admin.Services
             {
                 var res = await http.GetAsync(url);
                 if (res.StatusCode == HttpStatusCode.Unauthorized) return ([], "Sesión expirada");
+                if (Red.NoDisponible(res.StatusCode)) return ([], Red.SinConexion);
                 if (!res.IsSuccessStatusCode) return ([], "No se pudieron cargar las citas");
 
                 var lista = await res.Content.ReadFromJsonAsync<List<RespuestaCitaDTO>>() ?? [];
                 return (lista, null);
             }
-            catch (HttpRequestException) { return ([], SinConexion); }
-            catch (TaskCanceledException) { return ([], TiempoAgotado); }
+            catch (HttpRequestException) { return ([], Red.SinConexion); }
+            catch (TaskCanceledException) { return ([], Red.TiempoAgotado); }
         }
 
         static async Task<string> LeerError(HttpResponseMessage res, string porDefecto)

@@ -5,7 +5,7 @@ using DulceRelax.App.Admin.Services;
 
 namespace DulceRelax.App.Admin.ViewModels
 {
-    public partial class ClientesViewModel(IUsuarioService usuarioService) : ObservableObject
+    public partial class ClientesViewModel(IUsuarioService usuarioService, IClienteCacheService cache) : ObservableObject
     {
         private List<ClienteItem> _todos = [];
 
@@ -15,6 +15,8 @@ namespace DulceRelax.App.Admin.ViewModels
         [ObservableProperty] private bool sinResultados;
         [ObservableProperty] private string busqueda = "";
         [ObservableProperty] private string resumen = "";
+        [ObservableProperty] private bool sinConexion;
+        [ObservableProperty] private string avisoSinConexion = "";
 
         [ObservableProperty, NotifyPropertyChangedFor(nameof(HayError))]
         private string? error;
@@ -28,8 +30,23 @@ namespace DulceRelax.App.Admin.ViewModels
         {
             Cargando = true;
             Error = null;
+            SinConexion = false;
 
             var (lista, err) = await usuarioService.ObtenerTodosAsync();
+
+            if (err is not null && Red.EsError(err) && cache.UltimaSincronizacion is not null)
+            {
+                lista = await cache.ObtenerTodosAsync();
+                SinConexion = true;
+                err = null;
+
+                var sync = cache.UltimaSincronizacion?.ToLocalTime();
+                AvisoSinConexion = $"Sin conexión · lista guardada (actualizada {sync:ddd d MMM, h:mm tt}).";
+            }
+            else if (err is null)
+            {
+                try { await cache.GuardarAsync(lista); } catch { }
+            }
 
             _todos = lista.Select(u => new ClienteItem(u))
                           .OrderBy(c => c.Nombre, StringComparer.CurrentCultureIgnoreCase)

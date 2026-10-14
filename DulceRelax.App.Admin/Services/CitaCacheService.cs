@@ -24,12 +24,8 @@ namespace DulceRelax.App.Admin.Services
         Task<List<RespuestaCitaDTO>> ObtenerDiaAsync(DateTime dia);
     }
 
-    public class CitaCacheService : ICitaCacheService
+    public class CitaCacheService(LocalDb local) : ICitaCacheService
     {
-        private const string ClaveSync = "citas_cache_sync";
-        private readonly SemaphoreSlim _init = new(1, 1);
-        private SQLiteAsyncConnection? _db;
-
         public DateTime? UltimaSincronizacion =>
             DateTime.TryParse(Preferences.Get(ClaveSync, ""), CultureInfo.InvariantCulture,
                 DateTimeStyles.RoundtripKind, out var f) ? f : null;

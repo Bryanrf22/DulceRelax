@@ -48,6 +48,13 @@ namespace DulceRelax.App.Admin
             builder.Services.AddTransient<AjustesAdmin>();
 
             builder.Services.AddSingleton<ICitaCacheService, CitaCacheService>();
+            builder.Services.AddTransient<RedHandler>();
+            builder.Services.ConfigureHttpClientDefaults(b => b.AddHttpMessageHandler<RedHandler>());
+
+            builder.Services.AddSingleton<LocalDb>();
+            builder.Services.AddSingleton<ICuentaOfflineService, CuentaOfflineService>();
+            builder.Services.AddSingleton<IClienteCacheService, ClienteCacheService>();
+            builder.Services.AddTransient<ISincronizadorService, SincronizadorService>();
 
             builder
                 .UseMauiApp<App>()

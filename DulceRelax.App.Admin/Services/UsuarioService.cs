@@ -18,13 +18,14 @@ namespace DulceRelax.App.Admin.Services
                 var res = await http.GetAsync("api/usuario");
                 if (res.StatusCode == HttpStatusCode.Unauthorized) return ([], "Sesión expirada");
                 if (res.StatusCode == HttpStatusCode.Forbidden) return ([], "No tienes permiso para ver los clientes");
+                if (Red.NoDisponible(res.StatusCode)) return ([], Red.SinConexion);
                 if (!res.IsSuccessStatusCode) return ([], "No se pudieron cargar los clientes");
 
                 var lista = await res.Content.ReadFromJsonAsync<List<UsuarioDTO>>() ?? [];
                 return (lista, null);
             }
-            catch (HttpRequestException) { return ([], "Sin conexión con el servidor"); }
-            catch (TaskCanceledException) { return ([], "Tiempo de espera agotado"); }
+            catch (HttpRequestException) { return ([], Red.SinConexion); }
+            catch (TaskCanceledException) { return ([], Red.TiempoAgotado); }
         }
     }
 }
