@@ -3,8 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using DulceRelax.App.Admin.Services;
 using DulceRelax.Shared.DTOs;
 using System.Globalization;
-using static Android.Icu.Text.CaseMap;
-using static Android.Util.EventLogTags;
 
 namespace DulceRelax.App.Admin.ViewModels
 {
