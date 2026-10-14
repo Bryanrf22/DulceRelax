@@ -14,7 +14,7 @@ public partial class InicioSesionCliente : ContentPage
 
     private async void OnForgotPasswordClicked(object sender, TappedEventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(RecuperarContrase�aCliente));
+        await Shell.Current.GoToAsync(nameof(RecuperarContraseñaCliente));
     }
 
     private async void OnRegisterClicked(object sender, TappedEventArgs e)
