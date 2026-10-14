@@ -25,8 +25,12 @@ public partial class InicioSesionAdmin : ContentPage
     private void OnTogglePassword(object sender, TappedEventArgs e)
     {
         PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
+
+        if (sender is not Label toggle)
+            return;
+
         var clave = PasswordEntry.IsPassword ? "IconoVer" : "IconoOcultar";
         if (Application.Current?.Resources.TryGetValue(clave, out var glyph) == true && glyph is string texto)
-            PasswordToggle.Text = texto;
+            toggle.Text = texto;
     }
 }
