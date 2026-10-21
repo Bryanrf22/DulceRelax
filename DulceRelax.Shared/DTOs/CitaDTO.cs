@@ -44,5 +44,5 @@ namespace DulceRelax.Shared.DTOs
         public int DuracionMinutos { get; set; }
     }
 
-    public enum EstadoCita { Pendiente, Confirmada, Cancelada }
+    public enum EstadoCita { Pendiente, Confirmada, Cancelada, Reprogramada }
 }

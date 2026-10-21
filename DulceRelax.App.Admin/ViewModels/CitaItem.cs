@@ -21,7 +21,8 @@ namespace DulceRelax.App.Admin.ViewModels
 
         public bool PuedeConfirmar => !soloLectura && cita.Estado == EstadoCita.Pendiente && EsFutura;
         public bool PuedeCancelar => !soloLectura && cita.Estado != EstadoCita.Cancelada && EsFutura;
-        public bool TieneAcciones => PuedeConfirmar || PuedeCancelar;
+        public bool PuedeReprogramar => !soloLectura && cita.Estado == EstadoCita.Confirmada && EsFutura;
+        public bool TieneAcciones => PuedeConfirmar || PuedeCancelar || PuedeReprogramar;
 
         public Color EstadoFondo => cita.Estado switch
         {

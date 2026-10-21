@@ -11,6 +11,7 @@ namespace DulceRelax.App.Admin.Services
         Task<(List<RespuestaCitaDTO> Lista, string? Error)> ObtenerPendientesAsync();
         Task<string?> CambiarEstadoAsync(string id, EstadoCita estado);
         Task<(List<RespuestaCitaDTO> Lista, string? Error)> ObtenerAgendadasAsync();
+        Task<string?> ReprogramarAsync(string id, DateTime nuevaFecha);
     }
 
     public class CitaService(HttpClient http) : ICitaService
@@ -79,6 +80,25 @@ namespace DulceRelax.App.Admin.Services
             return ObtenerListaAsync(
                 $"api/cita/agendadas?desde={Uri.EscapeDataString(desde.ToString("o"))}" +
                 $"&hasta={Uri.EscapeDataString(hasta.ToString("o"))}");
+        }
+
+        public async Task<string?> ReprogramarAsync(string id, DateTime nuevaFecha)
+        {
+            try
+            {
+                var res = await http.PatchAsync($"api/cita/{id}/reprogramar",
+                    JsonContent.Create(new ReprogramarCitaDTO { FechaHora = nuevaFecha }));
+                if (res.IsSuccessStatusCode) return null;
+
+                return res.StatusCode switch
+                {
+                    HttpStatusCode.Unauthorized => "Sesión expirada",
+                    HttpStatusCode.Forbidden => "No tienes permiso para hacer esto",
+                    _ => await LeerError(res, "No se pudo reprogramar la cita")
+                };
+            }
+            catch (HttpRequestException) { return "Sin conexión con el servidor"; }
+            catch (TaskCanceledException) { return "Tiempo de espera agotado"; }
         }
     }
 }
