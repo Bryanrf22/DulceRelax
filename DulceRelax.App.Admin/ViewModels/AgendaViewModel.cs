@@ -10,6 +10,8 @@ namespace DulceRelax.App.Admin.ViewModels
     {
         public ObservableCollection<CitaItem> Citas { get; } = [];
 
+        private CitaItem? _reprogramando;
+
         [ObservableProperty, NotifyPropertyChangedFor(nameof(DiaTexto))]
         private DateTime dia = DateTime.Today;
 
@@ -17,6 +19,12 @@ namespace DulceRelax.App.Admin.ViewModels
         [ObservableProperty] private bool sinCitas;
         [ObservableProperty] private bool sinConexion;
         [ObservableProperty] private string avisoSinConexion = "";
+
+        [ObservableProperty] private bool mostrandoReprogramar;
+        [ObservableProperty] private string reprogramandoTexto = "";
+        [ObservableProperty] private DateTime nuevaFecha = DateTime.Today;
+        [ObservableProperty] private TimeSpan nuevaHora;
+        public DateTime FechaMinima => DateTime.Today;
 
         [ObservableProperty, NotifyPropertyChangedFor(nameof(HayError))]
         private string? error;
@@ -87,6 +95,47 @@ namespace DulceRelax.App.Admin.ViewModels
                 return;
             }
 
+            await CargarAsync();
+        }
+
+        [RelayCommand]
+        private void AbrirReprogramar(CitaItem item)
+        {
+            _reprogramando = item;
+            var local = item.Cita.FechaHora.ToLocalTime();
+            NuevaFecha = local.Date;
+            NuevaHora = local.TimeOfDay;
+            ReprogramandoTexto = $"{item.Cliente} · {item.FechaHoraTexto}";
+            MostrandoReprogramar = true;
+        }
+
+        [RelayCommand]
+        private void CerrarReprogramar()
+        {
+            MostrandoReprogramar = false;
+            _reprogramando = null;
+        }
+
+        [RelayCommand]
+        private async Task GuardarReprogramarAsync()
+        {
+            if (_reprogramando is null) return;
+
+            var nueva = DateTime.SpecifyKind(NuevaFecha.Date + NuevaHora, DateTimeKind.Local);
+            if (nueva <= DateTime.Now)
+            {
+                await Shell.Current.DisplayAlert("Error", "La nueva fecha debe ser futura.", "OK");
+                return;
+            }
+
+            var err = await citaService.ReprogramarAsync(_reprogramando.Cita.Id, nueva);
+            if (err is not null)
+            {
+                await Shell.Current.DisplayAlert("Error", err, "OK");
+                return;
+            }
+
+            CerrarReprogramar();
             await CargarAsync();
         }
     }

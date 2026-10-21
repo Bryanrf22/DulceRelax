@@ -170,6 +170,37 @@ namespace DulceRelax.API.Controllers
             return Ok(await _repository.GetByRangoAsync(desde.UtcDateTime, hasta.UtcDateTime));
         }
 
+        [HttpPatch("{id}/reprogramar")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> Reprogramar(string id, ReprogramarCitaDTO dto)
+        {
+            var cita = await _repository.GetByIdAsync(id);
+            if (cita is null) return NotFound();
+
+            if (cita.Estado != EstadoCita.Confirmada)
+                return BadRequest(new { error = "Solo se pueden reprogramar citas confirmadas." });
+
+            var nueva = dto.FechaHora.ToUniversalTime();
+            if (nueva <= DateTime.UtcNow)
+                return BadRequest(new { error = "La nueva fecha debe ser futura." });
+
+            var masaje = await _masajes.GetById(cita.MasajeId);
+            if (!await _horario.EstaDentroAsync(nueva, Minutos(masaje)))
+                return BadRequest(new { error = "La hora seleccionada está fuera del horario de atención." });
+
+            var resultado = await _repository.ReprogramarAsync(id, nueva);
+            return resultado switch
+            {
+                ResultadoCita.NoEncontrada => NotFound(),
+                ResultadoCita.EstadoInvalido => BadRequest(new { error = "Solo se pueden reprogramar citas confirmadas." }),
+                ResultadoCita.HorarioOcupado => Conflict(new
+                {
+                    error = "Se cruza con una cita ya confirmada (incluye 1 hora de descanso)."
+                }),
+                _ => NoContent()
+            };
+        }
+
         [HttpGet("pendientes")]
         [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetPendientes()

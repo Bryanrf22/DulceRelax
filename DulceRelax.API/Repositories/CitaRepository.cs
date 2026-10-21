@@ -3,7 +3,7 @@ using Google.Cloud.Firestore;
 
 namespace DulceRelax.API.Repositories
 {
-    public enum ResultadoCita { Ok, NoEncontrada, HorarioOcupado }
+    public enum ResultadoCita { Ok, NoEncontrada, HorarioOcupado, EstadoInvalido }
 
     public class CitaRepository
     {
@@ -219,6 +219,29 @@ namespace DulceRelax.API.Repositories
                 .Where(c => c.Estado == EstadoCita.Pendiente)
                 .OrderBy(c => c.FechaHora)
                 .ToList();
+        }
+
+        public async Task<ResultadoCita> ReprogramarAsync(string id, DateTime nuevaFechaUtc)
+        {
+            var docRef = Citas.Document(id);
+
+            return await _db.RunTransactionAsync(async tx =>
+            {
+                var doc = await tx.GetSnapshotAsync(docRef);
+                if (!doc.Exists) return ResultadoCita.NoEncontrada;
+
+                var c = doc.ConvertTo<CitaDTO>();
+                if (c.Estado != EstadoCita.Confirmada) return ResultadoCita.EstadoInvalido;
+
+                if (await HayConflictoAsync(tx, nuevaFechaUtc, c.DuracionMinutos, id))
+                    return ResultadoCita.HorarioOcupado;
+
+                tx.Update(docRef, new Dictionary<string, object>
+        {
+            { "FechaHora", Timestamp.FromDateTime(nuevaFechaUtc) }
+        });
+                return ResultadoCita.Ok;
+            });
         }
     }
 }
