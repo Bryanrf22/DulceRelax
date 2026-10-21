@@ -29,6 +29,7 @@ namespace DulceRelax.API.Controllers
         }
 
         [HttpPost("registrar")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> RegistrarAsync(RegistrarMasajeDTO dto)
         {
             var masaje = new MasajeDTO
@@ -47,6 +48,7 @@ namespace DulceRelax.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> UpdateAsync(string id, ActualizarMasajeDTO dto)
         {
             await _repository.UpdateAsync(id, dto);
@@ -54,6 +56,7 @@ namespace DulceRelax.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> DeleteAsync(string id)
         {
             await _repository.DeleteAsync(id);
