@@ -2,6 +2,9 @@
 using DulceRelax.App.Admin.Services;
 using DulceRelax.App.Admin.ViewModels;
 using DulceRelax.App.Admin.Views;
+using Plugin.LocalNotification;
+using Umbraco.Core.Services.Implement;
+
 
 namespace DulceRelax.App.Admin
 {
@@ -56,8 +59,11 @@ namespace DulceRelax.App.Admin
             builder.Services.AddSingleton<IClienteCacheService, ClienteCacheService>();
             builder.Services.AddTransient<ISincronizadorService, SincronizadorService>();
 
+            builder.Services.AddSingleton<NotificationService>();
+
             builder
                 .UseMauiApp<App>()
+                .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
