@@ -1,4 +1,5 @@
 ﻿using DulceRelax.API.Repositories;
+using DulceRelax.API.Services;
 using DulceRelax.Shared.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +16,18 @@ namespace DulceRelax.API.Controllers
         private readonly CitaRepository _repository;
         private readonly MasajeRepository _masajes;
         private readonly HorarioRepository _horario;
+        private readonly PushSender _push;
+        private readonly AvisoLimiteRepository _avisos;
 
-        public CitaController(CitaRepository repository, MasajeRepository masajes, HorarioRepository horario)
+        public CitaController(
+            CitaRepository repository, MasajeRepository masajes, HorarioRepository horario,
+            PushSender push, AvisoLimiteRepository avisos)
         {
             _repository = repository;
             _masajes = masajes;
             _horario = horario;
+            _push = push;
+            _avisos = avisos;
         }
 
         private string? Uid => User.FindFirst("user_id")?.Value;
@@ -91,6 +98,13 @@ namespace DulceRelax.API.Controllers
             if (id is null)
                 return Conflict(new { error = "Horario no disponible." });
 
+            await _push.EnviarAAdminsAsync("Nueva solicitud de cita", $"{dto.UsuarioNombre} - {masaje.Nombre}");
+
+            // Si la cita ya entra en el umbral de "fecha límite", se marca como avisada
+            // para que el worker no vuelva a enviar ese aviso justo después del de "nueva solicitud".
+            if (dto.FechaHora.ToUniversalTime() <= DateTime.UtcNow + AvisoLimiteWorker.Umbral)
+                await _avisos.MarcarAsync(id);
+
             return CreatedAtAction(nameof(GetById), new { id }, new { id });
         }
 
@@ -148,6 +162,11 @@ namespace DulceRelax.API.Controllers
                 return Forbid();
 
             var resultado = await _repository.CambiarEstadoAsync(id, estado);
+
+            if (resultado == ResultadoCita.Ok && !EsAdmin && estado == EstadoCita.Cancelada)
+                await _push.EnviarAAdminsAsync("Cita cancelada",
+                    $"{cita.UsuarioNombre} canceló su cita de {cita.MasajeNombre}");
+
             return resultado switch
             {
                 ResultadoCita.NoEncontrada => NotFound(),

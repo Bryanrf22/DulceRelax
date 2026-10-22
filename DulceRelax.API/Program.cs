@@ -1,9 +1,10 @@
 using DulceRelax.API.Repositories;
+using DulceRelax.API.Services;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,11 @@ builder.Services.AddScoped<UsuarioRepository>();
 builder.Services.AddScoped<MasajeRepository>();
 builder.Services.AddSingleton<CitaRepository>();
 builder.Services.AddScoped<HorarioRepository>();
+
+builder.Services.AddSingleton<DispositivoRepository>();
+builder.Services.AddSingleton<PushSender>();
+builder.Services.AddSingleton<AvisoLimiteRepository>();
+builder.Services.AddHostedService<AvisoLimiteWorker>();
 
 // --- Build ---
 

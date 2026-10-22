@@ -5,7 +5,8 @@ using DulceRelax.Shared.DTOs;
 
 namespace DulceRelax.App.Admin.ViewModels
 {
-    public partial class LoginViewModel(IAuthService auth) : ObservableObject
+    public partial class LoginViewModel(
+        IAuthService auth, NotificationService notificaciones, PushService push) : ObservableObject
     {
         [ObservableProperty] private string email = "";
         [ObservableProperty] private string password = "";
@@ -21,6 +22,7 @@ namespace DulceRelax.App.Admin.ViewModels
                 if (Error is null)
                 {
                     Password = "";
+                    await ActivarNotificacionesAsync();
                     await Shell.Current.GoToAsync("//Principal");
                 }
             }
@@ -36,9 +38,24 @@ namespace DulceRelax.App.Admin.ViewModels
             try
             {
                 if (await auth.RestaurarSesionAsync())
+                {
+                    await ActivarNotificacionesAsync();
                     await Shell.Current.GoToAsync("//Principal");
+                }
             }
             catch { }
+        }
+
+        /// <summary>
+        /// Pide permisos de notificación y registra este dispositivo para recibir
+        /// los avisos de nuevas solicitudes y cancelaciones.
+        /// </summary>
+        private async Task ActivarNotificacionesAsync()
+        {
+            try { await notificaciones.PedirPermisosAsync(); }
+            catch { }
+
+            await push.IniciarAsync();
         }
     }
 }

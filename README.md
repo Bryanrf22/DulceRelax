@@ -26,6 +26,8 @@ App Administrador (`DulceRelax.App.Admin`)
 - Listado de clientes.
 - Configuración del horario de atención por día de la semana.
 - Trabajo sin conexión con las citas confirmadas que ya se descargaron en el equipo.
+- Avisos por notificación cuando el cliente pide una cita o la cancela.
+- Aviso cuando una solicitud sigue sin confirmar cerca de la fecha de la cita.
 
 ## Arquitectura
 
@@ -120,6 +122,34 @@ var apiUrl = new Uri("https://jkr8tzhd-7204.use.devtunnels.ms/");
 Esa URL corresponde a un dev tunnel. Cámbiala por la dirección de tu API, por ejemplo
 `https://localhost:7204/` o `http://localhost:5082/`, antes de ejecutar las apps.
 
+### Firebase Cloud Messaging (app de administrador)
+
+Para que la app de administrador reciba los avisos por push hay que registrar el
+dispositivo en el proyecto de Firebase.
+
+1. En la consola de Firebase, agregá una app de Android con el nombre de paquete de la
+   app de administrador, que es `com.companyname.dulcerelax.app.admin` (el `ApplicationId`
+   de `DulceRelax.App.Admin.csproj`).
+2. Descargá el `google-services.json` de esa app y copialo en la raíz de
+   `DulceRelax.App.Admin/`. El archivo no se versiona, así que cada quien lo baja de su
+   propia cuenta.
+3. Habilitá la API de Firebase Cloud Messaging en el proyecto. La cuenta de servicio que
+   usa la API es la que envía los avisos.
+
+El `.csproj` ya incluye el archivo como `GoogleServicesJson` y avisa con un warning de
+compilación cuando no está presente:
+
+```xml
+<GoogleServicesJson Include="google-services.json"
+  Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' and Exists('google-services.json')" />
+```
+
+Sin ese archivo la app compila, pero Firebase no se inicializa y no llegan los avisos.
+
+La app se registra sola en la API al iniciar sesión: `PushService` pide el token de FCM
+y lo manda a `POST api/dispositivo`. Al cerrar sesión, el token se da de baja para que el
+equipo deje de recibir avisos de administrador.
+
 ## Cómo ejecutar
 
 API:
@@ -195,6 +225,13 @@ Horario (`/api/horario`)
 | GET | `/api/horario` | Autenticado | Devuelve el horario. Responde 204 si no hay. |
 | PUT | `/api/horario` | Admin | Guarda el horario de los 7 días. |
 
+Dispositivo (`/api/dispositivo`)
+
+| Método | Ruta | Acceso | Descripción |
+| --- | --- | --- | --- |
+| POST | `/api/dispositivo` | Admin | Registra el token de FCM del dispositivo. |
+| POST | `/api/dispositivo/baja` | Admin | Quita el token de FCM del dispositivo. |
+
 ## Reglas de negocio
 
 Las reglas viven en la API, en `CitaController` y `CitaRepository`.
@@ -224,6 +261,42 @@ Firestore guarda los datos en tres colecciones y un documento de configuración.
 | `configuracion/horario` | `Dias`: mapa de los 7 días, cada uno con `Activo`, `HoraInicio` y `HoraFin` |
 
 El id del usuario es el `uid` que genera Firebase Authentication.
+
+Las notificaciones agregan dos colecciones más:
+
+| Ruta | Campos |
+| --- | --- |
+| `dispositivosAdmin/{token}` | `Actualizado`. El id del documento es el token de FCM, así que registrarlo dos veces no duplica. |
+| `avisosLimite/{citaId}` | `Fecha`. Marca que esa cita ya recibió el aviso de fecha límite. |
+
+## Notificaciones
+
+El sistema tiene tres tipos de aviso, con mecanismos distintos.
+
+| Aviso | Origen | Mecanismo | Funciona sin conexión |
+| --- | --- | --- | --- |
+| Recordatorio de cita confirmada | App de administrador | Notificación local programada 1 día y 1 hora antes | Sí |
+| Nueva solicitud de cita | API | Push de FCM | No |
+| Cita cancelada por el cliente | API | Push de FCM | No |
+| Solicitud sin confirmar cerca de la fecha | API | Push de FCM desde un `BackgroundService` | No |
+
+Los recordatorios se programan en el dispositivo, así que llegan aunque la app esté
+cerrada y no haya red. Se recalculan en cada sincronización: `NotificationService`
+cancela los avisos pendientes y vuelve a programar los de las citas confirmadas, de modo
+que una cita cancelada deja de tener recordatorio.
+
+Los avisos de push los manda la API con `PushSender`, que usa el SDK de administración
+de Firebase. Necesitan internet porque el evento ocurre en el servidor.
+
+El worker `AvisoLimiteWorker` revisa cada hora las citas pendientes y avisa cuando faltan
+menos de siete días para la cita. Para que no se duplique el aviso de "nueva solicitud",
+una cita creada dentro de ese umbral queda marcada en `avisosLimite` desde el mismo
+momento en que se crea.
+
+> [!IMPORTANT]
+> `BackgroundService` solo corre si la API está encendida todo el tiempo. Si el hosting
+> escala a cero, hay que exponer la revisión en un endpoint protegido y llamarlo desde un
+> scheduler externo.
 
 ## Modo sin conexión
 

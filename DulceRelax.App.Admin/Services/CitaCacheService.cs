@@ -24,7 +24,7 @@ namespace DulceRelax.App.Admin.Services
         Task<List<RespuestaCitaDTO>> ObtenerDiaAsync(DateTime dia);
     }
 
-    public class CitaCacheService(LocalDb local) : ICitaCacheService
+    public class CitaCacheService(LocalDb local, NotificationService notificaciones) : ICitaCacheService
     {
         private const string ClaveSync = "citas_cache_sync";
         
@@ -44,8 +44,11 @@ namespace DulceRelax.App.Admin.Services
 
         public async Task GuardarAsync(IEnumerable<RespuestaCitaDTO> citas)
         {
-            var filas = citas
+            var confirmadas = citas
                 .Where(c => c.Estado == EstadoCita.Confirmada)
+                .ToList();
+
+            var filas = confirmadas
                 .Select(c => new CitaCache
                 {
                     Id = c.Id,
@@ -66,6 +69,9 @@ namespace DulceRelax.App.Admin.Services
             });
 
             Preferences.Set(ClaveSync, DateTime.UtcNow.ToString("o"));
+
+            try { await notificaciones.ReconciliarAsync(confirmadas); }
+            catch { }
         }
 
         public async Task<List<RespuestaCitaDTO>> ObtenerDiaAsync(DateTime dia)

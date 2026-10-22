@@ -2,6 +2,13 @@
 using DulceRelax.App.Admin.Services;
 using DulceRelax.App.Admin.ViewModels;
 using DulceRelax.App.Admin.Views;
+using Microsoft.Maui.LifecycleEvents;
+using Plugin.Firebase.CloudMessaging;
+using Plugin.LocalNotification;
+#if ANDROID
+using Plugin.Firebase.Core.Platforms.Android;
+#endif
+
 
 namespace DulceRelax.App.Admin
 {
@@ -56,14 +63,34 @@ namespace DulceRelax.App.Admin
             builder.Services.AddSingleton<IClienteCacheService, ClienteCacheService>();
             builder.Services.AddTransient<ISincronizadorService, SincronizadorService>();
 
+            builder.Services.AddSingleton<NotificationService>();
+
+            builder.Services.AddHttpClient<IDispositivoService, DispositivoService>(c => c.BaseAddress = apiUrl)
+                .AddHttpMessageHandler<AuthHandler>();
+            builder.Services.AddSingleton<PushService>();
+
+            // En Windows/MacCatalyst el plugin de FCM no está disponible: Current lanza
+            // NotImplementedException, así que se comprueba IsSupported antes de usarlo.
+            builder.Services.AddSingleton<IFirebaseCloudMessaging>(_ =>
+                CrossFirebaseCloudMessaging.IsSupported ? CrossFirebaseCloudMessaging.Current : null!);
+
             builder
                 .UseMauiApp<App>()
+                .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIcons");
                 });
+
+            builder.ConfigureLifecycleEvents(events =>
+            {
+#if ANDROID
+                events.AddAndroid(android => android.OnCreate((activity, _) =>
+                    FirebaseSetup.Initialize(activity)));
+#endif
+            });
 
 #if DEBUG
     		builder.Logging.AddDebug();
