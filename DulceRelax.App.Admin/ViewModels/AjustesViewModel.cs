@@ -6,7 +6,7 @@ using DulceRelax.Shared.DTOs;
 
 namespace DulceRelax.App.Admin.ViewModels
 {
-    public partial class AjustesViewModel(IHorarioService horarioService, IAuthService auth)
+    public partial class AjustesViewModel(IHorarioService horarioService, IAuthService auth, PushService push)
         : ObservableObject
     {
         private static readonly (string Clave, string Nombre)[] Orden =
@@ -90,6 +90,10 @@ namespace DulceRelax.App.Admin.ViewModels
         [RelayCommand]
         private async Task CerrarSesionAsync()
         {
+            // Se da de baja el dispositivo antes de borrar el token de autenticación,
+            // porque la baja también necesita ir autenticada.
+            await push.DetenerAsync();
+
             auth.CerrarSesion();
             await Shell.Current.GoToAsync("//InicioSesion");
         }

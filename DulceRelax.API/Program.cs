@@ -52,6 +52,8 @@ builder.Services.AddScoped<HorarioRepository>();
 
 builder.Services.AddSingleton<DispositivoRepository>();
 builder.Services.AddSingleton<PushSender>();
+builder.Services.AddSingleton<AvisoLimiteRepository>();
+builder.Services.AddHostedService<AvisoLimiteWorker>();
 
 // --- Build ---
 

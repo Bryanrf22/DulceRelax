@@ -17,13 +17,17 @@ namespace DulceRelax.API.Controllers
         private readonly MasajeRepository _masajes;
         private readonly HorarioRepository _horario;
         private readonly PushSender _push;
+        private readonly AvisoLimiteRepository _avisos;
 
-        public CitaController(CitaRepository repository, MasajeRepository masajes, HorarioRepository horario, PushSender push)
+        public CitaController(
+            CitaRepository repository, MasajeRepository masajes, HorarioRepository horario,
+            PushSender push, AvisoLimiteRepository avisos)
         {
             _repository = repository;
             _masajes = masajes;
             _horario = horario;
             _push = push;
+            _avisos = avisos;
         }
 
         private string? Uid => User.FindFirst("user_id")?.Value;
@@ -95,6 +99,11 @@ namespace DulceRelax.API.Controllers
                 return Conflict(new { error = "Horario no disponible." });
 
             await _push.EnviarAAdminsAsync("Nueva solicitud de cita", $"{dto.UsuarioNombre} - {masaje.Nombre}");
+
+            // Si la cita ya entra en el umbral de "fecha límite", se marca como avisada
+            // para que el worker no vuelva a enviar ese aviso justo después del de "nueva solicitud".
+            if (dto.FechaHora.ToUniversalTime() <= DateTime.UtcNow + AvisoLimiteWorker.Umbral)
+                await _avisos.MarcarAsync(id);
 
             return CreatedAtAction(nameof(GetById), new { id }, new { id });
         }
