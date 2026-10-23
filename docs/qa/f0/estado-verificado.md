@@ -18,8 +18,8 @@
   - T4: `PrincipalAdmin.xaml` diálogo `MostrandoReprogramar` con `Border`, `Overlay`, `AutomationId="reprogramar_modal"`, `SemanticProperties`, `DatePicker`/`TimePicker`
   - T5: `OnTogglePassword` actualiza `SemanticProperties.Description` dinámicamente en Registro/InicioAdmin/InicioCliente
 - F4-T2 a F4-T5: verificados (NavBar False, navegación corregida, modal corregido) pero sin cambio de archivo amplio
-- F5-T1 a F5-T4: tokens existen; sin migración completa a vistas (aún 200 font sizes restantes)
-- F5-T5 / F5-T6: sin cambios en archivos de vista (solo identificados con grep)
+- F5-T1 a F5-T6: COMPLETADOS (verificación archivo + commit local)
+- sin cambios en archivos de vista (solo identificados con grep)
 
 ## Bloqueado / no iniciado
 - F6-T1 a F6-T8: sin cambios
