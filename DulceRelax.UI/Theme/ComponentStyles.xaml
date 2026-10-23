@@ -165,6 +165,23 @@
         <Setter Property="HorizontalOptions" Value="Start" />
     </Style>
 
+    <Style x:Key="FormField" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource OnSurfaceMuted}" />
+        <Setter Property="FontSize" Value="{StaticResource FontBody}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="BorderColor" Value="{StaticResource Border}" />
+        <Setter Property="CornerRadius" Value="{StaticResource CornerRadiusMd}" />
+        <Setter Property="Padding" Value="10,12" />
+    </Style>
+
+    <Style x:Key="FormError" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource Error}" />
+        <Setter Property="FontSize" Value="{StaticResource FontCaption}" />
+        <Setter Property="Margin" Value="0,2,0,0" />
+    </Style>
+
     <Style x:Key="BtnLink" TargetType="Button">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{StaticResource Primary}" />
