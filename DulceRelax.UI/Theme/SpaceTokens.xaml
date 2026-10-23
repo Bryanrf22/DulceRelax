@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="DulceRelax.UI.Theme.SpaceTokens">
+
+    <!-- Escala de 8 (con 4 como medio paso) -->
+    <x:Double x:Key="Space1">4</x:Double>
+    <x:Double x:Key="Space2">8</x:Double>
+    <x:Double x:Key="Space3">12</x:Double>
+    <x:Double x:Key="Space4">16</x:Double>
+    <x:Double x:Key="Space5">20</x:Double>
+    <x:Double x:Key="Space6">24</x:Double>
+    <x:Double x:Key="Space8">32</x:Double>
+
+    <!-- Radios -->
+    <x:Int32 x:Key="RadiusSm">8</x:Int32>     <!-- badges, chips -->
+    <x:Int32 x:Key="RadiusMd">12</x:Int32>    <!-- botones, campos -->
+    <x:Int32 x:Key="RadiusLg">20</x:Int32>    <!-- tarjetas, diálogos -->
+    <x:Int32 x:Key="RadiusFull">999</x:Int32> <!-- avatar circular -->
+
+    <!-- Padding/Margin -->
+    <Thickness x:Key="Pad1">4</Thickness>
+    <Thickness x:Key="Pad2">8</Thickness>
+    <Thickness x:Key="Pad3">12</Thickness>
+    <Thickness x:Key="Pad4">16</Thickness>
+    <Thickness x:Key="Pad5">20</Thickness>
+    <Thickness x:Key="Pad6">24</Thickness>
+    <Thickness x:Key="Pad8">32</Thickness>
+
+    <!-- Medidas táctiles y de campo -->
+    <x:Double x:Key="HeightTouch">48</x:Double>
+    <x:Double x:Key="HeightInput">52</x:Double>
+    <x:Double x:Key="HeightButtonLarge">52</x:Double>
+    <x:Double x:Key="BorderWidth">1</x:Double>
+    <x:Double x:Key="BorderWidthFocus">2</x:Double>
+
+    <!-- Logo -->
+    <x:Double x:Key="LogoHeader">72</x:Double>
+    <x:Double x:Key="LogoAuth">120</x:Double>
+
+</ResourceDictionary>

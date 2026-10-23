@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="DulceRelax.UI.Theme.IconTokens">
+
+    <!-- Tamaños -->
+    <x:Double x:Key="IconSm">16</x:Double>
+    <x:Double x:Key="IconMd">20</x:Double>
+    <x:Double x:Key="IconLg">24</x:Double>
+    <x:Double x:Key="IconXl">32</x:Double>
 
     <x:String x:Key="IconoInicio">&#xE88A;</x:String>
     <x:String x:Key="IconoAgenda">&#xE878;</x:String>
@@ -9,6 +16,7 @@
     <x:String x:Key="IconoAnterior">&#xE5CB;</x:String>
     <x:String x:Key="IconoSiguiente">&#xE5CC;</x:String>
     <x:String x:Key="IconoTelefono">&#xE0CD;</x:String>
+    <x:String x:Key="IconoUbicacion">&#xE0C8;</x:String>
     <x:String x:Key="IconoReloj">&#xE8B5;</x:String>
     <x:String x:Key="IconoInfo">&#xE88E;</x:String>
     <x:String x:Key="IconoMasaje">&#xEB4C;</x:String>
@@ -21,11 +29,12 @@
     <x:String x:Key="IconoConfirmar">&#xE5CA;</x:String>
     <x:String x:Key="IconoSalir">&#xE9BA;</x:String>
     <x:String x:Key="IconoCandado">&#xE897;</x:String>
+    <x:String x:Key="IconoCorreo">&#xE0BE;</x:String>
     <x:String x:Key="IconoVer">&#xE8F4;</x:String>
     <x:String x:Key="IconoOcultar">&#xE8F5;</x:String>
-    <x:String x:Key="IconoUbicacion">&#xE0C8;</x:String>
-    <x:String x:Key="IconoSinConexion">&#xE648;</x:String>
-    <x:String x:Key="IconoCorreo">&#xE0BE;</x:String>
     <x:String x:Key="IconoReintentar">&#xE5D5;</x:String>
+    <x:String x:Key="IconoSinConexion">&#xE648;</x:String>
+    <x:String x:Key="IconoCalendario">&#xE916;</x:String>
+    <x:String x:Key="IconoDinero">&#xE263;</x:String>
 
 </ResourceDictionary>

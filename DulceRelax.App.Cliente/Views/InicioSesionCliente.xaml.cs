@@ -1,46 +1,37 @@
-using DulceRelax.App.Cliente.ViewModels;
+﻿using Microsoft.Maui.Controls;
+using DulceRelax.UI.Behaviors;
 
-namespace DulceRelax.App.Cliente.Views;
-
-public partial class InicioSesionCliente : ContentPage
+namespace DulceRelax.App.Cliente.Views
 {
-    public InicioSesionCliente(LoginViewModel vm)
+    public partial class InicioSesionCliente : ContentPage
     {
-        InitializeComponent();
-        BindingContext = vm;
-    }
+        public InicioSesionCliente()
+        {
+            InitializeComponent();
+            
+            // Apply SafeAreaBehavior to this page
+            var safeAreaBehavior = new SafeAreaBehavior
+            {
+                Edges = SafeAreaEdges.All
+            };
+            
+            // Attach the behavior to the page
+            Behaviors.Add(safeAreaBehavior);
+        }
 
-    private static bool _sesionRevisada;
+        private async void OnForgotPasswordClicked(object sender, EventArgs e) =>
+            await Shell.Current.GoToAsync(nameof(RecuperarContraseñaCliente));
 
-    private async void OnForgotPasswordClicked(object sender, TappedEventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(RecuperarContraseñaCliente));
-    }
+        private async void OnRegisterClicked(object sender, EventArgs e) =>
+            await Shell.Current.GoToAsync(nameof(RegistroCliente));
 
-    private async void OnRegisterClicked(object sender, TappedEventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(RegistroCliente));
-    }
-
-    private void OnTogglePassword(object sender, TappedEventArgs e)
-    {
-        PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
-
-        if (sender is not Label toggle)
-            return;
-
-        var clave = PasswordEntry.IsPassword ? "IconoVer" : "IconoOcultar";
-        if (Application.Current?.Resources.TryGetValue(clave, out var glyph) == true && glyph is string texto)
-            toggle.Text = texto;
-    }
-
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-        if (_sesionRevisada) return;
-        _sesionRevisada = true;
-
-        if (BindingContext is LoginViewModel vm)
-            await vm.RestaurarSesionCommand.ExecuteAsync(null);
+        private void OnTogglePassword(object sender, EventArgs e)
+        {
+            if (sender is Button btn)
+            {
+                btn.SemanticProperties.Description = btn.Text == "Mostrar"
+                    ? "Ocultar contraseña" : "Mostrar contraseña";
+            }
+        }
     }
 }

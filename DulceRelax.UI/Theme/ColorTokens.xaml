@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="DulceRelax.UI.Theme.ColorTokens">
+
+    <!-- ============================================================
+         MARCA
+         ============================================================ -->
+    <Color x:Key="Primary">#2F6B45</Color>            <!-- blanco encima: 6.34:1 -->
+    <Color x:Key="OnPrimary">#FFFFFF</Color>
+    <Color x:Key="PrimarySoft">#EAF4EC</Color>        <!-- Primary encima: 5.63:1 -->
+    <Color x:Key="PrimarySoftStrong">#D2E5D5</Color>  <!-- Primary encima: 4.81:1 -->
+    <Color x:Key="PrimaryPressed">#245235</Color>
+
+    <!-- ============================================================
+         SUPERFICIES
+         ============================================================ -->
+    <Color x:Key="Surface">#FFFFFF</Color>
+    <Color x:Key="SurfaceAlt">#FBF6F2</Color>         <!-- fondo de pantalla -->
+    <Color x:Key="SurfaceMuted">#F2EFE9</Color>       <!-- fondo de tarjetas internas -->
+    <Color x:Key="Overlay">#80000000</Color>          <!-- fondo de diálogos -->
+
+    <!-- ============================================================
+         TEXTO
+         ============================================================ -->
+    <Color x:Key="OnSurface">#222222</Color>
+    <Color x:Key="OnSurfaceVariant">#6B6B6B</Color>   <!-- blanco: 5.33:1 -->
+    <Color x:Key="OnSurfaceMuted">#767676</Color>     <!-- blanco: 4.54:1 -->
+    <Color x:Key="OnSurfaceDisabled">#8E8A81</Color>
+
+    <!-- ============================================================
+         BORDES
+         ============================================================ -->
+    <Color x:Key="Border">#8E8A81</Color>             <!-- blanco: 3.44:1 · SurfaceAlt: 3.21:1 -->
+    <Color x:Key="BorderStrong">#767676</Color>       <!-- campos: blanco 4.54:1 -->
+    <Color x:Key="BorderFocus">#1E7B45</Color>
+
+    <!-- ============================================================
+         ESTADOS
+         ============================================================ -->
+    <Color x:Key="Error">#B3261E</Color>              <!-- blanco: 6.54:1 -->
+    <Color x:Key="ErrorSoft">#FDECEA</Color>
+    <Color x:Key="ErrorPressed">#8C1D18</Color>
+
+    <Color x:Key="Success">#1E7B45</Color>            <!-- blanco: 5.28:1 -->
+    <Color x:Key="SuccessSoft">#E7F4EC</Color>
+
+    <Color x:Key="WarningText">#7A5A28</Color>        <!-- #FFF3CD: 5.71:1 -->
+    <Color x:Key="WarningSoft">#FFF3CD</Color>
+    <Color x:Key="WarningBorder">#E0C36B</Color>
+
+    <Color x:Key="Info">#2F6B45</Color>
+    <Color x:Key="InfoSoft">#EAF4EC</Color>
+
+    <!-- ============================================================
+         COMPONENTES
+         ============================================================ -->
+    <Color x:Key="TabBarBackground">#FFFFFF</Color>
+    <Color x:Key="TabBarSelected">#2F6B45</Color>
+    <Color x:Key="TabBarUnselected">#6B6B6B</Color>
+    <Color x:Key="DisabledSurface">#E6E3DC</Color>
+    <Color x:Key="DisabledText">#6B6B6B</Color>
+    <Color x:Key="Shadow">#1A000000</Color>
+    <SolidColorBrush x:Key="ShadowBrush" Color="#1A000000" />
+
+</ResourceDictionary>

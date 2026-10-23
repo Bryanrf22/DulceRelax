@@ -42,15 +42,13 @@
 	</PropertyGroup>
 
 	<!-- Aviso si falta la configuración de Firebase: sin ella los push no llegan. -->
-	<Target Name="AvisarFaltaGoogleServices" BeforeTargets="Build"
-		Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' and !Exists('google-services.json')">
+	<Target Name="AvisarFaltaGoogleServices" BeforeTargets="Build" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' and !Exists('google-services.json')">
 		<Warning Text="No se encontró google-services.json. Las notificaciones push (FCM) no funcionarán en Android hasta agregarlo a la raíz del proyecto." />
 	</Target>
 
 	<ItemGroup>
 		<!-- Configuración de Firebase (FCM). El archivo no se versiona: ver README. -->
-		<GoogleServicesJson Include="google-services.json"
-			Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' and Exists('google-services.json')" />
+		<GoogleServicesJson Include="google-services.json" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' and Exists('google-services.json')" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -83,6 +81,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\DulceRelax.Shared\DulceRelax.Shared.csproj" />
+	  <ProjectReference Include="..\DulceRelax.UI\DulceRelax.UI.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

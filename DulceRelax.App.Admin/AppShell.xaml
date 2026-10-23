@@ -6,9 +6,9 @@
     xmlns:views="clr-namespace:DulceRelax.App.Admin.Views"
     Shell.FlyoutBehavior="Disabled"
     Shell.TabBarBackgroundColor="White"
-    Shell.TabBarTitleColor="#3F8758"
-    Shell.TabBarForegroundColor="#3F8758"
-    Shell.TabBarUnselectedColor="#888888"
+    Shell.TabBarTitleColor="{StaticResource Primary}"
+    Shell.TabBarForegroundColor="{StaticResource Primary}"
+    Shell.TabBarUnselectedColor="{StaticResource OnSurfaceVariant}"
     Title="DulceRelax Admin">
 
     <ShellContent ContentTemplate="{DataTemplate views:InicioSesionAdmin}" Route="InicioSesion" />

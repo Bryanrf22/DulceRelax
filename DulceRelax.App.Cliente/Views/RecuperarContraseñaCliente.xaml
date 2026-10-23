@@ -1,48 +1,56 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              x:Class="DulceRelax.App.Cliente.Views.RecuperarContraseñaCliente"
              Title="Recuperar Contraseña"
-             BackgroundColor="#FBF6F2"
+             BackgroundColor="{StaticResource SurfaceAlt}"
              Shell.NavBarIsVisible="False">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+        <VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingLg}" VerticalOptions="Center">
 
-            <Image Source="logo.png"
+            <Image Source="logo.png" SemanticProperties.Description="Logo DulceRelax"
                    HeightRequest="120"
                    WidthRequest="120"
                    Aspect="AspectFit"
                    HorizontalOptions="Center"
                    Margin="0,0,0,20" />
 
-            <Border BackgroundColor="White"
+            <Border BackgroundColor="{StaticResource Surface}"
                     StrokeThickness="0"
-                    Padding="25"
+                    Padding="{StaticResource PaddingLg}"
                     HorizontalOptions="Fill">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="20" />
+                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                 </Border.StrokeShape>
 
-                <VerticalStackLayout Spacing="8">
+                <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
 
                     <Label Text="Recuperar Contraseña"
-                           FontSize="24"
+                           FontSize="{StaticResource FontTitle}"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"
-                           TextColor="#222222"
+                           TextColor="{StaticResource OnSurface}"
                            Margin="0,0,0,5" />
 
                     <Label Text="Ingresa tu correo electrónico para recuperar tu contraseña"
-                           FontSize="14"
+                           FontSize="{StaticResource FontBodySmall}"
                            HorizontalOptions="Center"
-                           TextColor="#777777"
+                           TextColor="{StaticResource OnSurfaceVariant}"
                            Margin="0,0,0,15" />
 
 					<Label Text="{Binding Mensaje}"
                            HorizontalTextAlignment="Center"
-                           TextColor="#27AE60"
-                           FontSize="14"
+                           TextColor="{StaticResource Success}"
+                           FontSize="{StaticResource FontBodySmall}"
                            Margin="0,0,0,5">
 						<Label.Triggers>
 							<DataTrigger TargetType="Label" Binding="{Binding EsError}" Value="True">
@@ -52,32 +60,32 @@
 					</Label>
 
                     <Label Text="Correo electrónico"
-                           FontSize="14"
+                           FontSize="{StaticResource FontBodySmall}"
                            FontAttributes="Bold"
-                           TextColor="#333333" />
+                           TextColor="{StaticResource OnSurface}" />
 
-                    <Border BackgroundColor="White"
-                            Stroke="#DDDDD9"
+                    <Border BackgroundColor="{StaticResource Surface}"
+                            Stroke="{StaticResource BorderStrong}"
                             StrokeThickness="1"
                             HeightRequest="48"
                             Padding="12,0"
                             Margin="0,0,0,10">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                         </Border.StrokeShape>
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource SpacingSm}">
                             <Label Grid.Column="0"
                                 Text="{StaticResource IconoCorreo}"
                                 Style="{StaticResource Icono}"
-                                FontSize="18" />
+                                FontSize="{StaticResource FontHeading}" />
                             <Entry Grid.Column="1"
                                Placeholder="ejemplo@email.com"
                                Text="{Binding Email}"
                                Keyboard="Email"
                                ClearButtonVisibility="WhileEditing"
-                               FontSize="14"
-                               TextColor="#333333"
-                               PlaceholderColor="#999999"
+                               FontSize="{StaticResource FontBodySmall}"
+                               TextColor="{StaticResource OnSurface}"
+                               PlaceholderColor="{StaticResource OnSurfaceMuted}"
                                VerticalOptions="Center"
                                BackgroundColor="Transparent" />
                         </Grid>
@@ -86,23 +94,23 @@
                     <Button x:Name="SendButton"
                             Text="Enviar correo"
                             HeightRequest="50"
-                            CornerRadius="15"
-                            BackgroundColor="#3F8758"
-                            TextColor="White"
-                            FontSize="15"
+                            CornerRadius="{StaticResource CornerRadiusMd}"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource OnPrimary}"
+                            FontSize="{StaticResource FontBody}"
                             FontAttributes="Bold"
                             Command="{Binding EnviarCommand}"
-                            Margin="0,5,0,8" />
+                            Margin="0,5,0,8"  automation_id="recuperarcontraseña_enviar_correo" />
 
                     <Button x:Name="BackButton"
                             Text="Volver al inicio de sesión"
                             HeightRequest="50"
-                            CornerRadius="15"
-                            BackgroundColor="#3F8758"
-                            TextColor="White"
-                            FontSize="14"
+                            CornerRadius="{StaticResource CornerRadiusMd}"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource OnPrimary}"
+                            FontSize="{StaticResource FontBodySmall}"
                             FontAttributes="Bold"
-                            Command="{Binding VolverCommand}" />
+                            Command="{Binding VolverCommand}"  automation_id="recuperarcontraseña_volver_al_inicio_de_" />
 
                 </VerticalStackLayout>
             </Border>

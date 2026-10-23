@@ -67,6 +67,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\DulceRelax.Shared\DulceRelax.Shared.csproj" />
+	  <ProjectReference Include="..\DulceRelax.UI\DulceRelax.UI.csproj" />
 	</ItemGroup>
 
 </Project>

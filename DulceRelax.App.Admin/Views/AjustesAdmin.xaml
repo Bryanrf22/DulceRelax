@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Admin.ViewModels"
              x:Class="DulceRelax.App.Admin.Views.AjustesAdmin"
              x:DataType="vm:AjustesViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="#FBF6F2">
+             BackgroundColor="{StaticResource SurfaceAlt}">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
     <RefreshView IsRefreshing="{Binding Cargando}"
                  Command="{Binding CargarCommand}"
-                 RefreshColor="#3F8758">
+                 RefreshColor="{StaticResource Primary}">
         <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="15">
+            <VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingMd}">
 
-                <Label Text="Ajustes" FontSize="24" FontAttributes="Bold" TextColor="#222222" />
-                <Label Text="Horario de atención" FontSize="16" FontAttributes="Bold" TextColor="#292929" />
+                <Label Text="Ajustes" FontSize="{StaticResource FontTitle}" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" />
+                <Label Text="Horario de atención" FontSize="{StaticResource FontBody}" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" />
 
-                <Border BackgroundColor="#FFF3CD" StrokeThickness="0" Padding="14"
+                <Border BackgroundColor="{StaticResource WarningSoft}" StrokeThickness="0" Padding="{StaticResource PaddingMd}"
                         IsVisible="{Binding SinConfigurar}">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="12" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                     </Border.StrokeShape>
                     <Label Text="Aún no hay un horario guardado. Mientras no lo guardes, los clientes pueden reservar a cualquier hora."
-                           FontSize="12" TextColor="#8A6D3B" />
+                           FontSize="{StaticResource FontCaption}" TextColor="{StaticResource WarningText}" />
                 </Border>
 
-                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Dias}">
+                <VerticalStackLayout Spacing="{StaticResource SpacingMd}" BindableLayout.ItemsSource="{Binding Dias}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="vm:DiaHorarioItem">
-                            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1"
+                            <Border BackgroundColor="{StaticResource Surface}" Stroke="{StaticResource Border}" StrokeThickness="1"
                                     Padding="16,10" HorizontalOptions="Fill">
                                 <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="16" />
+                                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusLg}" />
                                 </Border.StrokeShape>
 
-                                <VerticalStackLayout Spacing="4">
+                                <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
                                     <Grid ColumnDefinitions="*,Auto">
-                                        <Label Text="{Binding Nombre}" FontSize="15" FontAttributes="Bold"
-                                               TextColor="#292929" VerticalOptions="Center" />
+                                        <Label Text="{Binding Nombre}" FontSize="{StaticResource FontBody}" FontAttributes="Bold"
+                                               TextColor="{StaticResource OnSurface}" VerticalOptions="Center" />
                                         <Switch Grid.Column="1" IsToggled="{Binding Activo}"
-                                                OnColor="#3F8758" VerticalOptions="Center" />
+                                                OnColor="{StaticResource Primary}" VerticalOptions="Center" />
                                     </Grid>
 
-                                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10"
+                                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="{StaticResource SpacingMd}"
                                           IsVisible="{Binding Activo}">
-                                        <TimePicker Time="{Binding Inicio}" TextColor="#333333" />
-                                        <Label Grid.Column="1" Text="a" TextColor="#777777"
+                                        <TimePicker Time="{Binding Inicio}" TextColor="{StaticResource OnSurface}" />
+                                        <Label Grid.Column="1" Text="a" TextColor="{StaticResource OnSurfaceVariant}"
                                                VerticalOptions="Center" />
-                                        <TimePicker Grid.Column="2" Time="{Binding Fin}" TextColor="#333333" />
+                                        <TimePicker Grid.Column="2" Time="{Binding Fin}" TextColor="{StaticResource OnSurface}" />
                                     </Grid>
                                 </VerticalStackLayout>
                             </Border>
@@ -55,12 +59,12 @@
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
 
-                <Label Text="{Binding Error}" IsVisible="{Binding HayError}" TextColor="#B3261E"
-                       FontSize="13" HorizontalTextAlignment="Center" />
+                <Label Text="{Binding Error}" IsVisible="{Binding HayError}" TextColor="{StaticResource Error}"
+                       FontSize="{StaticResource FontBodySmall}" HorizontalTextAlignment="Center" />
 
                 <Button Text="Guardar horario" Command="{Binding GuardarCommand}"
-                        BackgroundColor="#3F8758" TextColor="White" CornerRadius="15"
-                        HeightRequest="50" FontSize="15" FontAttributes="Bold" ContentLayout="Left,8">
+                        BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" CornerRadius="{StaticResource CornerRadiusMd}"
+                        HeightRequest="50" FontSize="{StaticResource FontBody}" FontAttributes="Bold" ContentLayout="Left,8">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="MaterialIcons"
                                          Glyph="{StaticResource IconoConfirmar}"
@@ -69,13 +73,13 @@
                 </Button>
 
                 <Button Text="Cerrar sesión" Command="{Binding CerrarSesionCommand}"
-                        BackgroundColor="Transparent" BorderColor="#B3261E" BorderWidth="1"
-                        TextColor="#B3261E" CornerRadius="15" HeightRequest="50"
-                        FontSize="15" FontAttributes="Bold" Margin="0,20,0,0" ContentLayout="Left,8">
+                        BackgroundColor="Transparent" BorderColor="{StaticResource Error}" BorderWidth="1"
+                        TextColor="{StaticResource Error}" CornerRadius="{StaticResource CornerRadiusMd}" HeightRequest="50"
+                        FontSize="{StaticResource FontBody}" FontAttributes="Bold" Margin="0,20,0,0" ContentLayout="Left,8">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="MaterialIcons"
                                          Glyph="{StaticResource IconoSalir}"
-                                         Color="#B3261E" Size="18" />
+                                         Color="{StaticResource Error}" Size="18" />
                     </Button.ImageSource>
                 </Button>
 

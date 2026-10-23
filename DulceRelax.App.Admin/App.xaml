@@ -1,15 +1,22 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:DulceRelax.App.Admin"
+             xmlns:theme="clr-namespace:DulceRelax.UI.Theme;assembly=DulceRelax.UI"
+             xmlns:converters="clr-namespace:DulceRelax.UI.Converters;assembly=DulceRelax.UI"
              x:Class="DulceRelax.App.Admin.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Iconos.xaml" />
+                <theme:ColorTokens />
+                <theme:TypeTokens />
+                <theme:SpaceTokens />
+                <theme:SpacingTokens />
+                <theme:IconTokens />
+                <theme:CornerTokens />
+                <theme:ComponentStyles />
             </ResourceDictionary.MergedDictionaries>
+            <converters:TonoColorConverter x:Key="TonoColor" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

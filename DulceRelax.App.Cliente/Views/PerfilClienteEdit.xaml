@@ -1,53 +1,61 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
              x:Class="DulceRelax.App.Cliente.Views.PerfilClienteEdit"
              x:DataType="vm:PerfilEditViewModel"
              Title="Editar Perfil"
-             BackgroundColor="#FBF6F2"
+             BackgroundColor="{StaticResource SurfaceAlt}"
              Shell.NavBarIsVisible="False">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
     <ContentPage.Resources>
         <Style x:Key="Etiqueta" TargetType="Label">
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontAttributes" Value="Bold" />
-            <Setter Property="TextColor" Value="#333333" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
         </Style>
 
         <Style x:Key="Campo" TargetType="Border">
             <Setter Property="BackgroundColor" Value="White" />
-            <Setter Property="Stroke" Value="#DDDDD9" />
+            <Setter Property="Stroke" Value="{StaticResource BorderStrong}" />
             <Setter Property="StrokeThickness" Value="1" />
             <Setter Property="HeightRequest" Value="48" />
             <Setter Property="Padding" Value="12,0" />
             <Setter Property="Margin" Value="0,0,0,10" />
             <Setter Property="StrokeShape">
                 <Setter.Value>
-                    <RoundRectangle CornerRadius="12" />
+                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                 </Setter.Value>
             </Setter>
         </Style>
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+        <VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingMd}">
 
             <Label Text="Editar Perfil"
-                   FontSize="24"
+                   FontSize="{StaticResource FontTitle}"
                    FontAttributes="Bold"
-                   TextColor="#222222"
+                   TextColor="{StaticResource OnSurface}"
                    Margin="5,0,0,0" />
 
-            <Border BackgroundColor="White"
+            <Border BackgroundColor="{StaticResource Surface}"
                     StrokeThickness="0"
-                    Padding="25"
+                    Padding="{StaticResource PaddingLg}"
                     HorizontalOptions="Fill">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="20" />
+                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                 </Border.StrokeShape>
 
-                <VerticalStackLayout Spacing="8">
+                <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
 
                     <Label Text="Nombre" Style="{StaticResource Etiqueta}" />
                     <Border Style="{StaticResource Campo}">
@@ -56,9 +64,9 @@
                                MaxLength="80"
                                IsSpellCheckEnabled="False"
                                IsTextPredictionEnabled="False"
-                               FontSize="14"
-                               TextColor="#333333"
-                               PlaceholderColor="#999999"
+                               FontSize="{StaticResource FontBodySmall}"
+                               TextColor="{StaticResource OnSurface}"
+                               PlaceholderColor="{StaticResource OnSurfaceMuted}"
                                BackgroundColor="Transparent" />
                     </Border>
 
@@ -68,9 +76,9 @@
                                Placeholder="Teléfono"
                                Keyboard="Telephone"
                                MaxLength="20"
-                               FontSize="14"
-                               TextColor="#333333"
-                               PlaceholderColor="#999999"
+                               FontSize="{StaticResource FontBodySmall}"
+                               TextColor="{StaticResource OnSurface}"
+                               PlaceholderColor="{StaticResource OnSurfaceMuted}"
                                BackgroundColor="Transparent" />
                     </Border>
 
@@ -81,58 +89,58 @@
                                MaxLength="200"
                                IsSpellCheckEnabled="False"
                                IsTextPredictionEnabled="False"
-                               FontSize="14"
-                               TextColor="#333333"
-                               PlaceholderColor="#999999"
+                               FontSize="{StaticResource FontBodySmall}"
+                               TextColor="{StaticResource OnSurface}"
+                               PlaceholderColor="{StaticResource OnSurfaceMuted}"
                                BackgroundColor="Transparent" />
                     </Border>
 
                     <Label Text="Correo electrónico" Style="{StaticResource Etiqueta}" />
-                    <Border Style="{StaticResource Campo}" BackgroundColor="#F5F5F5" Stroke="Transparent">
+                    <Border Style="{StaticResource Campo}" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="Transparent">
                         <Label Text="{Binding Correo}"
-                               FontSize="14"
-                               TextColor="#777777"
+                               FontSize="{StaticResource FontBodySmall}"
+                               TextColor="{StaticResource OnSurfaceVariant}"
                                VerticalOptions="Center"
                                LineBreakMode="TailTruncation" />
                     </Border>
                     <Label Text="El correo identifica tu cuenta y no se puede cambiar aquí."
-                           FontSize="11"
-                           TextColor="#999999" />
+                           FontSize="{StaticResource FontCaption}"
+                           TextColor="{StaticResource OnSurfaceMuted}" />
 
                 </VerticalStackLayout>
             </Border>
 
             <Label Text="{Binding Error}"
                    IsVisible="{Binding HayError}"
-                   FontSize="13"
-                   TextColor="#B3261E"
+                   FontSize="{StaticResource FontBodySmall}"
+                   TextColor="{StaticResource Error}"
                    HorizontalTextAlignment="Center" />
 
             <ActivityIndicator IsRunning="{Binding Guardando}"
                                IsVisible="{Binding Guardando}"
-                               Color="#3F8758" />
+                               Color="{StaticResource Primary}" />
 
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="{StaticResource SpacingMd}">
                 <Button Grid.Column="0"
                         Text="Guardar"
                         Command="{Binding GuardarCommand}"
                         HeightRequest="50"
-                        CornerRadius="15"
-                        BackgroundColor="#3F8758"
-                        TextColor="White"
-                        FontSize="15"
-                        FontAttributes="Bold" />
+                        CornerRadius="{StaticResource CornerRadiusMd}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="{StaticResource OnPrimary}"
+                        FontSize="{StaticResource FontBody}"
+                        FontAttributes="Bold"  automation_id="perfiledit_guardar" />
                 <Button Grid.Column="1"
                         Text="Cancelar"
                         Command="{Binding CancelarCommand}"
                         HeightRequest="50"
-                        CornerRadius="15"
+                        CornerRadius="{StaticResource CornerRadiusMd}"
                         BackgroundColor="Transparent"
-                        BorderColor="#999999"
+                        BorderColor="{StaticResource Border}"
                         BorderWidth="1"
-                        TextColor="#555555"
-                        FontSize="15"
-                        FontAttributes="Bold" />
+                        TextColor="{StaticResource OnSurfaceVariant}"
+                        FontSize="{StaticResource FontBody}"
+                        FontAttributes="Bold"  automation_id="perfiledit_cancelar" />
             </Grid>
 
         </VerticalStackLayout>

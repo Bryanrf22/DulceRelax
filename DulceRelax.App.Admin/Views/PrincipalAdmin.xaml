@@ -1,74 +1,78 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Admin.ViewModels"
              x:Class="DulceRelax.App.Admin.Views.PrincipalAdmin"
              x:DataType="vm:AgendaViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="#FBF6F2">
+             BackgroundColor="{StaticResource SurfaceAlt}">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
     <Grid>
 
         <RefreshView IsRefreshing="{Binding Cargando}"
                      Command="{Binding CargarCommand}"
-                     RefreshColor="#3F8758">
+                     RefreshColor="{StaticResource Primary}">
             <ScrollView>
-                <VerticalStackLayout Padding="20" Spacing="15">
+                <VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingMd}">
 
-                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                        <Label Text="Agenda" FontSize="24" FontAttributes="Bold"
-                               TextColor="#222222" VerticalOptions="Center" />
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="{StaticResource SpacingSm}">
+                        <Label Text="Agenda" FontSize="{StaticResource FontTitle}" FontAttributes="Bold"
+                               TextColor="{StaticResource OnSurface}" VerticalOptions="Center" />
                         <Button Grid.Column="1" Text="Hoy" Command="{Binding HoyCommand}"
-                                BackgroundColor="Transparent" BorderColor="#3F8758" BorderWidth="1"
-                                TextColor="#3F8758" CornerRadius="10" HeightRequest="36"
-                                Padding="14,0" FontSize="12" FontAttributes="Bold" />
+                                BackgroundColor="Transparent" BorderColor="{StaticResource Primary}" BorderWidth="1"
+                                TextColor="{StaticResource Primary}" CornerRadius="{StaticResource CornerRadiusMd}" HeightRequest="36"
+                                Padding="14,0" FontSize="{StaticResource FontCaption}" FontAttributes="Bold"  automation_id="principal_hoy" />
                     </Grid>
 
-                    <Border BackgroundColor="White" StrokeThickness="0" Padding="8">
+                    <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingSm}">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="16" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusLg}" />
                         </Border.StrokeShape>
                         <Grid ColumnDefinitions="Auto,*,Auto">
                             <Button Text="{StaticResource IconoAnterior}" Command="{Binding DiaAnteriorCommand}"
                                     FontFamily="MaterialIcons"
-                                    BackgroundColor="Transparent" TextColor="#3F8758"
-                                    FontSize="24" WidthRequest="50"
-                                    SemanticProperties.Description="Día anterior" />
-                            <Label Grid.Column="1" Text="{Binding DiaTexto}" FontSize="16"
-                                   FontAttributes="Bold" TextColor="#262626"
+                                    BackgroundColor="Transparent" TextColor="{StaticResource Primary}"
+                                    FontSize="{StaticResource FontTitle}" WidthRequest="50"
+                                    SemanticProperties.Description="Día anterior"  automation_id="principal__staticresource_icon" />
+                            <Label Grid.Column="1" Text="{Binding DiaTexto}" FontSize="{StaticResource FontBody}"
+                                   FontAttributes="Bold" TextColor="{StaticResource OnSurface}"
                                    HorizontalTextAlignment="Center" VerticalOptions="Center" />
                             <Button Grid.Column="2" Text="{StaticResource IconoSiguiente}" Command="{Binding DiaSiguienteCommand}"
                                     FontFamily="MaterialIcons"
-                                    BackgroundColor="Transparent" TextColor="#3F8758"
-                                    FontSize="24" WidthRequest="50"
-                                    SemanticProperties.Description="Día siguiente" />
+                                    BackgroundColor="Transparent" TextColor="{StaticResource Primary}"
+                                    FontSize="{StaticResource FontTitle}" WidthRequest="50"
+                                    SemanticProperties.Description="Día siguiente"  automation_id="principal__staticresource_icon" />
                         </Grid>
                     </Border>
 
-                    <Border BackgroundColor="#FFF3CD" StrokeThickness="0" Padding="14"
+                    <Border BackgroundColor="{StaticResource WarningSoft}" StrokeThickness="0" Padding="{StaticResource PaddingMd}"
                             IsVisible="{Binding SinConexion}">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                         </Border.StrokeShape>
-                        <HorizontalStackLayout Spacing="6">
+                        <HorizontalStackLayout Spacing="{StaticResource SpacingSm}">
                             <Label Text="{StaticResource IconoSinConexion}"
                                    Style="{StaticResource Icono}"
-                                   FontSize="14" TextColor="#8A6D3B" />
-                            <Label Text="{Binding AvisoSinConexion}" FontSize="12"
-                                   TextColor="#8A6D3B" VerticalOptions="Center" />
+                                   FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource WarningText}" />
+                            <Label Text="{Binding AvisoSinConexion}" FontSize="{StaticResource FontCaption}"
+                                   TextColor="{StaticResource WarningText}" VerticalOptions="Center" />
                         </HorizontalStackLayout>
                     </Border>
 
-                    <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                    <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingLg}"
                             IsVisible="{Binding HayError}">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="20" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                         </Border.StrokeShape>
-                        <VerticalStackLayout Spacing="12">
-                            <Label Text="{Binding Error}" FontSize="14" TextColor="#B3261E"
+                        <VerticalStackLayout Spacing="{StaticResource SpacingMd}">
+                            <Label Text="{Binding Error}" FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource Error}"
                                    HorizontalTextAlignment="Center" />
                             <Button Text="Reintentar" Command="{Binding CargarCommand}"
-                                    BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
+                                    BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" CornerRadius="{StaticResource CornerRadiusMd}"
                                     ContentLayout="Left,6" HorizontalOptions="Center">
                                 <Button.ImageSource>
                                     <FontImageSource FontFamily="MaterialIcons"
@@ -79,60 +83,60 @@
                         </VerticalStackLayout>
                     </Border>
 
-                    <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                    <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingLg}"
                             IsVisible="{Binding SinCitas}">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="20" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                         </Border.StrokeShape>
                         <Label Text="No hay citas para este día." HorizontalTextAlignment="Center"
-                               FontSize="15" TextColor="#777777" Margin="0,20" />
+                               FontSize="{StaticResource FontBody}" TextColor="{StaticResource OnSurfaceVariant}" Margin="0,20" />
                     </Border>
 
-                    <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Citas}">
+                    <VerticalStackLayout Spacing="{StaticResource SpacingMd}" BindableLayout.ItemsSource="{Binding Citas}">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="vm:CitaItem">
-                                <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1"
-                                        Padding="16" HorizontalOptions="Fill">
+                                <Border BackgroundColor="{StaticResource Surface}" Stroke="{StaticResource Border}" StrokeThickness="1"
+                                        Padding="{StaticResource PaddingMd}" HorizontalOptions="Fill">
                                     <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="16" />
+                                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusLg}" />
                                     </Border.StrokeShape>
 
-                                    <VerticalStackLayout Spacing="6">
+                                    <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
 
                                         <Grid ColumnDefinitions="*,Auto">
-                                            <Label Text="{Binding HoraTexto}" FontSize="20"
-                                                   FontAttributes="Bold" TextColor="#3F8758" />
+                                            <Label Text="{Binding HoraTexto}" FontSize="{StaticResource FontHeading}"
+                                                   FontAttributes="Bold" TextColor="{StaticResource Primary}" />
                                             <Border Grid.Column="1" BackgroundColor="{Binding EstadoFondo}"
-                                                    StrokeThickness="0" Padding="10,4">
+                                                    StrokeThickness="0" Padding="{StaticResource PaddingSm}">
                                                 <Border.StrokeShape>
-                                                    <RoundRectangle CornerRadius="12" />
+                                                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                                                 </Border.StrokeShape>
-                                                <Label Text="{Binding EstadoTexto}" FontSize="11"
+                                                <Label Text="{Binding EstadoTexto}" FontSize="{StaticResource FontCaption}"
                                                        FontAttributes="Bold" TextColor="{Binding EstadoColor}" />
                                             </Border>
                                         </Grid>
 
-                                        <Label Text="{Binding MasajeNombre}" FontSize="16"
-                                               FontAttributes="Bold" TextColor="#292929"
+                                        <Label Text="{Binding MasajeNombre}" FontSize="{StaticResource FontBody}"
+                                               FontAttributes="Bold" TextColor="{StaticResource OnSurface}"
                                                LineBreakMode="TailTruncation" MaxLines="2" />
-                                        <Label Text="{Binding Cliente}" FontSize="14" TextColor="#555555" />
-                                        <HorizontalStackLayout Spacing="4" IsVisible="{Binding TieneTelefono}">
+                                        <Label Text="{Binding Cliente}" FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource OnSurfaceVariant}" />
+                                        <HorizontalStackLayout Spacing="{StaticResource SpacingSm}" IsVisible="{Binding TieneTelefono}">
                                             <Label Text="{StaticResource IconoTelefono}"
                                                    Style="{StaticResource Icono}"
-                                                   FontSize="13" />
-                                            <Label Text="{Binding Telefono}" FontSize="12"
-                                                   TextColor="#777777" VerticalOptions="Center" />
+                                                   FontSize="{StaticResource FontBodySmall}" />
+                                            <Label Text="{Binding Telefono}" FontSize="{StaticResource FontCaption}"
+                                                   TextColor="{StaticResource OnSurfaceVariant}" VerticalOptions="Center" />
                                         </HorizontalStackLayout>
-                                        <Label Text="{Binding Direccion}" FontSize="12" TextColor="#777777" />
+                                        <Label Text="{Binding Direccion}" FontSize="{StaticResource FontCaption}" TextColor="{StaticResource OnSurfaceVariant}" />
                                         <Label Text="{Binding Detalle}" IsVisible="{Binding TieneDetalle}"
-                                               FontSize="11" TextColor="#999999" />
+                                               FontSize="{StaticResource FontCaption}" TextColor="{StaticResource OnSurfaceMuted}" />
 
-                                        <HorizontalStackLayout Spacing="10" Margin="0,8,0,0"
+                                        <HorizontalStackLayout Spacing="{StaticResource SpacingMd}" Margin="0,8,0,0"
                                                                IsVisible="{Binding TieneAcciones}">
                                             <Button Text="Confirmar" IsVisible="{Binding PuedeConfirmar}"
-                                                    HeightRequest="36" Padding="18,0" CornerRadius="10"
-                                                    FontSize="12" FontAttributes="Bold" ContentLayout="Left,6"
-                                                    BackgroundColor="#3F8758" TextColor="White"
+                                                    HeightRequest="36" Padding="18,0" CornerRadius="{StaticResource CornerRadiusMd}"
+                                                    FontSize="{StaticResource FontCaption}" FontAttributes="Bold" ContentLayout="Left,6"
+                                                    BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}"
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AgendaViewModel}}, x:DataType=vm:AgendaViewModel, Path=ConfirmarCommand}"
                                                     CommandParameter="{Binding .}">
                                                 <Button.ImageSource>
@@ -142,23 +146,23 @@
                                                 </Button.ImageSource>
                                             </Button>
                                             <Button Text="Reprogramar" IsVisible="{Binding PuedeReprogramar}"
-                                                    HeightRequest="36" Padding="18,0" CornerRadius="10"
-                                                    FontSize="12" FontAttributes="Bold"
-                                                    BackgroundColor="Transparent" BorderColor="#3F8758"
-                                                    BorderWidth="1" TextColor="#3F8758"
+                                                    HeightRequest="36" Padding="18,0" CornerRadius="{StaticResource CornerRadiusMd}"
+                                                    FontSize="{StaticResource FontCaption}" FontAttributes="Bold"
+                                                    BackgroundColor="Transparent" BorderColor="{StaticResource Primary}"
+                                                    BorderWidth="1" TextColor="{StaticResource Primary}"
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AgendaViewModel}}, x:DataType=vm:AgendaViewModel, Path=AbrirReprogramarCommand}"
-                                                    CommandParameter="{Binding .}" />
+                                                    CommandParameter="{Binding .}"  automation_id="principal_reprogramar" />
                                             <Button Text="Cancelar" IsVisible="{Binding PuedeCancelar}"
-                                                    HeightRequest="36" Padding="18,0" CornerRadius="10"
-                                                    FontSize="12" FontAttributes="Bold" ContentLayout="Left,6"
-                                                    BackgroundColor="Transparent" BorderColor="#B3261E"
-                                                    BorderWidth="1" TextColor="#B3261E"
+                                                    HeightRequest="36" Padding="18,0" CornerRadius="{StaticResource CornerRadiusMd}"
+                                                    FontSize="{StaticResource FontCaption}" FontAttributes="Bold" ContentLayout="Left,6"
+                                                    BackgroundColor="Transparent" BorderColor="{StaticResource Error}"
+                                                    BorderWidth="1" TextColor="{StaticResource Error}"
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AgendaViewModel}}, x:DataType=vm:AgendaViewModel, Path=CancelarCommand}"
                                                     CommandParameter="{Binding .}">
                                                 <Button.ImageSource>
                                                     <FontImageSource FontFamily="MaterialIcons"
                                                                      Glyph="{StaticResource IconoCerrar}"
-                                                                     Color="#B3261E" Size="16" />
+                                                                     Color="{StaticResource Error}" Size="16" />
                                                 </Button.ImageSource>
                                             </Button>
                                         </HorizontalStackLayout>
@@ -173,26 +177,32 @@
             </ScrollView>
         </RefreshView>
 
-        <Grid IsVisible="{Binding MostrandoReprogramar}" BackgroundColor="#80000000">
-            <Border BackgroundColor="White" StrokeThickness="0" Padding="20"
-                    Margin="24" VerticalOptions="Center">
+        <Grid IsVisible="{Binding MostrandoReprogramar}" BackgroundColor="{StaticResource Overlay}">
+            <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingLg}"
+                    Margin="{StaticResource MarginLg}" VerticalOptions="Center"
+                    SemanticProperties.Description="Diálogo para reprogramar la cita seleccionada"
+                    AutomationId="reprogramar_modal">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="20" />
+                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                 </Border.StrokeShape>
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Reprogramar cita" FontSize="18" FontAttributes="Bold"
-                           TextColor="#222222" />
-                    <Label Text="{Binding ReprogramandoTexto}" FontSize="13" TextColor="#777777" />
+                <VerticalStackLayout Spacing="{StaticResource SpacingMd}">
+                    <Label Text="Reprogramar cita" FontSize="{StaticResource FontHeading}" FontAttributes="Bold"
+                           TextColor="{StaticResource OnSurface}" SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="{Binding ReprogramandoTexto}" FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource OnSurfaceVariant}" />
                     <DatePicker Date="{Binding NuevaFecha}" MinimumDate="{Binding FechaMinima}"
-                                TextColor="#262626" />
-                    <TimePicker Time="{Binding NuevaHora}" TextColor="#262626" />
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                TextColor="{StaticResource OnSurface}" />
+                    <TimePicker Time="{Binding NuevaHora}" TextColor="{StaticResource OnSurface}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="{StaticResource SpacingMd}">
                         <Button Text="Cancelar" Command="{Binding CerrarReprogramarCommand}"
-                                BackgroundColor="Transparent" BorderColor="#777777" BorderWidth="1"
-                                TextColor="#777777" CornerRadius="10" />
+                                BackgroundColor="Transparent" BorderColor="{StaticResource BorderStrong}" BorderWidth="1"
+                                TextColor="{StaticResource OnSurfaceVariant}" CornerRadius="{StaticResource CornerRadiusMd}"
+                                AutomationId="reprogramar_cancelar"
+                                SemanticProperties.Description="Cerrar diálogo sin guardar" />
                         <Button Grid.Column="1" Text="Guardar"
                                 Command="{Binding GuardarReprogramarCommand}"
-                                BackgroundColor="#3F8758" TextColor="White" CornerRadius="10" />
+                                BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" CornerRadius="{StaticResource CornerRadiusMd}"
+                                AutomationId="reprogramar_guardar"
+                                SemanticProperties.Description="Guardar nueva fecha y hora de la cita" />
                     </Grid>
                 </VerticalStackLayout>
             </Border>

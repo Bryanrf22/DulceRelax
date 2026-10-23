@@ -10,15 +10,18 @@ public partial class RegistroCliente : ContentPage
         BindingContext = vm;
     }
 
-    private void OnTogglePassword(object sender, TappedEventArgs e)
+    private void OnTogglePassword(object sender, EventArgs e)
     {
         PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
 
-        if (sender is not Label toggle)
-            return;
+        if (sender is Button toggle)
+        {
+            var clave = PasswordEntry.IsPassword ? "IconoVer" : "IconoOcultar";
+            if (Application.Current?.Resources.TryGetValue(clave, out var glyph) == true && glyph is string texto)
+                toggle.Text = texto;
 
-        var clave = PasswordEntry.IsPassword ? "IconoVer" : "IconoOcultar";
-        if (Application.Current?.Resources.TryGetValue(clave, out var glyph) == true && glyph is string texto)
-            toggle.Text = texto;
+            toggle.SemanticProperties.Description = PasswordEntry.IsPassword
+                ? "Mostrar contraseña" : "Ocultar contraseña";
+        }
     }
 }

@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
              x:Class="DulceRelax.App.Cliente.Views.MisCitasCliente"
              x:DataType="vm:MisCitasViewModel"
              Title="Mis Citas"
-             BackgroundColor="#FBF6F2"
+             BackgroundColor="{StaticResource SurfaceAlt}"
              Shell.NavBarIsVisible="False">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
 	<RefreshView IsRefreshing="{Binding Cargando}"
                  Command="{Binding CargarCommand}"
-                 RefreshColor="#3F8758">
+                 RefreshColor="{StaticResource Primary}">
 
 		<ScrollView>
-			<VerticalStackLayout Padding="20" Spacing="15">
+			<VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingMd}">
 
-				<HorizontalStackLayout Spacing="10">
+				<HorizontalStackLayout Spacing="{StaticResource SpacingMd}">
 					<Button Text="Atrás"
-                            BackgroundColor="#3F8758"
-                            TextColor="White"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource OnPrimary}"
                             Padding="15,10"
-                            CornerRadius="12"
-                            FontSize="14"
+                            CornerRadius="{StaticResource CornerRadiusMd}"
+                            FontSize="{StaticResource FontBodySmall}"
                             ContentLayout="Left,8"
                             Clicked="OnBackClicked"
                             VerticalOptions="Center">
@@ -33,29 +41,29 @@
 						</Button.ImageSource>
 					</Button>
 					<Label Text="Mis Citas"
-                           FontSize="24"
+                           FontSize="{StaticResource FontTitle}"
                            FontAttributes="Bold"
-                           TextColor="#222222"
+                           TextColor="{StaticResource OnSurface}"
                            VerticalOptions="Center" />
 				</HorizontalStackLayout>
 
-				<Border BackgroundColor="White"
+				<Border BackgroundColor="{StaticResource Surface}"
                         StrokeThickness="0"
-                        Padding="25"
+                        Padding="{StaticResource PaddingLg}"
                         IsVisible="{Binding HayError}">
 					<Border.StrokeShape>
-						<RoundRectangle CornerRadius="20" />
+						<RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
 					</Border.StrokeShape>
-					<VerticalStackLayout Spacing="12">
+					<VerticalStackLayout Spacing="{StaticResource SpacingMd}">
 						<Label Text="{Binding Error}"
-                               FontSize="14"
-                               TextColor="#B3261E"
+                               FontSize="{StaticResource FontBodySmall}"
+                               TextColor="{StaticResource Error}"
                                HorizontalTextAlignment="Center" />
 						<Button Text="Reintentar"
                                 Command="{Binding CargarCommand}"
-                                BackgroundColor="#3F8758"
-                                TextColor="White"
-                                CornerRadius="10"
+                                BackgroundColor="{StaticResource Primary}"
+                                TextColor="{StaticResource OnPrimary}"
+                                CornerRadius="{StaticResource CornerRadiusMd}"
                                 ContentLayout="Left,6"
                                 HorizontalOptions="Center">
 							<Button.ImageSource>
@@ -68,83 +76,83 @@
 					</VerticalStackLayout>
 				</Border>
 
-				<Border BackgroundColor="White"
+				<Border BackgroundColor="{StaticResource Surface}"
                         StrokeThickness="0"
-                        Padding="25"
+                        Padding="{StaticResource PaddingLg}"
                         IsVisible="{Binding SinCitas}">
 					<Border.StrokeShape>
-						<RoundRectangle CornerRadius="20" />
+						<RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
 					</Border.StrokeShape>
 					<Label Text="Aún no tienes citas. Solicita una desde el menú principal."
                            HorizontalTextAlignment="Center"
-                           FontSize="15"
-                           TextColor="#777777"
+                           FontSize="{StaticResource FontBody}"
+                           TextColor="{StaticResource OnSurfaceVariant}"
                            Margin="0,20" />
 				</Border>
 
-				<VerticalStackLayout Spacing="12"
+				<VerticalStackLayout Spacing="{StaticResource SpacingMd}"
                                      BindableLayout.ItemsSource="{Binding Citas}">
 					<BindableLayout.ItemTemplate>
 						<DataTemplate x:DataType="vm:CitaItem">
 
-							<Border BackgroundColor="White"
-									Stroke="#E0E0E0"
+							<Border BackgroundColor="{StaticResource Surface}"
+									Stroke="{StaticResource Border}"
 									StrokeThickness="1"
-									Padding="16"
+									Padding="{StaticResource PaddingMd}"
 									HorizontalOptions="Fill">
 								<Border.StrokeShape>
-									<RoundRectangle CornerRadius="16" />
+									<RoundRectangle CornerRadius="{StaticResource CornerRadiusLg}" />
 								</Border.StrokeShape>
 
-								<VerticalStackLayout Spacing="6">
+								<VerticalStackLayout Spacing="{StaticResource SpacingSm}">
 
 									<Label Text="{Binding MasajeNombre}"
-										   FontSize="16"
+										   FontSize="{StaticResource FontBody}"
 										   FontAttributes="Bold"
-										   TextColor="#292929"
+										   TextColor="{StaticResource OnSurface}"
 										   LineBreakMode="TailTruncation"
 										   MaxLines="2" />
 
 									<Border BackgroundColor="{Binding EstadoFondo}"
 											StrokeThickness="0"
-											Padding="10,4"
+											Padding="{StaticResource PaddingSm}"
 											HorizontalOptions="Start">
 										<Border.StrokeShape>
-											<RoundRectangle CornerRadius="12" />
+											<RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
 										</Border.StrokeShape>
 										<Label Text="{Binding EstadoTexto}"
-											   FontSize="11"
+											   FontSize="{StaticResource FontCaption}"
 											   FontAttributes="Bold"
 											   TextColor="{Binding EstadoColor}" />
 									</Border>
 
-									<HorizontalStackLayout Spacing="4" Margin="0,4,0,0">
+									<HorizontalStackLayout Spacing="{StaticResource SpacingSm}" Margin="0,4,0,0">
 										<Label Text="{StaticResource IconoReloj}"
 											   Style="{StaticResource Icono}"
-											   FontSize="13"
-											   TextColor="#555555" />
+											   FontSize="{StaticResource FontBodySmall}"
+											   TextColor="{StaticResource OnSurfaceVariant}" />
 										<Label Text="{Binding FechaHoraTexto}"
-											   FontSize="13"
-											   TextColor="#555555"
+											   FontSize="{StaticResource FontBodySmall}"
+											   TextColor="{StaticResource OnSurfaceVariant}"
 											   VerticalOptions="Center" />
 									</HorizontalStackLayout>
 
-									<HorizontalStackLayout Spacing="4">
+									<HorizontalStackLayout Spacing="{StaticResource SpacingSm}">
 										<Label Text="{StaticResource IconoUbicacion}"
 											   Style="{StaticResource Icono}"
-											   FontSize="13" />
+											   FontSize="{StaticResource FontBodySmall}" />
 										<Label Text="{Binding Direccion}"
-											   FontSize="12"
-											   TextColor="#777777"
+											   FontSize="{StaticResource FontCaption}"
+											   TextColor="{StaticResource OnSurfaceVariant}"
 											   VerticalOptions="Center" />
 									</HorizontalStackLayout>
 
 									<Label Text="{Binding Detalle}"
 										   IsVisible="{Binding TieneDetalle}"
-										   FontSize="11"
-										   TextColor="#999999" />
+										   FontSize="{StaticResource FontCaption}"
+										   TextColor="{StaticResource OnSurfaceMuted}" />
 
-									<HorizontalStackLayout Spacing="10"
+									<HorizontalStackLayout Spacing="{StaticResource SpacingMd}"
 														   Margin="0,8,0,0"
 														   IsVisible="{Binding TieneAcciones}">
 
@@ -152,20 +160,20 @@
 												IsVisible="{Binding PuedeEditar}"
 												HeightRequest="36"
 												Padding="18,0"
-												CornerRadius="10"
-												FontSize="12"
+												CornerRadius="{StaticResource CornerRadiusMd}"
+												FontSize="{StaticResource FontCaption}"
 												FontAttributes="Bold"
 												ContentLayout="Left,6"
 												BackgroundColor="Transparent"
-												BorderColor="#3F8758"
+												BorderColor="{StaticResource Primary}"
 												BorderWidth="1"
-												TextColor="#3F8758"
+												TextColor="{StaticResource Primary}"
 												Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MisCitasViewModel}}, x:DataType=vm:MisCitasViewModel, Path=EditarCommand}"
 												CommandParameter="{Binding .}">
 											<Button.ImageSource>
 												<FontImageSource FontFamily="MaterialIcons"
 																 Glyph="{StaticResource IconoEditar}"
-																 Color="#3F8758"
+																 Color="{StaticResource Primary}"
 																 Size="16" />
 											</Button.ImageSource>
 										</Button>
@@ -174,20 +182,20 @@
 												IsVisible="{Binding PuedeCancelar}"
 												HeightRequest="36"
 												Padding="18,0"
-												CornerRadius="10"
-												FontSize="12"
+												CornerRadius="{StaticResource CornerRadiusMd}"
+												FontSize="{StaticResource FontCaption}"
 												FontAttributes="Bold"
 												ContentLayout="Left,6"
 												BackgroundColor="Transparent"
-												BorderColor="#B3261E"
+												BorderColor="{StaticResource Error}"
 												BorderWidth="1"
-												TextColor="#B3261E"
+												TextColor="{StaticResource Error}"
 												Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MisCitasViewModel}}, x:DataType=vm:MisCitasViewModel, Path=CancelarCommand}"
 												CommandParameter="{Binding .}">
 											<Button.ImageSource>
 												<FontImageSource FontFamily="MaterialIcons"
 																 Glyph="{StaticResource IconoCerrar}"
-																 Color="#B3261E"
+																 Color="{StaticResource Error}"
 																 Size="16" />
 											</Button.ImageSource>
 										</Button>

@@ -1,34 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
              x:Class="DulceRelax.App.Cliente.Views.PerfilCliente"
              x:DataType="vm:PerfilViewModel"
              Title="Mi Perfil"
-             BackgroundColor="#FBF6F2"
+             BackgroundColor="{StaticResource SurfaceAlt}"
              Shell.NavBarIsVisible="False">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
     <ContentPage.Resources>
         <Style x:Key="Caption" TargetType="Label">
             <Setter Property="FontSize" Value="12" />
-            <Setter Property="TextColor" Value="#888888" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurfaceVariant}" />
         </Style>
         <Style x:Key="Valor" TargetType="Label">
             <Setter Property="FontSize" Value="15" />
-            <Setter Property="TextColor" Value="#292929" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
         </Style>
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+        <VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingMd}">
 
-            <HorizontalStackLayout Spacing="10">
+            <HorizontalStackLayout Spacing="{StaticResource SpacingMd}">
                 <Button Text="Atrás"
-                        BackgroundColor="#3F8758"
-                        TextColor="White"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="{StaticResource OnPrimary}"
                         Padding="15,10"
-                        CornerRadius="12"
-                        FontSize="14"
+                        CornerRadius="{StaticResource CornerRadiusMd}"
+                        FontSize="{StaticResource FontBodySmall}"
                         ContentLayout="Left,8"
                         Clicked="OnBackClicked"
                         VerticalOptions="Center">
@@ -40,33 +48,33 @@
                     </Button.ImageSource>
                 </Button>
                 <Label Text="Mi Perfil"
-                       FontSize="24"
+                       FontSize="{StaticResource FontTitle}"
                        FontAttributes="Bold"
-                       TextColor="#222222"
+                       TextColor="{StaticResource OnSurface}"
                        VerticalOptions="Center" />
             </HorizontalStackLayout>
 
             <ActivityIndicator IsRunning="{Binding Cargando}"
                                IsVisible="{Binding Cargando}"
-                               Color="#3F8758" />
+                               Color="{StaticResource Primary}" />
 
-            <Border BackgroundColor="White"
+            <Border BackgroundColor="{StaticResource Surface}"
                     StrokeThickness="0"
-                    Padding="25"
+                    Padding="{StaticResource PaddingLg}"
                     IsVisible="{Binding HayError}">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="20" />
+                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                 </Border.StrokeShape>
-                <VerticalStackLayout Spacing="12">
+                <VerticalStackLayout Spacing="{StaticResource SpacingMd}">
                     <Label Text="{Binding Error}"
-                           FontSize="14"
-                           TextColor="#B3261E"
+                           FontSize="{StaticResource FontBodySmall}"
+                           TextColor="{StaticResource Error}"
                            HorizontalTextAlignment="Center" />
                     <Button Text="Reintentar"
                             Command="{Binding CargarCommand}"
-                            BackgroundColor="#3F8758"
-                            TextColor="White"
-                            CornerRadius="10"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource OnPrimary}"
+                            CornerRadius="{StaticResource CornerRadiusMd}"
                             ContentLayout="Left,6"
                             HorizontalOptions="Center">
                         <Button.ImageSource>
@@ -79,76 +87,76 @@
                 </VerticalStackLayout>
             </Border>
 
-            <VerticalStackLayout Spacing="15" IsVisible="{Binding HayDatos}">
+            <VerticalStackLayout Spacing="{StaticResource SpacingMd}" IsVisible="{Binding HayDatos}">
 
-                <Border BackgroundColor="White"
+                <Border BackgroundColor="{StaticResource Surface}"
                         StrokeThickness="0"
-                        Padding="25"
+                        Padding="{StaticResource PaddingLg}"
                         HorizontalOptions="Fill">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="20" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                     </Border.StrokeShape>
 
-                    <VerticalStackLayout Spacing="8">
+                    <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
 
                         <Border WidthRequest="84"
                                 HeightRequest="84"
-                                BackgroundColor="#D2E5D5"
+                                BackgroundColor="{StaticResource PrimarySoftStrong}"
                                 StrokeThickness="0"
                                 HorizontalOptions="Center">
                             <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="42" />
+                                <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                             </Border.StrokeShape>
                             <Label Text="{Binding Iniciales}"
-                                   FontSize="30"
+                                   FontSize="{StaticResource FontDisplay}"
                                    FontAttributes="Bold"
-                                   TextColor="#3F8758"
+                                   TextColor="{StaticResource Primary}"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center" />
                         </Border>
 
                         <Label Text="{Binding Nombre}"
-                               FontSize="20"
+                               FontSize="{StaticResource FontHeading}"
                                FontAttributes="Bold"
-                               TextColor="#222222"
+                               TextColor="{StaticResource OnSurface}"
                                HorizontalTextAlignment="Center"
                                Margin="0,6,0,0" />
 
-                        <HorizontalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <HorizontalStackLayout Spacing="{StaticResource SpacingSm}" HorizontalOptions="Center">
                             <Label Text="{StaticResource IconoCorreo}"
                                    Style="{StaticResource Icono}"
-                                   FontSize="14" />
+                                   FontSize="{StaticResource FontBodySmall}" />
                             <Label Text="{Binding Correo}"
-                                   FontSize="13"
-                                   TextColor="#777777"
+                                   FontSize="{StaticResource FontBodySmall}"
+                                   TextColor="{StaticResource OnSurfaceVariant}"
                                    VerticalOptions="Center" />
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Border>
 
-                <Border BackgroundColor="White"
+                <Border BackgroundColor="{StaticResource Surface}"
                         StrokeThickness="0"
                         Padding="25,20"
                         HorizontalOptions="Fill">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="20" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                     </Border.StrokeShape>
 
-                    <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="{StaticResource SpacingMd}">
 
-                        <VerticalStackLayout Spacing="2">
+                        <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
                             <Label Text="Teléfono" Style="{StaticResource Caption}" />
                             <Label Text="{Binding Telefono}" Style="{StaticResource Valor}" />
                         </VerticalStackLayout>
 
-                        <BoxView HeightRequest="1" Color="#EEEEEE" />
+                        <BoxView HeightRequest="1" Color="{StaticResource Border}" />
 
-                        <VerticalStackLayout Spacing="2">
+                        <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
                             <Label Text="Dirección" Style="{StaticResource Caption}" />
-                            <HorizontalStackLayout Spacing="4">
+                            <HorizontalStackLayout Spacing="{StaticResource SpacingSm}">
                                 <Label Text="{StaticResource IconoUbicacion}"
                                        Style="{StaticResource Icono}"
-                                       FontSize="16" />
+                                       FontSize="{StaticResource FontBody}" />
                                 <Label Text="{Binding Direccion}" Style="{StaticResource Valor}"
                                        VerticalOptions="Center" />
                             </HorizontalStackLayout>
@@ -160,10 +168,10 @@
                 <Button Text="Editar perfil"
                         Command="{Binding EditarCommand}"
                         HeightRequest="50"
-                        CornerRadius="15"
-                        BackgroundColor="#3F8758"
-                        TextColor="White"
-                        FontSize="15"
+                        CornerRadius="{StaticResource CornerRadiusMd}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="{StaticResource OnPrimary}"
+                        FontSize="{StaticResource FontBody}"
                         FontAttributes="Bold"
                         ContentLayout="Left,8">
                     <Button.ImageSource>
@@ -177,18 +185,18 @@
                 <Button Text="Cambiar contraseña"
                         Command="{Binding CambiarPasswordCommand}"
                         HeightRequest="50"
-                        CornerRadius="15"
+                        CornerRadius="{StaticResource CornerRadiusMd}"
                         BackgroundColor="Transparent"
-                        BorderColor="#3F8758"
+                        BorderColor="{StaticResource Primary}"
                         BorderWidth="1"
-                        TextColor="#3F8758"
-                        FontSize="15"
+                        TextColor="{StaticResource Primary}"
+                        FontSize="{StaticResource FontBody}"
                         FontAttributes="Bold"
                         ContentLayout="Left,8">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="MaterialIcons"
                                          Glyph="{StaticResource IconoCandado}"
-                                         Color="#3F8758"
+                                         Color="{StaticResource Primary}"
                                          Size="18" />
                     </Button.ImageSource>
                 </Button>
@@ -196,18 +204,18 @@
                 <Button Text="Cerrar sesión"
                         Command="{Binding CerrarSesionCommand}"
                         HeightRequest="50"
-                        CornerRadius="15"
+                        CornerRadius="{StaticResource CornerRadiusMd}"
                         BackgroundColor="Transparent"
-                        BorderColor="#B3261E"
+                        BorderColor="{StaticResource Error}"
                         BorderWidth="1"
-                        TextColor="#B3261E"
-                        FontSize="15"
+                        TextColor="{StaticResource Error}"
+                        FontSize="{StaticResource FontBody}"
                         FontAttributes="Bold"
                         ContentLayout="Left,8">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="MaterialIcons"
                                          Glyph="{StaticResource IconoSalir}"
-                                         Color="#B3261E"
+                                         Color="{StaticResource Error}"
                                          Size="18" />
                     </Button.ImageSource>
                 </Button>

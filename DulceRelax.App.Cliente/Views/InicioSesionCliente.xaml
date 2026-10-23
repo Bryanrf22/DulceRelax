@@ -2,238 +2,55 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
+             xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
              x:Class="DulceRelax.App.Cliente.Views.InicioSesionCliente"
+             x:DataType="vm:InicioSesionViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="#FBF6F2">
+             BackgroundColor="{StaticResource SurfaceAlt}">
+
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
     <ScrollView>
-
-        <VerticalStackLayout
-            Padding="30"
-            Spacing="0"
-            VerticalOptions="Center">
-
-            <Image
-                Source="logo.png"
-                HeightRequest="120"
-                WidthRequest="120"
-                Aspect="AspectFit"
-                HorizontalOptions="Center"
-                Margin="0,0,0,20" />
-            <Border
-                BackgroundColor="White"
-                StrokeThickness="0"
-                Padding="25"
-                HorizontalOptions="Fill">
-
+        <VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingSm}" VerticalOptions="Center">
+            <Image Source="logo.png" SemanticProperties.Description="Logo DulceRelax" HeightRequest="120" WidthRequest="120" Aspect="AspectFit"
+                   HorizontalOptions="Center" Margin="0,0,0,20" />
+            <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingLg}"
+                    HorizontalOptions="Fill">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="20" />
+                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                 </Border.StrokeShape>
-
-                <VerticalStackLayout Spacing="8">
-
-                    <Label
-                        Text="Bienvenido"
-                        FontSize="30"
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"
-                        TextColor="#222222"
-                        Margin="0,0,0,5" />
-
-                    <Label
-                        Text="Inicie sesión para continuar"
-                        FontSize="15"
-                        HorizontalOptions="Center"
-                        TextColor="#777777"
-                        Margin="0,0,0,20" />
-
-                    <Label
-                        Text="Correo electrónico"
-                        FontSize="14"
-                        FontAttributes="Bold"
-                        TextColor="#333333" />
-
-                    <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDD9"
-                        StrokeThickness="1"
-                        HeightRequest="48"
-                        Padding="12,0"
-                        Margin="0,0,0,10">
-
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
-                        </Border.StrokeShape>
-
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
-                            <Label Grid.Column="0"
-                                Text="{StaticResource IconoCorreo}"
-                                Style="{StaticResource Icono}"
-                                FontSize="18" />
-
-                            <Entry Grid.Column="1"
-                                Text="{Binding Email}"
-                                x:Name="EmailEntry"
-                                Placeholder="ejemplo@email.com"
-                                Keyboard="Email"
-                                ClearButtonVisibility="WhileEditing"
-                                FontSize="14"
-                                TextColor="#333333"
-                                PlaceholderColor="#999999"
-                                VerticalOptions="Center"
-                                BackgroundColor="Transparent" />
-                        </Grid>
-
-                    </Border>
-
-                    <Label
-                        Text="Contraseña"
-                        FontSize="14"
-                        FontAttributes="Bold"
-                        TextColor="#333333" />
-
-                    <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDD9"
-                        StrokeThickness="1"
-                        HeightRequest="48"
-                        Padding="12,0"
-                        Margin="0,0,0,8">
-
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
-                        </Border.StrokeShape>
-
-                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-                            <Label Grid.Column="0"
-                                Text="{StaticResource IconoCandado}"
-                                Style="{StaticResource Icono}"
-                                FontSize="18" />
-
-                            <Entry Grid.Column="1"
-                                Text="{Binding Password}"
-                                x:Name="PasswordEntry"
-                                Placeholder="Contraseña"
-                                IsPassword="True"
-                                FontSize="14"
-                                TextColor="#333333"
-                                PlaceholderColor="#999999"
-                                VerticalOptions="Center"
-                                BackgroundColor="Transparent" />
-
-                            <Label Grid.Column="2"
-                                x:Name="PasswordToggle"
-                                Text="{StaticResource IconoVer}"
-                                Style="{StaticResource Icono}"
-                                FontSize="18"
-                                MinimumWidthRequest="44"
-                                MinimumHeightRequest="44"
-                                HorizontalTextAlignment="Center"
-                                VerticalTextAlignment="Center"
-                                SemanticProperties.Description="Mostrar u ocultar contraseña">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnTogglePassword" />
-                                </Label.GestureRecognizers>
-                            </Label>
-                        </Grid>
-
-                    </Border>
-
-                    <Grid
-                        ColumnDefinitions="Auto,*,Auto"
-                        ColumnSpacing="8"
-                        Margin="0,0,0,18">
-
-                  
-                        <CheckBox
-                            IsChecked="{Binding Recordarme}"
-                            x:Name="RememberCheckBox"
-                            Grid.Column="0"
-                            Color="#3F8758"
-                            VerticalOptions="Center" />
-
-                        <Label
-                            Grid.Column="1"
-                            Text="Recordarme"
-                            FontSize="13"
-                            TextColor="#888888"
-                            VerticalOptions="Center" />
-
-                        <Label
-                            x:Name="ForgotPasswordLabel"
-                            Grid.Column="2"
-                            Text="¿Olvidaste tu contraseña?"
-                            FontSize="13"
-                            FontAttributes="Bold"
-                            TextColor="#3F8758"
-                            VerticalOptions="Center">
-
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnForgotPasswordClicked" />
-                            </Label.GestureRecognizers>
-
-                        </Label>
-
+                <VerticalStackLayout Spacing="{StaticResource SpacingLg}">
+                    <Label Text="DulceRelax" FontSize="{StaticResource FontDisplay}" FontAttributes="Bold"
+                           HorizontalOptions="Center" TextColor="{StaticResource Primary}" />
+                    <Label Text="Iniciar sesión" FontSize="{StaticResource FontBody}" FontAttributes="Bold"
+                           HorizontalOptions="Center" TextColor="{StaticResource OnSurface}" />
+                    <Entry Placeholder="Correo electrónico" Text="{Binding Email, Mode=TwoWay}" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource SpacingSm}">
+                        <Entry Grid.Column="0" Placeholder="Contraseña"
+                               Text="{Binding Password, Mode=TwoWay}" IsPassword="True" />
+                        <Button Grid.Column="1" x:Name="ToggleButton" Text="Mostrar"
+                                Clicked="OnTogglePassword"
+                                AutomationId="login_password_toggle"
+                                SemanticProperties.Description="Mostrar contraseña" />
                     </Grid>
+                    <Button Text="Iniciar sesión" Clicked="OnLoginClicked"  automation_id="iniciosesion_iniciar_sesi_n" />
 
-                    <Label Text="{Binding Error}" TextColor="Red" />
+                    <Button Text="¿Olvidaste tu contraseña?"
+                            Style="{StaticResource BtnLink}"
+                            Clicked="OnForgotPasswordClicked"
+                            AutomationId="login_forgot_password"
+                            SemanticProperties.Description="Recuperar contraseña" />
 
-                    <Button
-                        x:Name="LoginButton"
-                        Text="Iniciar sesión"
-                        Command="{Binding LoginCommand}"
-                        BackgroundColor="#3F8758"
-                        TextColor="White"
-                        CornerRadius="15"
-                        HeightRequest="50"
-                        FontSize="15"
-                        FontAttributes="Bold"
-                        Margin="0,0,0,8">
-                    </Button>
-    
-                    <HorizontalStackLayout
-                        HorizontalOptions="Center"
-                        Spacing="4">
-
-                        <Label
-    Text="¿No tienes una cuenta?"
-    FontSize="14"
-    TextColor="#888888"
-    VerticalOptions="Center" />
-
-                        <Label
-    x:Name="RegisterLabel"
-    Text="Regístrate"
-    FontSize="14"
-    FontAttributes="Bold"
-    TextColor="#3F8758"
-    VerticalOptions="Center">
-
-                            <Label.GestureRecognizers>
-
-                                <TapGestureRecognizer
-            Tapped="OnRegisterClicked" />
-
-                            </Label.GestureRecognizers>
-
-                        </Label>
-                    </HorizontalStackLayout>
-
-               
-                    <Label
-                        x:Name="MessageLabel"
-                        HorizontalOptions="Center"
-                        TextColor="Red"
-                        FontSize="13"
-                        Margin="0,5,0,0" />
-
+                    <Button Text="Regístrate"
+                            Style="{StaticResource BtnLink}"
+                            Clicked="OnRegisterClicked"
+                            AutomationId="login_register"
+                            SemanticProperties.Description="Crear una cuenta" />
                 </VerticalStackLayout>
-
             </Border>
-
         </VerticalStackLayout>
-
     </ScrollView>
-
-
 </ContentPage>

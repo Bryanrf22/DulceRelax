@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Admin.ViewModels"
              x:Class="DulceRelax.App.Admin.Views.MasajesAdmin"
              x:DataType="vm:MasajesViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="#FBF6F2">
+             BackgroundColor="{StaticResource SurfaceAlt}">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
     <RefreshView IsRefreshing="{Binding Cargando}"
                  Command="{Binding CargarCommand}"
-                 RefreshColor="#3F8758">
+                 RefreshColor="{StaticResource Primary}">
         <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="15">
+            <VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingMd}">
 
                 <Grid ColumnDefinitions="*,Auto">
-                    <Label Text="Masajes" FontSize="24" FontAttributes="Bold"
-                           TextColor="#222222" VerticalOptions="Center" />
+                    <Label Text="Masajes" FontSize="{StaticResource FontTitle}" FontAttributes="Bold"
+                           TextColor="{StaticResource OnSurface}" VerticalOptions="Center" />
                     <Button Grid.Column="1" Text="Nuevo" Command="{Binding NuevoCommand}"
-                            BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
-                            HeightRequest="36" Padding="16,0" FontSize="12" FontAttributes="Bold"
+                            BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" CornerRadius="{StaticResource CornerRadiusMd}"
+                            HeightRequest="36" Padding="16,0" FontSize="{StaticResource FontCaption}" FontAttributes="Bold"
                             ContentLayout="Left,6">
                         <Button.ImageSource>
                             <FontImageSource FontFamily="MaterialIcons"
@@ -28,16 +32,16 @@
                     </Button>
                 </Grid>
 
-                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingLg}"
                         IsVisible="{Binding HayError}">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="20" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                     </Border.StrokeShape>
-                    <VerticalStackLayout Spacing="12">
-                        <Label Text="{Binding Error}" FontSize="14" TextColor="#B3261E"
+                    <VerticalStackLayout Spacing="{StaticResource SpacingMd}">
+                        <Label Text="{Binding Error}" FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource Error}"
                                HorizontalTextAlignment="Center" />
                         <Button Text="Reintentar" Command="{Binding CargarCommand}"
-                                BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
+                                BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" CornerRadius="{StaticResource CornerRadiusMd}"
                                 ContentLayout="Left,6" HorizontalOptions="Center">
                             <Button.ImageSource>
                                 <FontImageSource FontFamily="MaterialIcons"
@@ -48,68 +52,68 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingLg}"
                         IsVisible="{Binding SinMasajes}">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="20" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                     </Border.StrokeShape>
                     <Label Text="Aún no hay masajes registrados." HorizontalTextAlignment="Center"
-                           FontSize="15" TextColor="#777777" Margin="0,20" />
+                           FontSize="{StaticResource FontBody}" TextColor="{StaticResource OnSurfaceVariant}" Margin="0,20" />
                 </Border>
 
-                <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Masajes}">
+                <VerticalStackLayout Spacing="{StaticResource SpacingMd}" BindableLayout.ItemsSource="{Binding Masajes}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="vm:MasajeItem">
-                            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1"
-                                    Padding="16" HorizontalOptions="Fill">
+                            <Border BackgroundColor="{StaticResource Surface}" Stroke="{StaticResource Border}" StrokeThickness="1"
+                                    Padding="{StaticResource PaddingMd}" HorizontalOptions="Fill">
                                 <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="16" />
+                                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusLg}" />
                                 </Border.StrokeShape>
 
-                                <VerticalStackLayout Spacing="6">
+                                <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
 
-                                    <Label Text="{Binding Nombre}" FontSize="16" FontAttributes="Bold"
-                                           TextColor="#292929" LineBreakMode="TailTruncation" MaxLines="2" />
+                                    <Label Text="{Binding Nombre}" FontSize="{StaticResource FontBody}" FontAttributes="Bold"
+                                           TextColor="{StaticResource OnSurface}" LineBreakMode="TailTruncation" MaxLines="2" />
 
                                     <Border BackgroundColor="{Binding EstadoFondo}" StrokeThickness="0"
-                                            Padding="10,4" HorizontalOptions="Start">
+                                            Padding="{StaticResource PaddingSm}" HorizontalOptions="Start">
                                         <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="12" />
+                                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                                         </Border.StrokeShape>
-                                        <Label Text="{Binding EstadoTexto}" FontSize="11"
+                                        <Label Text="{Binding EstadoTexto}" FontSize="{StaticResource FontCaption}"
                                                FontAttributes="Bold" TextColor="{Binding EstadoColor}" />
                                     </Border>
 
-                                    <Label Text="{Binding PrecioTexto}" FontSize="13" TextColor="#555555"
+                                    <Label Text="{Binding PrecioTexto}" FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource OnSurfaceVariant}"
                                            Margin="0,4,0,0" />
-                                    <HorizontalStackLayout Spacing="4" IsVisible="{Binding TieneDuracion}">
+                                    <HorizontalStackLayout Spacing="{StaticResource SpacingSm}" IsVisible="{Binding TieneDuracion}">
                                         <Label Text="{StaticResource IconoReloj}"
                                                Style="{StaticResource Icono}"
-                                               FontSize="13" />
-                                        <Label Text="{Binding DuracionTexto}" FontSize="12"
-                                               TextColor="#777777" VerticalOptions="Center" />
+                                               FontSize="{StaticResource FontBodySmall}" />
+                                        <Label Text="{Binding DuracionTexto}" FontSize="{StaticResource FontCaption}"
+                                               TextColor="{StaticResource OnSurfaceVariant}" VerticalOptions="Center" />
                                     </HorizontalStackLayout>
 
-                                    <HorizontalStackLayout Spacing="10" Margin="0,8,0,0">
+                                    <HorizontalStackLayout Spacing="{StaticResource SpacingMd}" Margin="0,8,0,0">
                                         <Button Text="Editar" HeightRequest="36" Padding="18,0"
-                                                CornerRadius="10" FontSize="12" FontAttributes="Bold"
+                                                CornerRadius="{StaticResource CornerRadiusMd}" FontSize="{StaticResource FontCaption}" FontAttributes="Bold"
                                                 ContentLayout="Left,6"
-                                                BackgroundColor="Transparent" BorderColor="#3F8758"
-                                                BorderWidth="1" TextColor="#3F8758"
+                                                BackgroundColor="Transparent" BorderColor="{StaticResource Primary}"
+                                                BorderWidth="1" TextColor="{StaticResource Primary}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MasajesViewModel}}, x:DataType=vm:MasajesViewModel, Path=EditarCommand}"
                                                 CommandParameter="{Binding .}">
                                             <Button.ImageSource>
                                                 <FontImageSource FontFamily="MaterialIcons"
                                                                  Glyph="{StaticResource IconoEditar}"
-                                                                 Color="#3F8758" Size="16" />
+                                                                 Color="{StaticResource Primary}" Size="16" />
                                             </Button.ImageSource>
                                         </Button>
                                         <Button Text="{Binding AccionTexto}" HeightRequest="36" Padding="18,0"
-                                                CornerRadius="10" FontSize="12" FontAttributes="Bold"
+                                                CornerRadius="{StaticResource CornerRadiusMd}" FontSize="{StaticResource FontCaption}" FontAttributes="Bold"
                                                 BackgroundColor="Transparent" BorderWidth="1"
                                                 BorderColor="{Binding AccionColor}" TextColor="{Binding AccionColor}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MasajesViewModel}}, x:DataType=vm:MasajesViewModel, Path=AlternarCommand}"
-                                                CommandParameter="{Binding .}" />
+                                                CommandParameter="{Binding .}"  automation_id="masajes__binding_acciontexto" />
                                     </HorizontalStackLayout>
 
                                 </VerticalStackLayout>

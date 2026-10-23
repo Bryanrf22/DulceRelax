@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              x:Class="DulceRelax.App.Cliente.Views.RegistroCliente"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="#FBF6F2">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
+             BackgroundColor="{StaticResource SurfaceAlt}">
 
     <ScrollView>
         <VerticalStackLayout
-            Padding="30"
-            Spacing="8"
+            Padding="{StaticResource PaddingLg}"
+            Spacing="{StaticResource SpacingSm}"
             VerticalOptions="Center">
 
             <Image
                 Source="logo.png"
+                SemanticProperties.Description="Logo DulceRelax"
                 HeightRequest="120"
                 WidthRequest="120"
                 Aspect="AspectFit"
@@ -21,64 +25,64 @@
                 Margin="0,0,0,20" />
 
             <Border
-                BackgroundColor="White"
+                BackgroundColor="{StaticResource Surface}"
                 StrokeThickness="0"
-                Padding="25"
+                Padding="{StaticResource PaddingLg}"
                 HorizontalOptions="Fill">
 
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="20" />
+                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                 </Border.StrokeShape>
 
-                <VerticalStackLayout Spacing="8">
+                <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
 
                     <Label
                         Text="Registro"
-                        FontSize="30"
+                        FontSize="{StaticResource FontDisplay}"
                         FontAttributes="Bold"
                         HorizontalOptions="Center"
-                        TextColor="#222222"
+                        TextColor="{StaticResource OnSurface}"
                         Margin="0,0,0,5" />
 
                     <Label
                         Text="Cree su cuenta para continuar"
-                        FontSize="15"
+                        FontSize="{StaticResource FontBody}"
                         HorizontalOptions="Center"
-                        TextColor="#777777"
+                        TextColor="{StaticResource OnSurfaceVariant}"
                         Margin="0,0,0,20" />
 
                     <Label
                         Text="Correo electrónico"
-                        FontSize="14"
+                        FontSize="{StaticResource FontBodySmall}"
                         FontAttributes="Bold"
-                        TextColor="#333333" />
+                        TextColor="{StaticResource OnSurface}" />
 
                     <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDD9"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderStrong}"
                         StrokeThickness="1"
                         HeightRequest="48"
                         Padding="12,0"
                         Margin="0,0,0,10">
 
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                         </Border.StrokeShape>
 
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource SpacingSm}">
                             <Label Grid.Column="0"
                                 Text="{StaticResource IconoCorreo}"
                                 Style="{StaticResource Icono}"
-                                FontSize="18" />
+                                FontSize="{StaticResource FontHeading}" />
                             <Entry Grid.Column="1"
                                 Text="{Binding Email}"
                                 x:Name="EmailEntry"
                                 Placeholder="ejemplo@email.com"
                                 Keyboard="Email"
                                 ClearButtonVisibility="WhileEditing"
-                                FontSize="14"
-                                TextColor="#333333"
-                                PlaceholderColor="#999999"
+                                FontSize="{StaticResource FontBodySmall}"
+                                TextColor="{StaticResource OnSurface}"
+                                PlaceholderColor="{StaticResource OnSurfaceMuted}"
                                 VerticalOptions="Center"
                                 BackgroundColor="Transparent" />
                         </Grid>
@@ -86,85 +90,78 @@
 
                     <Label
                         Text="Contraseña"
-                        FontSize="14"
+                        FontSize="{StaticResource FontBodySmall}"
                         FontAttributes="Bold"
-                        TextColor="#333333" />
+                        TextColor="{StaticResource OnSurface}" />
 
                     <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDD9"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderStrong}"
                         StrokeThickness="1"
                         HeightRequest="48"
                         Padding="12,0"
                         Margin="0,0,0,10">
 
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                         </Border.StrokeShape>
 
-                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="{StaticResource SpacingSm}">
                             <Label Grid.Column="0"
                                 Text="{StaticResource IconoCandado}"
                                 Style="{StaticResource Icono}"
-                                FontSize="18" />
+                                FontSize="{StaticResource FontHeading}" />
                             <Entry Grid.Column="1"
                                 Text="{Binding Password}"
                                 x:Name="PasswordEntry"
                                 Placeholder="Contraseña"
                                 IsPassword="True"
-                                FontSize="14"
-                                TextColor="#333333"
-                                PlaceholderColor="#999999"
+                                FontSize="{StaticResource FontBodySmall}"
+                                TextColor="{StaticResource OnSurface}"
+                                PlaceholderColor="{StaticResource OnSurfaceMuted}"
                                 VerticalOptions="Center"
                                 BackgroundColor="Transparent" />
-                            <Label Grid.Column="2"
-                                x:Name="PasswordToggle"
-                                Text="{StaticResource IconoVer}"
-                                Style="{StaticResource Icono}"
-                                FontSize="18"
-                                MinimumWidthRequest="44"
-                                MinimumHeightRequest="44"
-                                HorizontalTextAlignment="Center"
-                                VerticalTextAlignment="Center"
-                                SemanticProperties.Description="Mostrar u ocultar contraseña">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnTogglePassword" />
-                                </Label.GestureRecognizers>
-                            </Label>
+                                        <Button Grid.Column="2"
+                                                x:Name="PasswordToggle"
+                                                Text="{StaticResource IconoVer}"
+                                                Style="{StaticResource IconButton}"
+                                                Clicked="OnTogglePassword"
+                                                SemanticProperties.Description="Mostrar u ocultar contraseña"
+                                                AutomationId="registro_password_toggle" />
                         </Grid>
                     </Border>
 
                     <Label
                         Text="Nombre"
-                        FontSize="14"
+                        FontSize="{StaticResource FontBodySmall}"
                         FontAttributes="Bold"
-                        TextColor="#333333" />
+                        TextColor="{StaticResource OnSurface}" />
 
                     <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDD9"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderStrong}"
                         StrokeThickness="1"
                         HeightRequest="48"
                         Padding="12,0"
                         Margin="0,0,0,10">
 
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                         </Border.StrokeShape>
 
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource SpacingSm}">
                             <Label Grid.Column="0"
                                 Text="{StaticResource IconoPerfil}"
                                 Style="{StaticResource Icono}"
-                                FontSize="18" />
+                                FontSize="{StaticResource FontHeading}" />
                             <Entry Grid.Column="1"
                                 Text="{Binding Nombre}"
                                 x:Name="NombreNuevoRegistro"
                                 Placeholder="Nombre"
                                 ClearButtonVisibility="WhileEditing"
-                                FontSize="14"
-                                TextColor="#333333"
-                                PlaceholderColor="#999999"
+                                FontSize="{StaticResource FontBodySmall}"
+                                TextColor="{StaticResource OnSurface}"
+                                PlaceholderColor="{StaticResource OnSurfaceMuted}"
                                 VerticalOptions="Center"
                                 BackgroundColor="Transparent" />
                         </Grid>
@@ -172,36 +169,36 @@
 
                     <Label
                         Text="Teléfono"
-                        FontSize="14"
+                        FontSize="{StaticResource FontBodySmall}"
                         FontAttributes="Bold"
-                        TextColor="#333333" />
+                        TextColor="{StaticResource OnSurface}" />
 
                     <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDD9"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderStrong}"
                         StrokeThickness="1"
                         HeightRequest="48"
                         Padding="12,0"
                         Margin="0,0,0,10">
 
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                         </Border.StrokeShape>
 
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource SpacingSm}">
                             <Label Grid.Column="0"
                                 Text="{StaticResource IconoTelefono}"
                                 Style="{StaticResource Icono}"
-                                FontSize="18" />
+                                FontSize="{StaticResource FontHeading}" />
                             <Entry Grid.Column="1"
                                 Text="{Binding Telefono}"
                                 x:Name="TelefonoNuevoRegistro"
                                 Placeholder="Número Telefónico"
                                 Keyboard="Telephone"
                                 ClearButtonVisibility="WhileEditing"
-                                FontSize="14"
-                                TextColor="#333333"
-                                PlaceholderColor="#999999"
+                                FontSize="{StaticResource FontBodySmall}"
+                                TextColor="{StaticResource OnSurface}"
+                                PlaceholderColor="{StaticResource OnSurfaceMuted}"
                                 VerticalOptions="Center"
                                 BackgroundColor="Transparent" />
                         </Grid>
@@ -209,35 +206,35 @@
 
                     <Label
                         Text="Dirección"
-                        FontSize="14"
+                        FontSize="{StaticResource FontBodySmall}"
                         FontAttributes="Bold"
-                        TextColor="#333333" />
+                        TextColor="{StaticResource OnSurface}" />
 
                     <Border
-                        BackgroundColor="White"
-                        Stroke="#DDDDD9"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderStrong}"
                         StrokeThickness="1"
                         HeightRequest="48"
                         Padding="12,0"
                         Margin="0,0,0,10">
 
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
+                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                         </Border.StrokeShape>
 
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource SpacingSm}">
                             <Label Grid.Column="0"
                                 Text="{StaticResource IconoUbicacion}"
                                 Style="{StaticResource Icono}"
-                                FontSize="18" />
+                                FontSize="{StaticResource FontHeading}" />
                             <Entry Grid.Column="1"
                                 Text="{Binding Direccion}"
                                 x:Name="DirNuevoRegistro"
                                 Placeholder="Su Dirección"
                                 ClearButtonVisibility="WhileEditing"
-                                FontSize="14"
-                                TextColor="#333333"
-                                PlaceholderColor="#999999"
+                                FontSize="{StaticResource FontBodySmall}"
+                                TextColor="{StaticResource OnSurface}"
+                                PlaceholderColor="{StaticResource OnSurfaceMuted}"
                                 VerticalOptions="Center"
                                 BackgroundColor="Transparent" />
                         </Grid>
@@ -247,16 +244,16 @@
                         Text="{Binding Error}"
                         HorizontalOptions="Center"
                         TextColor="Red"
-                        FontSize="13"
+                        FontSize="{StaticResource FontBodySmall}"
                         Margin="0,5,0,0" />
 
                     <Button
                         Text="Registrarse"
                         HeightRequest="50"
-                        CornerRadius="15"
-                        BackgroundColor="#3F8758"
-                        TextColor="White"
-                        FontSize="15"
+                        CornerRadius="{StaticResource CornerRadiusMd}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="{StaticResource OnPrimary}"
+                        FontSize="{StaticResource FontBody}"
                         FontAttributes="Bold"
                         Margin="0,10,0,0"
                         Command="{Binding RegistrarCommand}">

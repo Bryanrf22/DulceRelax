@@ -3,25 +3,30 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
     xmlns:dto="clr-namespace:DulceRelax.Shared.DTOs;assembly=DulceRelax.Shared"
     xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
     x:Class="DulceRelax.App.Cliente.Views.PrincipalCliente"
     x:DataType="vm:PrincipalViewModel"
-    BackgroundColor="#F5F4F0"
+    BackgroundColor="{StaticResource SurfaceAlt}"
     Shell.NavBarIsVisible="False">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
     <Grid RowDefinitions="*,75">
 
         <ScrollView Grid.Row="0">
 
             <VerticalStackLayout
-                Padding="10,30,10,20"
-                Spacing="0">
+                Padding="{StaticResource PaddingXl}"
+                Spacing="{StaticResource SpacingSm}">
 
                 <Image
                     Source="logo.png"
-                    HeightRequest="270"
-                    WidthRequest="280"
+                    SemanticProperties.Description="Logo DulceRelax"
+                    HeightRequest="120"
+                    WidthRequest="120"
                     Aspect="AspectFit"
                     HorizontalOptions="Center"
                     Margin="0,0,0,5" />
@@ -29,25 +34,25 @@
                 <Border
                     BackgroundColor="White"
                     StrokeThickness="0"
-                    Padding="10,15,10,20"
+                    Padding="{StaticResource PaddingMd}"
                     HorizontalOptions="Fill">
 
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="20" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                     </Border.StrokeShape>
 
-                    <VerticalStackLayout Spacing="5">
+                    <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
 
                         <Label
                             Text="Masajes"
-                            FontSize="25"
+                            FontSize="{StaticResource FontTitle}"
                             FontAttributes="Bold"
                             HorizontalOptions="Center"
                             TextColor="#262626" />
 
                         <Label
                             Text="Masajes Disponibles"
-                            FontSize="13"
+                            FontSize="{StaticResource FontBodySmall}"
                             HorizontalOptions="Center"
                             TextColor="#888888"
                             Margin="0,0,0,18" />
@@ -57,10 +62,10 @@
                             IsVisible="{Binding Cargando}"
                             Color="#3F8758" />
 
-                        <VerticalStackLayout IsVisible="{Binding HayError}" Spacing="8">
+                        <VerticalStackLayout IsVisible="{Binding HayError}" Spacing="{StaticResource SpacingSm}">
                             <Label
                                 Text="{Binding Error}"
-                                FontSize="13"
+                                FontSize="{StaticResource FontBodySmall}"
                                 TextColor="#B3261E"
                                 HorizontalOptions="Center" />
                             <Button
@@ -68,7 +73,7 @@
                                 Command="{Binding CargarCommand}"
                                 BackgroundColor="#3F8758"
                                 TextColor="White"
-                                CornerRadius="8"
+                                CornerRadius="{StaticResource CornerRadiusSm}"
                                 ContentLayout="Left,6"
                                 HorizontalOptions="Center">
                                 <Button.ImageSource>
@@ -83,12 +88,12 @@
                         <Label
                             Text="No hay masajes disponibles por el momento"
                             IsVisible="{Binding SinMasajes}"
-                            FontSize="13"
+                            FontSize="{StaticResource FontBodySmall}"
                             TextColor="#888888"
                             HorizontalOptions="Center" />
 
                         <VerticalStackLayout
-                            Spacing="12"
+                            Spacing="{StaticResource SpacingMd}"
                             BindableLayout.ItemsSource="{Binding Masajes}">
 
                             <BindableLayout.ItemTemplate>
@@ -98,14 +103,14 @@
                                         BackgroundColor="White"
                                         Stroke="#E0E0E0"
                                         StrokeThickness="1"
-                                        Padding="10"
+                                        Padding="{StaticResource PaddingMd}"
                                         HorizontalOptions="Fill">
 
                                         <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="15" />
+                                            <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                                         </Border.StrokeShape>
 
-                                        <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
+                                        <Grid ColumnDefinitions="100,*" ColumnSpacing="{StaticResource SpacingMd}">
 
                                             <Border
                                                 Grid.Column="0"
@@ -114,14 +119,15 @@
                                                 VerticalOptions="Start"
                                                 BackgroundColor="#D2E5D5"
                                                 StrokeThickness="0"
-                                                Padding="0">
+                                                Padding="{StaticResource PaddingSm}">
 
                                                 <Border.StrokeShape>
-                                                    <RoundRectangle CornerRadius="12" />
+                                                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                                                 </Border.StrokeShape>
 
                                                 <Image
                                                     Source="{Binding ImagenUrl, TargetNullValue=masaje1.jpg, FallbackValue=masaje1.jpg}"
+                                                    SemanticProperties.Description="Imagen del masaje"
                                                     WidthRequest="100"
                                                     HeightRequest="100"
                                                     Aspect="AspectFill" />
@@ -129,11 +135,11 @@
 
                                             <VerticalStackLayout
                                                 Grid.Column="1"
-                                                Spacing="4">
+                                                Spacing="{StaticResource SpacingSm}">
 
                                                 <Label
                                                     Text="{Binding Nombre}"
-                                                    FontSize="16"
+                                                    FontSize="{StaticResource FontBody}"
                                                     FontAttributes="Bold"
                                                     TextColor="#292929"
                                                     LineBreakMode="TailTruncation"
@@ -142,21 +148,21 @@
                                                 <Border
                                                     BackgroundColor="#EAF4EC"
                                                     StrokeThickness="0"
-                                                    Padding="10,4"
+                                                    Padding="{StaticResource PaddingSm}"
                                                     HorizontalOptions="Start">
 
                                                     <Border.StrokeShape>
-                                                        <RoundRectangle CornerRadius="12" />
+                                                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                                                     </Border.StrokeShape>
 
                                                     <Label
                                                         Text="{Binding Precio, StringFormat='Precio: {0:0.##} C$'}"
-                                                        FontSize="11"
+                                                        FontSize="{StaticResource FontCaption}"
                                                         FontAttributes="Bold"
                                                         TextColor="#3F8758" />
                                                 </Border>
 
-                                                <HorizontalStackLayout Spacing="4">
+                                                <HorizontalStackLayout Spacing="{StaticResource SpacingSm}">
                                                     <HorizontalStackLayout.Triggers>
                                                         <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding DuracionMinutos}" Value="0">
                                                             <Setter Property="IsVisible" Value="False" />
@@ -165,33 +171,33 @@
                                                     <Label
                                                         Text="{StaticResource IconoReloj}"
                                                         Style="{StaticResource Icono}"
-                                                        FontSize="12" />
+                                                        FontSize="{StaticResource FontCaption}" />
                                                     <Label
                                                         Text="{Binding DuracionMinutos, StringFormat='Duración: {0} min'}"
-                                                        FontSize="11"
+                                                        FontSize="{StaticResource FontCaption}"
                                                         TextColor="#777777"
                                                         VerticalOptions="Center" />
                                                 </HorizontalStackLayout>
 
                                                 <Label
                                                     Text="{Binding Descripcion}"
-                                                    FontSize="10.5"
+                                                    FontSize="{StaticResource FontCaption}"
                                                     TextColor="#777777"
                                                     LineBreakMode="TailTruncation"
                                                     MaxLines="3" />
 
                                                 <Button
                                                     Text="Solicitar cita"
-                                                    FontSize="11"
+                                                    FontSize="{StaticResource FontCaption}"
                                                     FontAttributes="Bold"
                                                     HeightRequest="30"
-                                                    CornerRadius="8"
-                                                    Padding="0"
+                                                    CornerRadius="{StaticResource CornerRadiusSm}"
+                                                    Padding="{StaticResource PaddingSm}"
                                                     Margin="0,4,0,0"
                                                     BackgroundColor="#3F8758"
                                                     TextColor="White"
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PrincipalViewModel}}, x:DataType=vm:PrincipalViewModel, Path=SolicitarCitaCommand}"
-                                                    CommandParameter="{Binding .}" />
+                                                    CommandParameter="{Binding .}"  automation_id="principal_solicitar_cita" />
 
                                             </VerticalStackLayout>
 
@@ -217,14 +223,14 @@
             BackgroundColor="White"
             Stroke="#E5E5E5"
             StrokeThickness="1"
-            Padding="10,5">
+            Padding="{StaticResource PaddingSm}">
 
             <Grid ColumnDefinitions="*,*,*">
 
                 <VerticalStackLayout
                     Grid.Column="0"
                     HorizontalOptions="Center"
-                    Spacing="2">
+                    Spacing="{StaticResource SpacingSm}">
 
                     <Label
                         Text="{StaticResource IconoInicio}"
@@ -233,21 +239,17 @@
 
                     <Label
                         Text="Inicio"
-                        FontSize="10"
+                        FontSize="{StaticResource FontCaption}"
                         FontAttributes="Bold"
                         TextColor="#3F8758"
                         HorizontalOptions="Center" />
-
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnHomeClicked" />
-                    </VerticalStackLayout.GestureRecognizers>
 
                 </VerticalStackLayout>
 
                 <VerticalStackLayout
                     Grid.Column="1"
                     HorizontalOptions="Center"
-                    Spacing="2">
+                    Spacing="{StaticResource SpacingSm}">
 
                     <Label
                         Text="{StaticResource IconoAgenda}"
@@ -256,20 +258,16 @@
 
                     <Label
                         Text="Mis Citas"
-                        FontSize="10"
+                        FontSize="{StaticResource FontCaption}"
                         TextColor="#333333"
                         HorizontalOptions="Center" />
-
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnCalendarTapped" />
-                    </VerticalStackLayout.GestureRecognizers>
 
                 </VerticalStackLayout>
 
                 <VerticalStackLayout
                     Grid.Column="2"
                     HorizontalOptions="Center"
-                    Spacing="2">
+                    Spacing="{StaticResource SpacingSm}">
 
                     <Label
                         Text="{StaticResource IconoPerfil}"
@@ -278,13 +276,9 @@
 
                     <Label
                         Text="Perfil"
-                        FontSize="10"
+                        FontSize="{StaticResource FontCaption}"
                         TextColor="#333333"
                         HorizontalOptions="Center" />
-
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnProfileTapped" />
-                    </VerticalStackLayout.GestureRecognizers>
 
                 </VerticalStackLayout>
 

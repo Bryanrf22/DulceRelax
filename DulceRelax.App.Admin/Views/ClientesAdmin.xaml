@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Admin.ViewModels"
              x:Class="DulceRelax.App.Admin.Views.ClientesAdmin"
              x:DataType="vm:ClientesViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="#FBF6F2">
+             BackgroundColor="{StaticResource SurfaceAlt}">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
     <RefreshView IsRefreshing="{Binding Cargando}"
                  Command="{Binding CargarCommand}"
-                 RefreshColor="#3F8758">
+                 RefreshColor="{StaticResource Primary}">
         <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="15">
+            <VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingMd}">
 
-                <Label Text="Clientes" FontSize="24" FontAttributes="Bold" TextColor="#222222" />
+                <Label Text="Clientes" FontSize="{StaticResource FontTitle}" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" />
 
-                <Border BackgroundColor="White" Stroke="#DDDDD9" StrokeThickness="1"
+                <Border BackgroundColor="{StaticResource Surface}" Stroke="{StaticResource BorderStrong}" StrokeThickness="1"
                         HeightRequest="48" Padding="12,0">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="12" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                     </Border.StrokeShape>
                     <Entry Text="{Binding Busqueda}" Placeholder="Buscar por nombre, teléfono o correo"
-                           ClearButtonVisibility="WhileEditing" FontSize="14" TextColor="#333333"
-                           PlaceholderColor="#999999" BackgroundColor="Transparent" />
+                           ClearButtonVisibility="WhileEditing" FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource OnSurface}"
+                           PlaceholderColor="{StaticResource OnSurfaceMuted}" BackgroundColor="Transparent" />
                 </Border>
 
-                <Label Text="{Binding Resumen}" FontSize="12" TextColor="#888888" />
+                <Label Text="{Binding Resumen}" FontSize="{StaticResource FontCaption}" TextColor="{StaticResource OnSurfaceVariant}" />
 
-                <Border BackgroundColor="#FFF3CD" StrokeThickness="0" Padding="14"
+                <Border BackgroundColor="{StaticResource WarningSoft}" StrokeThickness="0" Padding="{StaticResource PaddingMd}"
                         IsVisible="{Binding SinConexion}">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="12" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
                     </Border.StrokeShape>
-                    <HorizontalStackLayout Spacing="6">
+                    <HorizontalStackLayout Spacing="{StaticResource SpacingSm}">
                         <Label Text="{StaticResource IconoSinConexion}"
                                Style="{StaticResource Icono}"
-                               FontSize="14" TextColor="#8A6D3B" />
-                        <Label Text="{Binding AvisoSinConexion}" FontSize="12"
-                               TextColor="#8A6D3B" VerticalOptions="Center" />
+                               FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource WarningText}" />
+                        <Label Text="{Binding AvisoSinConexion}" FontSize="{StaticResource FontCaption}"
+                               TextColor="{StaticResource WarningText}" VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingLg}"
                         IsVisible="{Binding HayError}">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="20" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                     </Border.StrokeShape>
-                    <VerticalStackLayout Spacing="12">
-                        <Label Text="{Binding Error}" FontSize="14" TextColor="#B3261E"
+                    <VerticalStackLayout Spacing="{StaticResource SpacingMd}">
+                        <Label Text="{Binding Error}" FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource Error}"
                                HorizontalTextAlignment="Center" />
                         <Button Text="Reintentar" Command="{Binding CargarCommand}"
-                                BackgroundColor="#3F8758" TextColor="White" CornerRadius="10"
+                                BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" CornerRadius="{StaticResource CornerRadiusMd}"
                                 ContentLayout="Left,6" HorizontalOptions="Center">
                             <Button.ImageSource>
                                 <FontImageSource FontFamily="MaterialIcons"
@@ -61,56 +65,56 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Border BackgroundColor="White" StrokeThickness="0" Padding="25"
+                <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingLg}"
                         IsVisible="{Binding SinResultados}">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="20" />
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
                     </Border.StrokeShape>
                     <Label Text="No se encontraron clientes." HorizontalTextAlignment="Center"
-                           FontSize="15" TextColor="#777777" Margin="0,20" />
+                           FontSize="{StaticResource FontBody}" TextColor="{StaticResource OnSurfaceVariant}" Margin="0,20" />
                 </Border>
 
-                <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Clientes}">
+                <VerticalStackLayout Spacing="{StaticResource SpacingMd}" BindableLayout.ItemsSource="{Binding Clientes}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="vm:ClienteItem">
-                            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1"
-                                    Padding="16" HorizontalOptions="Fill">
+                            <Border BackgroundColor="{StaticResource Surface}" Stroke="{StaticResource Border}" StrokeThickness="1"
+                                    Padding="{StaticResource PaddingMd}" HorizontalOptions="Fill">
                                 <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="16" />
+                                    <RoundRectangle CornerRadius="{StaticResource CornerRadiusLg}" />
                                 </Border.StrokeShape>
 
-                                <VerticalStackLayout Spacing="6">
-                                    <Label Text="{Binding Nombre}" FontSize="16" FontAttributes="Bold"
-                                           TextColor="#292929" LineBreakMode="TailTruncation" MaxLines="2" />
-                                    <Label Text="{Binding Correo}" FontSize="13" TextColor="#555555" />
-                                    <HorizontalStackLayout Spacing="4" IsVisible="{Binding TieneTelefono}">
+                                <VerticalStackLayout Spacing="{StaticResource SpacingSm}">
+                                    <Label Text="{Binding Nombre}" FontSize="{StaticResource FontBody}" FontAttributes="Bold"
+                                           TextColor="{StaticResource OnSurface}" LineBreakMode="TailTruncation" MaxLines="2" />
+                                    <Label Text="{Binding Correo}" FontSize="{StaticResource FontBodySmall}" TextColor="{StaticResource OnSurfaceVariant}" />
+                                    <HorizontalStackLayout Spacing="{StaticResource SpacingSm}" IsVisible="{Binding TieneTelefono}">
                                         <Label Text="{StaticResource IconoTelefono}"
                                                Style="{StaticResource Icono}"
-                                               FontSize="13" />
-                                        <Label Text="{Binding TelefonoTexto}" FontSize="12"
-                                               TextColor="#777777" VerticalOptions="Center" />
+                                               FontSize="{StaticResource FontBodySmall}" />
+                                        <Label Text="{Binding TelefonoTexto}" FontSize="{StaticResource FontCaption}"
+                                               TextColor="{StaticResource OnSurfaceVariant}" VerticalOptions="Center" />
                                     </HorizontalStackLayout>
-                                    <HorizontalStackLayout Spacing="4" IsVisible="{Binding TieneDireccion}">
+                                    <HorizontalStackLayout Spacing="{StaticResource SpacingSm}" IsVisible="{Binding TieneDireccion}">
                                         <Label Text="{StaticResource IconoUbicacion}"
                                                Style="{StaticResource Icono}"
-                                               FontSize="13" />
-                                        <Label Text="{Binding Direccion}" FontSize="12"
-                                               TextColor="#777777" LineBreakMode="TailTruncation"
+                                               FontSize="{StaticResource FontBodySmall}" />
+                                        <Label Text="{Binding Direccion}" FontSize="{StaticResource FontCaption}"
+                                               TextColor="{StaticResource OnSurfaceVariant}" LineBreakMode="TailTruncation"
                                                MaxLines="2" VerticalOptions="Center" />
                                     </HorizontalStackLayout>
 
                                     <Button Text="Llamar" IsVisible="{Binding TieneTelefono}"
-                                            HeightRequest="36" Padding="18,0" CornerRadius="10"
-                                            FontSize="12" FontAttributes="Bold" HorizontalOptions="Start"
+                                            HeightRequest="36" Padding="18,0" CornerRadius="{StaticResource CornerRadiusMd}"
+                                            FontSize="{StaticResource FontCaption}" FontAttributes="Bold" HorizontalOptions="Start"
                                             ContentLayout="Left,6"
-                                            BackgroundColor="Transparent" BorderColor="#3F8758"
-                                            BorderWidth="1" TextColor="#3F8758" Margin="0,8,0,0"
+                                            BackgroundColor="Transparent" BorderColor="{StaticResource Primary}"
+                                            BorderWidth="1" TextColor="{StaticResource Primary}" Margin="0,8,0,0"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientesViewModel}}, x:DataType=vm:ClientesViewModel, Path=LlamarCommand}"
                                             CommandParameter="{Binding .}">
                                         <Button.ImageSource>
                                             <FontImageSource FontFamily="MaterialIcons"
                                                              Glyph="{StaticResource IconoTelefono}"
-                                                             Color="#3F8758" Size="16" />
+                                                             Color="{StaticResource Primary}" Size="16" />
                                         </Button.ImageSource>
                                     </Button>
                                 </VerticalStackLayout>

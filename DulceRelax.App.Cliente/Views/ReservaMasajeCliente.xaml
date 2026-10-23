@@ -1,45 +1,53 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
+             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
              x:Class="DulceRelax.App.Cliente.Views.ReservaMasajeCliente"
              x:DataType="vm:ReservaViewModel"
              Title="Solicitar cita"
-             BackgroundColor="#FBF6F2"
+             BackgroundColor="{StaticResource SurfaceAlt}"
              Shell.NavBarIsVisible="False">
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
+    <ContentPage.Behaviors>
+        <behaviors:SafeAreaBehavior Edges="All" />
+    </ContentPage.Behaviors>
 
 	<ContentPage.Resources>
 		<Style x:Key="Etiqueta" TargetType="Label">
 			<Setter Property="FontSize" Value="14" />
 			<Setter Property="FontAttributes" Value="Bold" />
-			<Setter Property="TextColor" Value="#333333" />
+			<Setter Property="TextColor" Value="{StaticResource OnSurface}" />
 		</Style>
 
 		<Style x:Key="Campo" TargetType="Border">
 			<Setter Property="BackgroundColor" Value="White" />
-			<Setter Property="Stroke" Value="#DDDDD9" />
+			<Setter Property="Stroke" Value="{StaticResource BorderStrong}" />
 			<Setter Property="StrokeThickness" Value="1" />
 			<Setter Property="HeightRequest" Value="48" />
 			<Setter Property="Padding" Value="12,0" />
 			<Setter Property="Margin" Value="0,0,0,10" />
 			<Setter Property="StrokeShape">
 				<Setter.Value>
-					<RoundRectangle CornerRadius="12" />
+					<RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
 				</Setter.Value>
 			</Setter>
 		</Style>
 	</ContentPage.Resources>
 
 	<ScrollView>
-		<VerticalStackLayout Padding="20" Spacing="15">
+		<VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingMd}">
 
-			<HorizontalStackLayout Spacing="10">
+			<HorizontalStackLayout Spacing="{StaticResource SpacingMd}">
 				<Button Text="Atrás"
-                        BackgroundColor="#3F8758"
-                        TextColor="White"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="{StaticResource OnPrimary}"
                         Padding="15,10"
-                        CornerRadius="12"
-                        FontSize="14"
+                        CornerRadius="{StaticResource CornerRadiusMd}"
+                        FontSize="{StaticResource FontBodySmall}"
                         ContentLayout="Left,8"
                         Clicked="OnBackClicked"
                         VerticalOptions="Center">
@@ -51,67 +59,66 @@
 					</Button.ImageSource>
 				</Button>
 				<Label Text="Solicitar cita"
-                       FontSize="24"
+                       FontSize="{StaticResource FontTitle}"
                        FontAttributes="Bold"
-                       TextColor="#222222"
+                       TextColor="{StaticResource OnSurface}"
                        VerticalOptions="Center" />
 			</HorizontalStackLayout>
 
-			<Border BackgroundColor="White"
+			<Border BackgroundColor="{StaticResource Surface}"
                     StrokeThickness="0"
-                    Padding="12"
+                    Padding="{StaticResource PaddingMd}"
                     HorizontalOptions="Fill">
 				<Border.StrokeShape>
-					<RoundRectangle CornerRadius="20" />
+					<RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
 				</Border.StrokeShape>
 
-				<Grid ColumnDefinitions="80,*" ColumnSpacing="12">
+				<Grid ColumnDefinitions="80,*" ColumnSpacing="{StaticResource SpacingMd}">
 
 					<Border Grid.Column="0"
                             WidthRequest="80"
                             HeightRequest="80"
-                            BackgroundColor="#D2E5D5"
+                            BackgroundColor="{StaticResource PrimarySoftStrong}"
                             StrokeThickness="0"
-                            Padding="0">
+                            Padding="{StaticResource PaddingSm}">
 						<Border.StrokeShape>
-							<RoundRectangle CornerRadius="12" />
+							<RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
 						</Border.StrokeShape>
-						<Image Source="{Binding Masaje.ImagenUrl, TargetNullValue=masaje1.jpg, FallbackValue=masaje1.jpg}"
-                               WidthRequest="80"
+						<Image Source="{Binding Masaje.ImagenUrl, TargetNullValue=masaje1.jpg, FallbackValue=masaje1.jpg}" SemanticProperties.Description="Imagen del masaje"                               WidthRequest="80"
                                HeightRequest="80"
                                Aspect="AspectFill" />
 					</Border>
 
 					<VerticalStackLayout Grid.Column="1"
-                                         Spacing="4"
+                                         Spacing="{StaticResource SpacingSm}"
                                          VerticalOptions="Center">
 						<Label Text="{Binding Masaje.Nombre}"
-                               FontSize="17"
+                               FontSize="{StaticResource FontHeading}"
                                FontAttributes="Bold"
-                               TextColor="#292929"
+                               TextColor="{StaticResource OnSurface}"
                                LineBreakMode="TailTruncation"
                                MaxLines="2" />
 
-						<Border BackgroundColor="#EAF4EC"
+						<Border BackgroundColor="{StaticResource PrimarySoft}"
                                 StrokeThickness="0"
-                                Padding="10,4"
+                                Padding="{StaticResource PaddingSm}"
                                 HorizontalOptions="Start">
 							<Border.StrokeShape>
-								<RoundRectangle CornerRadius="12" />
+								<RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
 							</Border.StrokeShape>
 							<Label Text="{Binding Masaje.Precio, StringFormat='Precio: {0:0.##} C$'}"
-                                   FontSize="11"
+                                   FontSize="{StaticResource FontCaption}"
                                    FontAttributes="Bold"
-                                   TextColor="#3F8758" />
+                                   TextColor="{StaticResource Primary}" />
 						</Border>
 
-						<HorizontalStackLayout Spacing="4" IsVisible="{Binding TieneDuracion}">
+						<HorizontalStackLayout Spacing="{StaticResource SpacingSm}" IsVisible="{Binding TieneDuracion}">
 							<Label Text="{StaticResource IconoReloj}"
                                    Style="{StaticResource Icono}"
-                                   FontSize="12" />
+                                   FontSize="{StaticResource FontCaption}" />
 							<Label Text="{Binding Masaje.DuracionMinutos, StringFormat='Duración: {0} min'}"
-                                   FontSize="11"
-                                   TextColor="#777777"
+                                   FontSize="{StaticResource FontCaption}"
+                                   TextColor="{StaticResource OnSurfaceVariant}"
                                    VerticalOptions="Center" />
 						</HorizontalStackLayout>
 					</VerticalStackLayout>
@@ -119,91 +126,91 @@
 				</Grid>
 			</Border>
 
-			<Border BackgroundColor="#EAF4EC"
+			<Border BackgroundColor="{StaticResource PrimarySoft}"
                     StrokeThickness="0"
                     Padding="14,10">
 				<Border.StrokeShape>
-					<RoundRectangle CornerRadius="12" />
+					<RoundRectangle CornerRadius="{StaticResource CornerRadiusMd}" />
 				</Border.StrokeShape>
-				<HorizontalStackLayout Spacing="6">
+				<HorizontalStackLayout Spacing="{StaticResource SpacingSm}">
 					<Label Text="{StaticResource IconoInfo}"
                            Style="{StaticResource Icono}"
-                           FontSize="14"
-                           TextColor="#3F8758" />
+                           FontSize="{StaticResource FontBodySmall}"
+                           TextColor="{StaticResource Primary}" />
 					<Label Text="Las citas deben solicitarse con al menos 5 días de anticipación."
-                           FontSize="12"
-                           TextColor="#3F8758"
+                           FontSize="{StaticResource FontCaption}"
+                           TextColor="{StaticResource Primary}"
                            VerticalOptions="Center" />
 				</HorizontalStackLayout>
 			</Border>
 
-			<Border BackgroundColor="White"
+			<Border BackgroundColor="{StaticResource Surface}"
                     StrokeThickness="0"
-                    Padding="20"
+                    Padding="{StaticResource PaddingLg}"
                     HorizontalOptions="Fill">
 				<Border.StrokeShape>
-					<RoundRectangle CornerRadius="20" />
+					<RoundRectangle CornerRadius="{StaticResource CornerRadiusXl}" />
 				</Border.StrokeShape>
 
-				<VerticalStackLayout Spacing="8">
+				<VerticalStackLayout Spacing="{StaticResource SpacingSm}">
 
                     <Label Text="Fecha" Style="{StaticResource Etiqueta}" />
                     <Border Style="{StaticResource Campo}">
                         <DatePicker MinimumDate="{Binding FechaMinima}"
                             Date="{Binding Fecha}"
                             Format="dd/MM/yyyy"
-                            TextColor="#333333"
+                            TextColor="{StaticResource OnSurface}"
                             BackgroundColor="Transparent"
-                            FontSize="14" />
+                            FontSize="{StaticResource FontBodySmall}" />
                     </Border>
 
                     <Label Text="Hora" Style="{StaticResource Etiqueta}" />
                     <Border Style="{StaticResource Campo}">
                         <TimePicker Time="{Binding Hora}"
-                            TextColor="#333333"
+                            TextColor="{StaticResource OnSurface}"
                             BackgroundColor="Transparent"
-                            FontSize="14" />
+                            FontSize="{StaticResource FontBodySmall}" />
                     </Border>
 
                     <Label Text="{Binding HorarioDiaTexto}"
                        IsVisible="{Binding HayHorarioDia}"
-                       FontSize="12"
-                       TextColor="#888888" />
+                       FontSize="{StaticResource FontCaption}"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
 
                     <Label Text="Teléfono" Style="{StaticResource Etiqueta}" />
                     <Border Style="{StaticResource Campo}">
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource SpacingSm}">
                             <Label Grid.Column="0"
                                    Text="{StaticResource IconoTelefono}"
                                    Style="{StaticResource Icono}"
-                                   FontSize="16" />
+                                   FontSize="{StaticResource FontBody}" />
                             <Entry Grid.Column="1"
                            Text="{Binding Telefono}"
                            Placeholder="Número de contacto"
                            Keyboard="Telephone"
-                           TextColor="#333333"
-                           PlaceholderColor="#999999"
+                           TextColor="{StaticResource OnSurface}"
+                           PlaceholderColor="{StaticResource OnSurfaceMuted}"
                            VerticalOptions="Center"
                            BackgroundColor="Transparent"
-                           FontSize="14" />
+                           FontSize="{StaticResource FontBodySmall}" />
                         </Grid>
                     </Border>
 
                     <Label Text="Dirección exacta" Style="{StaticResource Etiqueta}" />
                     <Border Style="{StaticResource Campo}">
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource SpacingSm}">
                             <Label Grid.Column="0"
                                    Text="{StaticResource IconoUbicacion}"
                                    Style="{StaticResource Icono}"
-                                   FontSize="16" />
+                                   FontSize="{StaticResource FontBody}" />
                             <Entry Grid.Column="1"
                            Text="{Binding Direccion}"
                            Placeholder="Dónde será el masaje"
-                           TextColor="#333333"
-                           PlaceholderColor="#999999"
+                           TextColor="{StaticResource OnSurface}"
+                           PlaceholderColor="{StaticResource OnSurfaceMuted}"
                            VerticalOptions="Center"
                            BackgroundColor="Transparent"
-                           FontSize="14" />
+                           FontSize="{StaticResource FontBodySmall}" />
                         </Grid>
                     </Border>
 
@@ -211,10 +218,10 @@
                     <Border Style="{StaticResource Campo}">
                         <Entry Text="{Binding Detalle}"
                            Placeholder="Casa azul, portón negro..."
-                           TextColor="#333333"
-                           PlaceholderColor="#999999"
+                           TextColor="{StaticResource OnSurface}"
+                           PlaceholderColor="{StaticResource OnSurfaceMuted}"
                            BackgroundColor="Transparent"
-                           FontSize="14" />
+                           FontSize="{StaticResource FontBodySmall}" />
                     </Border>
 
                 </VerticalStackLayout>
@@ -222,22 +229,22 @@
 
 			<Label Text="{Binding Error}"
                    IsVisible="{Binding HayError}"
-                   FontSize="13"
-                   TextColor="#B3261E"
+                   FontSize="{StaticResource FontBodySmall}"
+                   TextColor="{StaticResource Error}"
                    HorizontalTextAlignment="Center" />
 
 			<ActivityIndicator IsRunning="{Binding Enviando}"
                                IsVisible="{Binding Enviando}"
-                               Color="#3F8758" />
+                               Color="{StaticResource Primary}" />
 
 			<Button Text="Solicitar cita"
                     Command="{Binding ReservarCommand}"
                     HeightRequest="50"
-                    CornerRadius="15"
-                    BackgroundColor="#3F8758"
-                    TextColor="White"
-                    FontSize="15"
-                    FontAttributes="Bold" />
+                    CornerRadius="{StaticResource CornerRadiusMd}"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="{StaticResource OnPrimary}"
+                    FontSize="{StaticResource FontBody}"
+                    FontAttributes="Bold"  automation_id="reservamasaje_solicitar_cita" />
 
 		</VerticalStackLayout>
 	</ScrollView>
