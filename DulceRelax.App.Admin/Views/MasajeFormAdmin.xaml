@@ -15,7 +15,7 @@
         <VerticalStackLayout Padding="{StaticResource PaddingLg}" Spacing="{StaticResource SpacingMd}">
 
             <HorizontalStackLayout Spacing="{StaticResource SpacingMd}">
-                <Button Text="Atrás" Command="{Binding VolverCommand}"
+                <Button Text="Atrás" Command="{Binding VolverCommand}" AutomationId="masaje_form_volver" SemanticProperties.Description="Volver a la pantalla anterior"
                         BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" Padding="15,10"
                         CornerRadius="{StaticResource CornerRadiusMd}" FontSize="{StaticResource FontBodySmall}" ContentLayout="Left,8"
                         VerticalOptions="Center">
