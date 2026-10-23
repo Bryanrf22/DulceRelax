@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
-             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
              x:Class="DulceRelax.App.Cliente.Views.MisCitasCliente"
              x:DataType="vm:MisCitasViewModel"
@@ -10,13 +9,10 @@
              BackgroundColor="{StaticResource SurfaceAlt}"
              Shell.NavBarIsVisible="False">
     <ContentPage.Behaviors>
-        <behaviors:SafeAreaBehavior Edges="All" />
-    </ContentPage.Behaviors>
-    <ContentPage.Behaviors>
-        <behaviors:SafeAreaBehavior Edges="All" />
+        <behaviors:SafeAreaBehavior Edges="Top,Bottom" />
     </ContentPage.Behaviors>
 
-	<RefreshView IsRefreshing="{Binding Cargando}"
+    <RefreshView IsRefreshing="{Binding Cargando}"
                  Command="{Binding CargarCommand}"
                  RefreshColor="{StaticResource Primary}">
 

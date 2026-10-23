@@ -1,22 +1,13 @@
-﻿using Microsoft.Maui.Controls;
-using DulceRelax.UI.Behaviors;
+﻿using DulceRelax.App.Cliente.ViewModels;
 
 namespace DulceRelax.App.Cliente.Views
 {
     public partial class InicioSesionCliente : ContentPage
     {
-        public InicioSesionCliente()
+        public InicioSesionCliente(LoginViewModel vm)
         {
             InitializeComponent();
-            
-            // Apply SafeAreaBehavior to this page
-            var safeAreaBehavior = new SafeAreaBehavior
-            {
-                Edges = SafeAreaEdges.All
-            };
-            
-            // Attach the behavior to the page
-            Behaviors.Add(safeAreaBehavior);
+            BindingContext = vm;
         }
 
         private async void OnForgotPasswordClicked(object sender, EventArgs e) =>
@@ -27,11 +18,10 @@ namespace DulceRelax.App.Cliente.Views
 
         private void OnTogglePassword(object sender, EventArgs e)
         {
-            if (sender is Button btn)
-            {
-                btn.SemanticProperties.Description = btn.Text == "Mostrar"
-                    ? "Ocultar contraseña" : "Mostrar contraseña";
-            }
+            PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
+            ToggleButton.Text = PasswordEntry.IsPassword ? "Mostrar" : "Ocultar";
+            SemanticProperties.SetDescription(ToggleButton, PasswordEntry.IsPassword
+                ? "Mostrar contraseña" : "Ocultar contraseña");
         }
     }
 }

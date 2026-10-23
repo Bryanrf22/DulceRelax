@@ -197,7 +197,7 @@
                                                     BackgroundColor="#3F8758"
                                                     TextColor="White"
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PrincipalViewModel}}, x:DataType=vm:PrincipalViewModel, Path=SolicitarCitaCommand}"
-                                                    CommandParameter="{Binding .}"  automation_id="principal_solicitar_cita" />
+                                                    CommandParameter="{Binding .}"  AutomationId="principal_solicitar_cita" />
 
                                             </VerticalStackLayout>
 

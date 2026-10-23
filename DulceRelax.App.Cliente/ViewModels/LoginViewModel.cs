@@ -26,7 +26,7 @@ namespace DulceRelax.App.Cliente.ViewModels
             if (Error is null)
             {
                 Password = "";
-                await Shell.Current.GoToAsync("//Principal/Inicio");
+                await Shell.Current.GoToAsync(nameof(PrincipalCliente));
             }
         }
 
@@ -34,7 +34,7 @@ namespace DulceRelax.App.Cliente.ViewModels
         private async Task RestaurarSesionAsync()
         {
             if (await auth.RestaurarSesionAsync())
-                await Shell.Current.GoToAsync("//Principal/Inicio");
+                await Shell.Current.GoToAsync(nameof(PrincipalCliente));
         }
     }
 }

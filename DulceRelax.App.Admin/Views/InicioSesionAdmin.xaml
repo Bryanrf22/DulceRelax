@@ -82,7 +82,7 @@
 
                     <Button Text="Iniciar sesión" Command="{Binding LoginCommand}"
                             BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource OnPrimary}" CornerRadius="{StaticResource CornerRadiusMd}"
-                            HeightRequest="50" FontSize="{StaticResource FontBody}" FontAttributes="Bold"  automation_id="iniciosesion_iniciar_sesi_n" />
+                            HeightRequest="50" FontSize="{StaticResource FontBody}" FontAttributes="Bold"  AutomationId="iniciosesion_iniciar_sesi_n" />
 
                 </VerticalStackLayout>
             </Border>

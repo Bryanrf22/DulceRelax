@@ -2,16 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
-             xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              x:Class="DulceRelax.App.Cliente.Views.RecuperarContraseñaCliente"
              Title="Recuperar Contraseña"
              BackgroundColor="{StaticResource SurfaceAlt}"
              Shell.NavBarIsVisible="False">
     <ContentPage.Behaviors>
-        <behaviors:SafeAreaBehavior Edges="All" />
-    </ContentPage.Behaviors>
-    <ContentPage.Behaviors>
-        <behaviors:SafeAreaBehavior Edges="All" />
+        <behaviors:SafeAreaBehavior Edges="Top,Bottom" />
     </ContentPage.Behaviors>
 
     <ScrollView>
@@ -100,7 +96,7 @@
                             FontSize="{StaticResource FontBody}"
                             FontAttributes="Bold"
                             Command="{Binding EnviarCommand}"
-                            Margin="0,5,0,8"  automation_id="recuperarcontraseña_enviar_correo" />
+                            Margin="0,5,0,8"  AutomationId="recuperarcontraseña_enviar_correo" />
 
                     <Button x:Name="BackButton"
                             Text="Volver al inicio de sesión"
@@ -110,7 +106,7 @@
                             TextColor="{StaticResource OnPrimary}"
                             FontSize="{StaticResource FontBodySmall}"
                             FontAttributes="Bold"
-                            Command="{Binding VolverCommand}"  automation_id="recuperarcontraseña_volver_al_inicio_de_" />
+                            Command="{Binding VolverCommand}"  AutomationId="recuperarcontraseña_volver_al_inicio_de_" />
 
                 </VerticalStackLayout>
             </Border>

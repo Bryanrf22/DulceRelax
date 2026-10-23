@@ -25,7 +25,7 @@
                         <Button Grid.Column="1" Text="Hoy" Command="{Binding HoyCommand}"
                                 BackgroundColor="Transparent" BorderColor="{StaticResource Primary}" BorderWidth="1"
                                 TextColor="{StaticResource Primary}" CornerRadius="{StaticResource CornerRadiusMd}" HeightRequest="36"
-                                Padding="14,0" FontSize="{StaticResource FontCaption}" FontAttributes="Bold"  automation_id="principal_hoy" />
+                                Padding="14,0" FontSize="{StaticResource FontCaption}" FontAttributes="Bold"  AutomationId="principal_hoy" />
                     </Grid>
 
                     <Border BackgroundColor="{StaticResource Surface}" StrokeThickness="0" Padding="{StaticResource PaddingSm}">
@@ -37,7 +37,7 @@
                                     FontFamily="MaterialIcons"
                                     BackgroundColor="Transparent" TextColor="{StaticResource Primary}"
                                     FontSize="{StaticResource FontTitle}" WidthRequest="50"
-                                    SemanticProperties.Description="Día anterior"  automation_id="principal__staticresource_icon" />
+                                    SemanticProperties.Description="Día anterior"  AutomationId="principal__staticresource_icon" />
                             <Label Grid.Column="1" Text="{Binding DiaTexto}" FontSize="{StaticResource FontBody}"
                                    FontAttributes="Bold" TextColor="{StaticResource OnSurface}"
                                    HorizontalTextAlignment="Center" VerticalOptions="Center" />
@@ -45,7 +45,7 @@
                                     FontFamily="MaterialIcons"
                                     BackgroundColor="Transparent" TextColor="{StaticResource Primary}"
                                     FontSize="{StaticResource FontTitle}" WidthRequest="50"
-                                    SemanticProperties.Description="Día siguiente"  automation_id="principal__staticresource_icon" />
+                                    SemanticProperties.Description="Día siguiente"  AutomationId="principal__staticresource_icon" />
                         </Grid>
                     </Border>
 
@@ -151,7 +151,7 @@
                                                     BackgroundColor="Transparent" BorderColor="{StaticResource Primary}"
                                                     BorderWidth="1" TextColor="{StaticResource Primary}"
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AgendaViewModel}}, x:DataType=vm:AgendaViewModel, Path=AbrirReprogramarCommand}"
-                                                    CommandParameter="{Binding .}"  automation_id="principal_reprogramar" />
+                                                    CommandParameter="{Binding .}"  AutomationId="principal_reprogramar" />
                                             <Button Text="Cancelar" IsVisible="{Binding PuedeCancelar}"
                                                     HeightRequest="36" Padding="18,0" CornerRadius="{StaticResource CornerRadiusMd}"
                                                     FontSize="{StaticResource FontCaption}" FontAttributes="Bold" ContentLayout="Left,6"

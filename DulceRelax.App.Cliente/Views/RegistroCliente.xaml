@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              x:Class="DulceRelax.App.Cliente.Views.RegistroCliente"
-             Shell.NavBarIsVisible="False"
+             Shell.NavBarIsVisible="False" >
     <ContentPage.Behaviors>
         <behaviors:SafeAreaBehavior Edges="All" />
     </ContentPage.Behaviors>
-             BackgroundColor="{StaticResource SurfaceAlt}">
+            
 
     <ScrollView>
         <VerticalStackLayout

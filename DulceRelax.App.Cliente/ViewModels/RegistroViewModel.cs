@@ -44,7 +44,7 @@ namespace DulceRelax.App.Cliente.ViewModels
 
             Error = await auth.LoginAsync(new LoginDTO { Email = correo, Password = Password });
             if (Error is null)
-                await Shell.Current.GoToAsync("//Principal/Inicio");
+                await Shell.Current.GoToAsync(nameof(PrincipalCliente));
         }
 
     }

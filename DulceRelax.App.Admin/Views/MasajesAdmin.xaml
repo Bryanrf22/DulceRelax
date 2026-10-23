@@ -113,7 +113,7 @@
                                                 BackgroundColor="Transparent" BorderWidth="1"
                                                 BorderColor="{Binding AccionColor}" TextColor="{Binding AccionColor}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MasajesViewModel}}, x:DataType=vm:MasajesViewModel, Path=AlternarCommand}"
-                                                CommandParameter="{Binding .}"  automation_id="masajes__binding_acciontexto" />
+                                                CommandParameter="{Binding .}"  AutomationId="masajes__binding_acciontexto" />
                                     </HorizontalStackLayout>
 
                                 </VerticalStackLayout>

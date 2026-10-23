@@ -32,13 +32,8 @@ public partial class InicioSesionAdmin : ContentPage
             if (Application.Current?.Resources.TryGetValue(clave, out var glyph) == true && glyph is string texto)
                 toggle.Text = texto;
 
-            toggle.SemanticProperties.Description = PasswordEntry.IsPassword
-                ? "Mostrar contraseña" : "Ocultar contraseña";
+            SemanticProperties.SetDescription(toggle, PasswordEntry.IsPassword
+                ? "Mostrar contraseña" : "Ocultar contraseña");
         }
-    }
-
-        var clave = PasswordEntry.IsPassword ? "IconoVer" : "IconoOcultar";
-        if (Application.Current?.Resources.TryGetValue(clave, out var glyph) == true && glyph is string texto)
-            toggle.Text = texto;
     }
 }

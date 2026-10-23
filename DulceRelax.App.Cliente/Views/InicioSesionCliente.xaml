@@ -5,7 +5,7 @@
              xmlns:behaviors="clr-namespace:DulceRelax.UI.Behaviors;assembly=DulceRelax.UI"
              xmlns:vm="clr-namespace:DulceRelax.App.Cliente.ViewModels"
              x:Class="DulceRelax.App.Cliente.Views.InicioSesionCliente"
-             x:DataType="vm:InicioSesionViewModel"
+             x:DataType="vm:LoginViewModel"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource SurfaceAlt}">
 
@@ -27,16 +27,16 @@
                            HorizontalOptions="Center" TextColor="{StaticResource Primary}" />
                     <Label Text="Iniciar sesión" FontSize="{StaticResource FontBody}" FontAttributes="Bold"
                            HorizontalOptions="Center" TextColor="{StaticResource OnSurface}" />
-                    <Entry Placeholder="Correo electrónico" Text="{Binding Email, Mode=TwoWay}"  TabIndex="0" />
+                    <Entry Placeholder="Correo electrónico" Text="{Binding Email, Mode=TwoWay}" />
                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource SpacingSm}">
-                        <Entry Grid.Column="0" Placeholder="Contraseña"
+                        <Entry Grid.Column="0" Placeholder="Contraseña" x:Name="PasswordEntry"
                                Text="{Binding Password, Mode=TwoWay}" IsPassword="True" />
                         <Button Grid.Column="1" x:Name="ToggleButton" Text="Mostrar"
                                 Clicked="OnTogglePassword"
                                 AutomationId="login_password_toggle"
                                 SemanticProperties.Description="Mostrar contraseña" />
                     </Grid>
-                    <Button Text="Iniciar sesión" Clicked="OnLoginClicked"  automation_id="iniciosesion_iniciar_sesi_n" />
+                    <Button Text="Iniciar sesión" Command="{Binding LoginCommand}" AutomationId="iniciosesion_iniciar_sesi_n" />
 
                     <Button Text="¿Olvidaste tu contraseña?"
                             Style="{StaticResource BtnLink}"

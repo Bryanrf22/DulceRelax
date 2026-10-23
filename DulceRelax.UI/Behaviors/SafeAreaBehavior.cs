@@ -1,117 +1,86 @@
-using Microsoft.Maui.Controls;
+#if IOS || MACCATALYST
+using Microsoft.Maui.Controls.PlatformConfiguration;
+using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
+#endif
 
 namespace DulceRelax.UI.Behaviors;
 
-/// <summary>
-/// A behavior that applies Safe Area insets to ContentPage controls.
-/// </summary>
-public sealed class SafeAreaBehavior : Behavior<ContentPage>
-{
-    public static readonly BindableProperty EdgesProperty =
-        BindableProperty.Create(
-            nameof(Edges),
-            typeof(SafeAreaEdges),
-            typeof(SafeAreaBehavior),
-            SafeAreaEdges.All,
-            propertyChanged: OnEdgesChanged);
-
-    public static readonly BindableProperty SafeAreaProperty =
-        BindableProperty.Create(
-            nameof(SafeArea),
-            typeof(Thickness),
-            typeof(SafeAreaBehavior),
-            new Thickness(0),
-            propertyChanged: OnSafeAreaChanged);
-
-    public SafeAreaEdges Edges { get => (SafeAreaEdges)GetValue(EdgesProperty); set => SetValue(EdgesProperty, value); }
-    public Thickness SafeArea { get => (Thickness)GetValue(SafeAreaProperty); set => SetValue(SafeAreaProperty, value); }
-
-    private static void OnEdgesChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is SafeAreaBehavior behavior)
-        {
-            // Apply initial safe area
-            behavior.ApplySafeArea();
-
-            // Hook up to page events
-            if (behavior.Parent is ContentPage page)
-            {
-                page.Loaded += behavior.OnPageLoaded;
-                page.Appearing += behavior.OnPageAppearing;
-                page.Disappearing += behavior.OnPageDisappearing;
-            }
-        }
-    }
-
-    private static void OnSafeAreaChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is SafeAreaBehavior behavior)
-        {
-            behavior.ApplySafeArea();
-        }
-    }
-
-    private void OnPageLoaded(object? sender, EventArgs e)
-    {
-        ApplySafeArea();
-    }
-
-    private void OnPageAppearing(object? sender, EventArgs e)
-    {
-        ApplySafeArea();
-    }
-
-    private void OnPageDisappearing(object? sender, EventArgs e)
-    {
-        // Remove safe area when page disappears
-        if (Parent is ContentPage page)
-        {
-            // Remove padding that was added
-            var currentPadding = page.Padding;
-            page.Padding = new Thickness(
-                currentPadding.Left,
-                0, // Top padding removed
-                currentPadding.Right,
-                currentPadding.Bottom
-            );
-        }
-    }
-
-    private void ApplySafeArea()
-    {
-        if (Parent is not ContentPage page)
-            return;
-
-        // Get current padding
-        var currentPadding = page.Padding;
-
-        // Calculate new padding based on SafeArea property and edges
-        var newPadding = new Thickness(currentPadding.Left, currentPadding.Top, currentPadding.Right, currentPadding.Bottom);
-
-        if (Edges.HasFlag(SafeAreaEdges.Top))
-        {
-            // Apply safe area padding for the top (status bar, navigation, etc.)
-            newPadding.Top = SafeArea.Top + 20; // Standard status bar offset
-        }
-
-        if (Edges.HasFlag(SafeAreaEdges.Bottom))
-        {
-            // Apply safe area padding for the bottom (navigation bar, home indicator, etc.)
-            newPadding.Bottom = SafeArea.Bottom + 20; // Standard bottom safe area
-        }
-
-        page.Padding = newPadding;
-    }
-}
-
-/// <summary>
-/// Enumeration of safe area edges that can be applied.
-/// </summary>
 [Flags]
 public enum SafeAreaEdges
 {
     None = 0,
-    Top = 1,
-    Bottom = 2,
-    All = Top | Bottom
+    Left = 1,
+    Top = 2,
+    Right = 4,
+    Bottom = 8,
+    Horizontal = Left | Right,
+    Vertical = Top | Bottom,
+    All = Left | Top | Right | Bottom
+}
+
+public class SafeAreaBehavior : Behavior<ContentPage>
+{
+    ContentPage? _page;
+    Thickness _basePadding;
+
+    public SafeAreaEdges Edges { get; set; } = SafeAreaEdges.All;
+
+    protected override void OnAttachedTo(ContentPage page)
+    {
+        base.OnAttachedTo(page);
+        _page = page;
+        _basePadding = page.Padding;
+        page.Loaded += OnPageEvent;
+        page.SizeChanged += OnPageEvent;
+        Apply();
+    }
+
+    protected override void OnDetachingFrom(ContentPage page)
+    {
+        page.Loaded -= OnPageEvent;
+        page.SizeChanged -= OnPageEvent;
+        _page = null;
+        base.OnDetachingFrom(page);
+    }
+
+    void OnPageEvent(object? sender, EventArgs e) => Apply();
+
+    void Apply()
+    {
+        if (_page is null) return;
+
+#if IOS || MACCATALYST
+        _page.On<iOS>().SetUseSafeArea(Edges != SafeAreaEdges.None);
+#elif ANDROID
+        var i = GetAndroidInsets(_page);
+        var target = new Thickness(
+            _basePadding.Left + (Edges.HasFlag(SafeAreaEdges.Left) ? i.Left : 0),
+            _basePadding.Top + (Edges.HasFlag(SafeAreaEdges.Top) ? i.Top : 0),
+            _basePadding.Right + (Edges.HasFlag(SafeAreaEdges.Right) ? i.Right : 0),
+            _basePadding.Bottom + (Edges.HasFlag(SafeAreaEdges.Bottom) ? i.Bottom : 0));
+
+        if (_page.Padding != target)
+            _page.Padding = target;
+#endif
+    }
+
+#if ANDROID
+    static Thickness GetAndroidInsets(ContentPage page)
+    {
+        if (page.Handler?.PlatformView is not Android.Views.View view)
+            return default;
+
+        var insets = AndroidX.Core.View.ViewCompat.GetRootWindowInsets(view);
+        if (insets is null) return default;
+
+        var bars = insets.GetInsets(AndroidX.Core.View.WindowInsetsCompat.Type.SystemBars());
+        var density = view.Context?.Resources?.DisplayMetrics?.Density ?? 1f;
+
+        return new Thickness(
+            bars.Left / density,
+            bars.Top / density,
+            bars.Right / density,
+            bars.Bottom / density);
+    }
+#endif
 }
