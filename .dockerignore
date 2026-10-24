@@ -1,0 +1,8 @@
+**/bin
+**/obj
+**/.vs
+**/.git
+DulceRelax.App.*
+DulceRelax.UI
+*.json.secret
+**/*firebase*.json
