@@ -51,7 +51,7 @@ namespace DulceRelax.App.Admin.ViewModels
 
                 var sync = cache.UltimaSincronizacion?.ToLocalTime();
                 AvisoSinConexion = "Sin conexión · se muestran solo las citas confirmadas " +
-                                   $"guardadas (actualizado {sync:ddd d MMM, h:mm tt}).";
+                $"guardadas (actualizado {sync:ddd d MMM, h:mm tt}).";
             }
 
             Citas.Clear();
