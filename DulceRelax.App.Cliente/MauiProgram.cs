@@ -11,7 +11,7 @@ namespace DulceRelax.App.Cliente
         {
             var builder = MauiApp.CreateBuilder();
 
-            var apiUrl = new Uri("https://jkr8tzhd-7204.use.devtunnels.ms/");
+            var apiUrl = new Uri("https://dulcerelax.onrender.com/");
 
             builder.Services.AddTransient<AuthHandler>();
             builder.Services.AddHttpClient<IAuthService, AuthService>(c => c.BaseAddress = apiUrl)
