@@ -1,0 +1,56 @@
+name: Android APKs
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+
+      - name: Publish client APK
+        run: dotnet publish DulceRelax.App.Cliente -f net9.0-android -c Release
+
+      - name: Publish admin APK
+        run: dotnet publish DulceRelax.App.Admin -f net9.0-android -c Release
+
+      - name: Collect APKs
+        run: |
+          mkdir -p artifacts
+          find DulceRelax.App.Cliente/bin/Release/net9.0-android -name "*.apk" -exec cp {} artifacts/ \;
+          find DulceRelax.App.Admin/bin/Release/net9.0-android -name "*.apk" -exec cp {} artifacts/ \;
+          ls -lh artifacts
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dulcerelax-apks
+          path: artifacts/*.apk
+
+      - name: Attach APKs to the release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.apk
