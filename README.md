@@ -1,371 +1,258 @@
 # DulceRelax
 
-DulceRelax es un sistema para agendar masajes a domicilio. Un cliente pide una cita
-eligiendo masaje, fecha, hora y dirección, y un administrador la confirma, la reprograma
-o la cancela desde su agenda. El sistema se compone de una API REST en ASP.NET Core y dos
-aplicaciones .NET MAUI: una para el cliente y otra para el administrador.
+Massage booking system with an ASP.NET Core API and two .NET MAUI apps (client and
+admin), featuring Firebase authentication, offline support and push notifications.
 
-## Características
+[English](README.md) · [Español](README.es.md)
 
-App Cliente (`DulceRelax.App.Cliente`)
+> Screenshots are pending capture. The checklist and file names live in
+> [`docs/screenshots`](docs/screenshots/README.md).
 
-- Registro e inicio de sesión con correo y contraseña.
-- Recuperación de contraseña por correo.
-- Catálogo de masajes disponibles con precio, duración y descripción.
-- Solicitud de cita con dirección exacta, teléfono y un detalle para ubicar la casa.
-- Edición de citas pendientes y cancelación.
-- Consulta de "Mis citas".
-- Perfil del usuario, con edición de nombre, teléfono y dirección.
+## Overview
 
-App Administrador (`DulceRelax.App.Admin`)
+Clients book a massage at home by choosing a service, date, time and address. Admins
+confirm, reschedule or cancel requests from a daily agenda. The API owns the business
+rules; the two apps consume them.
 
-- Inicio de sesión restringido a cuentas con el rol de administrador.
-- Agenda por día, con navegación al día anterior, al siguiente y un atajo a hoy.
-- Confirmación o cancelación de solicitudes pendientes.
-- Alta y edición de masajes, incluida la disponibilidad.
-- Listado de clientes.
-- Configuración del horario de atención por día de la semana.
-- Trabajo sin conexión con las citas confirmadas que ya se descargaron en el equipo.
-- Avisos por notificación cuando el cliente pide una cita o la cancela.
-- Aviso cuando una solicitud sigue sin confirmar cerca de la fecha de la cita.
+This is a complete product rather than a CRUD demo: authentication, role-based access,
+offline mode, local reminders, push notifications and a deployed API. I built the API,
+the data model and the business rules, and implemented the two MAUI clients on top of
+that flow.
 
-## Arquitectura
+## Features
 
-El repositorio es una solución de cuatro proyectos.
+### Client app
 
-| Proyecto | Tipo | Responsabilidad |
+- Sign up and sign in with email and password, plus password recovery
+- Service catalog with price, duration and description
+- Booking with address, phone and access notes
+- Edit or cancel pending appointments
+- "My appointments" with pending, confirmed and cancelled states
+- Profile editing (name, phone, address)
+
+### Admin app
+
+- Sign in restricted to accounts with the `admin` claim
+- Daily agenda with previous/next day and a shortcut to today
+- Confirm or cancel requests
+- Create and edit services and their availability
+- Customer list
+- Weekly business hours configuration
+- Offline mode for confirmed appointments already cached on the device
+- Push notifications for new and cancelled requests
+- Reminder when a request is still pending close to the appointment date
+
+## Tech stack
+
+| Layer | Technology |
+| --- | --- |
+| API | ASP.NET Core 9 Web API, Firebase Admin SDK |
+| Auth | Firebase Authentication (JWT) |
+| Data | Cloud Firestore |
+| Apps | .NET MAUI 9 (Android), CommunityToolkit.Mvvm |
+| Offline | SQLite in the admin app |
+| Push | Firebase Cloud Messaging |
+
+## Architecture
+
+Four projects:
+
+| Project | Type | Responsibility |
 | --- | --- | --- |
-| `DulceRelax.API` | ASP.NET Core Web API (`net9.0`) | Expone los controladores REST y habla con Firebase. |
-| `DulceRelax.Shared` | Biblioteca (`net9.0`) | DTOs compartidos entre la API y las dos apps. |
-| `DulceRelax.App.Cliente` | .NET MAUI | Aplicación del cliente. |
-| `DulceRelax.App.Admin` | .NET MAUI | Aplicación del administrador. |
+| `DulceRelax.API` | ASP.NET Core Web API | REST controllers, Firestore access, business rules, push |
+| `DulceRelax.Shared` | Class library | DTOs, `CitaRules`, shared API settings |
+| `DulceRelax.App.Cliente` | .NET MAUI | Client app |
+| `DulceRelax.App.Admin` | .NET MAUI | Admin app |
 
-Las apps MAUI no comparten interfaz: cada una reutiliza los DTOs de `DulceRelax.Shared`
-y su propia capa de servicios (`Services/`), modelos de vista (`ViewModels/`) y vistas
-(`Views/`).
+The apps do not share UI. Each one has its own `Services/`, `ViewModels/` and `Views/`,
+and reuses the DTOs and rules from `DulceRelax.Shared`.
 
-El flujo de una petición pasa por una app, la API y Firestore. Firebase Authentication
-emite los tokens, la API valida el JWT contra el proyecto de Firebase y Firestore guarda
-los datos.
-
-## Tecnologías
-
-- .NET 9.0
-- ASP.NET Core Web API con controladores
-- .NET MAUI
-- Firebase Authentication (tokens JWT)
-- Cloud Firestore para la persistencia
-- SQLite local en la app de administrador (caché y login sin conexión)
-- CommunityToolkit.Mvvm en las dos apps
-- Fuentes Material Icons y OpenSans
-
-## Requisitos previos
-
-- SDK de .NET 9.0 o posterior.
-- Carga de trabajo de MAUI: `dotnet workload install maui`.
-- Un proyecto de Firebase con Authentication por correo y contraseña habilitado, y una
-  base de datos de Firestore.
-- La clave de cuenta de servicio del proyecto de Firebase y su Web API key.
-- Para compilar la app de Android, el SDK de Android. Para iOS y Mac Catalyst se necesita
-  macOS con Xcode. El destino de Windows solo se agrega cuando se compila en Windows.
-
-## Configuración
-
-### API
-
-`DulceRelax.API/appsettings.json` solo trae el nivel de log, `AllowedHosts` y la zona
-horaria del negocio:
-
-```json
-"Negocio": { "ZonaHoraria": "America/Managua" }
+```mermaid
+sequenceDiagram
+    participant C as Client app
+    participant A as API
+    participant F as Firebase
+    participant D as Firestore
+    C->>F: Sign in (email + password)
+    F-->>C: ID token
+    C->>A: POST /api/cita + Bearer token
+    A->>F: Validate JWT
+    A->>A: Check notice, hours and rest block
+    A->>D: Create pending appointment
+    A-->>C: 201 Created
+    A->>F: Push "new request" to admin devices
 ```
 
-Los valores de Firebase no se guardan en el archivo. La API los lee de la configuración
-y, en desarrollo, conviene dejarlos con user secrets. El proyecto ya trae un
-`UserSecretsId` en `DulceRelax.API.csproj`, así que basta con:
+Request flow: app → API → Firestore. Firebase issues and validates the tokens.
+
+## Business rules
+
+The rules live in `DulceRelax.Shared/CitaRules.cs` and are covered by unit tests.
+
+- A booking needs at least 5 days of notice.
+- Confirmed appointments keep a one-hour rest block around them.
+- The appointment must fit inside the business hours of that weekday, measured in the
+  business time zone.
+- The duration comes from the service; when it is missing, it is 60 minutes.
+- Clients can only edit pending appointments and can only cancel.
+- The weekly schedule must include all seven days.
+
+The API is the source of truth. The client repeats the notice and schedule checks only
+to give feedback before sending the request.
+
+## Getting started
+
+### Prerequisites
+
+- .NET 9 SDK
+- MAUI workload: `dotnet workload install maui-android`
+- Android SDK and a device or emulator
+- A Firebase project with email/password authentication, Firestore and Cloud Messaging
+
+### Configure the API
+
+The API reads Firebase settings from configuration. In development, use user secrets:
 
 ```bash
 cd DulceRelax.API
-dotnet user-secrets set "Firebase:ProjectId" "<tu-project-id>"
-dotnet user-secrets set "Firebase:CredentialsJson" "$(cat /ruta/a/serviceAccountKey.json)"
-dotnet user-secrets set "Firebase:WebApiKey" "<tu-web-api-key>"
+dotnet user-secrets set "Firebase:ProjectId" "<project-id>"
+dotnet user-secrets set "Firebase:CredentialsJson" "$(cat /path/to/serviceAccountKey.json)"
+dotnet user-secrets set "Firebase:WebApiKey" "<web-api-key>"
 ```
 
-Claves que lee la API:
-
-| Clave | Uso |
+| Key | Purpose |
 | --- | --- |
-| `Firebase:ProjectId` | Proyecto de Firebase, usado como emisor y audiencia del JWT. |
-| `Firebase:CredentialsJson` | Contenido JSON de la cuenta de servicio para Firestore y Firebase Admin. |
-| `Firebase:WebApiKey` | Web API key para iniciar sesión, recuperar contraseña y refrescar el token. |
-| `Negocio:ZonaHoraria` | Zona horaria para validar el horario de atención. Por defecto, `America/Managua`. |
+| `Firebase:ProjectId` | JWT issuer and audience |
+| `Firebase:CredentialsJson` | Service account JSON for Firestore and Firebase Admin |
+| `Firebase:WebApiKey` | Sign-in, password recovery and token refresh |
+| `Negocio:ZonaHoraria` | Business time zone (default `America/Managua`) |
 
-No subas credenciales al repositorio. El `.gitignore` ya excluye `serviceAccountKey.json`,
-`firebase-adminsdk*.json`, `appsettings.Development.json`, `appsettings.Local.json`,
-`google-services.json`, `GoogleService-Info.plist` y los archivos `*.keystore` y `*.jks`.
+The `.gitignore` already excludes service account files, `google-services.json`, local
+settings and keystores. Never commit them.
 
-### Rol de administrador
-
-La API autoriza el rol por una política llamada `Admin` que exige el claim `admin` con
-valor `true` en el token. La app de administrador también comprueba ese claim antes de
-dejar entrar. El claim se asigna en la cuenta de Firebase; el sistema no incluye ningún
-endpoint que lo cree.
-
-### Apps MAUI
-
-La dirección base de la API está fijada en cada `MauiProgram.cs`:
-
-```csharp
-var apiUrl = new Uri("https://jkr8tzhd-7204.use.devtunnels.ms/");
-```
-
-Esa URL corresponde a un dev tunnel. Cámbiala por la dirección de tu API, por ejemplo
-`https://localhost:7204/` o `http://localhost:5082/`, antes de ejecutar las apps.
-
-### Firebase Cloud Messaging (app de administrador)
-
-Para que la app de administrador reciba los avisos por push hay que registrar el
-dispositivo en el proyecto de Firebase.
-
-1. En la consola de Firebase, agregá una app de Android con el nombre de paquete de la
-   app de administrador, que es `com.companyname.dulcerelax.app.admin` (el `ApplicationId`
-   de `DulceRelax.App.Admin.csproj`).
-2. Descargá el `google-services.json` de esa app y copialo en la raíz de
-   `DulceRelax.App.Admin/`. El archivo no se versiona, así que cada quien lo baja de su
-   propia cuenta.
-3. Habilitá la API de Firebase Cloud Messaging en el proyecto. La cuenta de servicio que
-   usa la API es la que envía los avisos.
-
-El `.csproj` ya incluye el archivo como `GoogleServicesJson` y avisa con un warning de
-compilación cuando no está presente:
-
-```xml
-<GoogleServicesJson Include="google-services.json"
-  Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' and Exists('google-services.json')" />
-```
-
-Sin ese archivo la app compila, pero Firebase no se inicializa y no llegan los avisos.
-
-La app se registra sola en la API al iniciar sesión: `PushService` pide el token de FCM
-y lo manda a `POST api/dispositivo`. Al cerrar sesión, el token se da de baja para que el
-equipo deje de recibir avisos de administrador.
-
-## Cómo ejecutar
-
-API:
+### Run the API
 
 ```bash
-cd DulceRelax.API
-dotnet run
+dotnet run --project DulceRelax.API
 ```
 
-El perfil `http` escucha en `http://localhost:5082` y el perfil `https` en
-`https://localhost:7204;http://localhost:5082`. En entorno de desarrollo, la API expone
-el documento OpenAPI.
+The `http` profile listens on `http://localhost:5082`; the `https` profile also uses
+`https://localhost:7204`. In Development the OpenAPI document is exposed. Deployment
+steps for Render and Fly are in [`docs/deployment.md`](docs/deployment.md).
 
-Apps MAUI. Cada app apunta a varios marcos de destino, así que hay que indicar el
-framework y, en Android, el emulador o dispositivo:
+### Build the apps
 
 ```bash
-cd DulceRelax.App.Cliente
-dotnet build -f net9.0-android
-
-cd ../DulceRelax.App.Admin
-dotnet build -f net9.0-android
+dotnet build DulceRelax.App.Cliente -f net9.0-android
+dotnet build DulceRelax.App.Admin -f net9.0-android
 ```
 
-## Endpoints de la API
+The apps read the API address from `DulceRelax.Shared/ApiSettings.cs`. Debug builds use
+`http://10.0.2.2:5082/` (the host machine from the Android emulator); Release builds use
+`https://dulcerelax.onrender.com/`. You can override it at runtime with the
+`api_base_url` preference.
 
-Todos los controladores cuelgan de `/api`. Salvo los marcados como anónimos, cada endpoint
-pide un token válido.
+The admin app also needs `google-services.json` in `DulceRelax.App.Admin/` for push. It
+compiles without that file, but FCM does not start and no push arrives.
 
-Usuario (`/api/usuario`)
-
-| Método | Ruta | Acceso | Descripción |
-| --- | --- | --- | --- |
-| POST | `/api/usuario/registrar` | Anónimo | Crea la cuenta en Firebase y su documento en Firestore. |
-| POST | `/api/usuario/login` | Anónimo | Inicia sesión y devuelve `idToken` y `refreshToken`. |
-| POST | `/api/usuario/recuperar-password` | Anónimo | Envía el correo de restablecimiento. |
-| POST | `/api/usuario/refresh` | Anónimo | Renueva el `idToken` a partir del `refreshToken`. |
-| GET | `/api/usuario` | Admin | Lista todos los usuarios. |
-| GET | `/api/usuario/{id}` | Admin | Consulta un usuario por id. |
-| GET | `/api/usuario/me` | Autenticado | Datos del usuario del token. |
-| PUT | `/api/usuario/me` | Autenticado | Actualiza nombre, teléfono y dirección. |
-| DELETE | `/api/usuario/me` | Autenticado | Borra la cuenta en Firebase y en Firestore. |
-
-Cita (`/api/cita`)
-
-| Método | Ruta | Acceso | Descripción |
-| --- | --- | --- | --- |
-| GET | `/api/cita/rango?desde&hasta` | Admin | Citas en un rango de hasta 7 días. |
-| GET | `/api/cita/pendientes` | Admin | Solicitudes pendientes desde hoy. |
-| GET | `/api/cita/agendadas?desde&hasta` | Admin | Citas confirmadas en un rango de hasta 3 días. |
-| GET | `/api/cita?fecha` | Admin | Citas de un día. |
-| GET | `/api/cita/disponibilidad?desde&hasta` | Autenticado | Franjas ocupadas por citas confirmadas. |
-| GET | `/api/cita/mias` | Autenticado | Citas del usuario del token. |
-| GET | `/api/cita/{id}` | Autenticado | Detalle de una cita. Solo si es propia o si el usuario es admin. |
-| POST | `/api/cita` | Autenticado | Crea una solicitud de cita. |
-| PUT | `/api/cita/{id}` | Autenticado | Actualiza una cita. |
-| PATCH | `/api/cita/{id}/estado?estado` | Autenticado | Cambia el estado. El cliente solo puede cancelar. |
-
-Masaje (`/api/masaje`)
-
-| Método | Ruta | Acceso | Descripción |
-| --- | --- | --- | --- |
-| GET | `/api/masaje` | Autenticado | Lista los masajes. |
-| GET | `/api/masaje/{id}` | Autenticado | Consulta un masaje por id. |
-| POST | `/api/masaje/registrar` | Autenticado | Registra un masaje. |
-| PUT | `/api/masaje/{id}` | Autenticado | Actualiza un masaje. |
-| DELETE | `/api/masaje/{id}` | Autenticado | Elimina un masaje. |
-
-Horario (`/api/horario`)
-
-| Método | Ruta | Acceso | Descripción |
-| --- | --- | --- | --- |
-| GET | `/api/horario` | Autenticado | Devuelve el horario. Responde 204 si no hay. |
-| PUT | `/api/horario` | Admin | Guarda el horario de los 7 días. |
-
-Dispositivo (`/api/dispositivo`)
-
-| Método | Ruta | Acceso | Descripción |
-| --- | --- | --- | --- |
-| POST | `/api/dispositivo` | Admin | Registra el token de FCM del dispositivo. |
-| POST | `/api/dispositivo/baja` | Admin | Quita el token de FCM del dispositivo. |
-
-## Reglas de negocio
-
-Las reglas viven en la API, en `CitaController` y `CitaRepository`.
-
-- Una cita debe pedirse con al menos 5 días de anticipación. La validación se repite en
-  el cliente para dar el aviso antes de enviar.
-- Entre dos citas confirmadas debe quedar una hora de descanso. Al confirmar, la API
-  rechaza con `409` si la cita se cruza con otra confirmada.
-- La duración de la cita sale de los minutos del masaje. Si el masaje no trae duración,
-  se usan 60 minutos.
-- La hora solicitada debe caer dentro del horario de atención del día correspondiente,
-  medido en la zona horaria del negocio.
-- Los estados de una cita son `Pendiente`, `Confirmada` y `Cancelada`. El cliente solo
-  edita citas pendientes y solo puede cancelar. El administrador cambia cualquier estado.
-- El horario debe incluir los 7 días. Cada día activo tiene hora de inicio y de fin en
-  formato `hh:mm`, y el inicio debe ser menor que el fin.
-
-## Modelo de datos
-
-Firestore guarda los datos en tres colecciones y un documento de configuración.
-
-| Ruta | Campos |
-| --- | --- |
-| `usuarios/{uid}` | `NombreCompleto`, `NumTelefono`, `Correo`, `Direccion` |
-| `citas/{id}` | `UsuarioId`, `UsuarioNombre`, `UsuarioTelefono`, `DireccionExacta`, `DetalleDireccion`, `MasajeId`, `MasajeNombre`, `DuracionMinutos`, `FechaHora`, `Estado` |
-| `masajes/{id}` | `Nombre`, `Descripcion`, `Disponible`, `Precio`, `DuracionMinutos`, `ImagenUrl` |
-| `configuracion/horario` | `Dias`: mapa de los 7 días, cada uno con `Activo`, `HoraInicio` y `HoraFin` |
-
-El id del usuario es el `uid` que genera Firebase Authentication.
-
-Las notificaciones agregan dos colecciones más:
-
-| Ruta | Campos |
-| --- | --- |
-| `dispositivosAdmin/{token}` | `Actualizado`. El id del documento es el token de FCM, así que registrarlo dos veces no duplica. |
-| `avisosLimite/{citaId}` | `Fecha`. Marca que esa cita ya recibió el aviso de fecha límite. |
-
-## Notificaciones
-
-El sistema tiene tres tipos de aviso, con mecanismos distintos.
-
-| Aviso | Origen | Mecanismo | Funciona sin conexión |
-| --- | --- | --- | --- |
-| Recordatorio de cita confirmada | App de administrador | Notificación local programada 1 día y 1 hora antes | Sí |
-| Nueva solicitud de cita | API | Push de FCM | No |
-| Cita cancelada por el cliente | API | Push de FCM | No |
-| Solicitud sin confirmar cerca de la fecha | API | Push de FCM desde un `BackgroundService` | No |
-
-Los recordatorios se programan en el dispositivo, así que llegan aunque la app esté
-cerrada y no haya red. Se recalculan en cada sincronización: `NotificationService`
-cancela los avisos pendientes y vuelve a programar los de las citas confirmadas, de modo
-que una cita cancelada deja de tener recordatorio.
-
-Los avisos de push los manda la API con `PushSender`, que usa el SDK de administración
-de Firebase. Necesitan internet porque el evento ocurre en el servidor.
-
-El worker `AvisoLimiteWorker` revisa cada hora las citas pendientes y avisa cuando faltan
-menos de siete días para la cita. Para que no se duplique el aviso de "nueva solicitud",
-una cita creada dentro de ese umbral queda marcada en `avisosLimite` desde el mismo
-momento en que se crea.
-
-> [!IMPORTANT]
-> `BackgroundService` solo corre si la API está encendida todo el tiempo. Si el hosting
-> escala a cero, hay que exponer la revisión en un endpoint protegido y llamarlo desde un
-> scheduler externo.
-
-## Modo sin conexión
-
-Solo la app de administrador funciona sin conexión. La lógica está en `Services/`.
-
-- `LocalDb` abre una base SQLite en `dulcerelax_admin.db3` dentro de la carpeta de datos
-  de la app y crea las tablas `citas`, `clientes` y `cuenta_offline`.
-- `CitaCacheService` guarda las citas confirmadas y `ClienteCacheService` guarda los
-  clientes. Ambos registran la última sincronización en `Preferences`.
-- La agenda muestra la caché cuando la red falla y el día pedido está cubierto, y avisa
-  que se están viendo datos guardados. La cobertura abarca hoy y mañana.
-- `CuentaOfflineService` permite iniciar sesión sin red. La contraseña se guarda como
-  hash PBKDF2-SHA256 con 600 000 iteraciones, sal de 16 bytes y hash de 32 bytes, y se
-  compara en tiempo constante. Para entrar sin conexión, la cuenta de administrador debe
-  haber iniciado sesión antes en ese equipo.
-- `RedHandler` envuelve los errores de red y `Red` reconoce los estados `502`, `503` y
-  `504` como servidor no disponible.
-
-## Estructura del repositorio
-
-```
-DulceRelax/
-├── DulceRelax.API/            API REST
-│   ├── Controllers/           Usuario, Cita, Masaje, Horario
-│   ├── Repositories/          Acceso a Firestore
-│   └── Program.cs             Punto de entrada de la API
-├── DulceRelax.Shared/
-│   └── DTOs/                  DTOs y enums compartidos
-├── DulceRelax.App.Cliente/    App MAUI del cliente
-│   ├── Services/              Clientes HTTP de la API
-│   ├── ViewModels/            Modelos de vista
-│   └── Views/                 Vistas XAML
-├── DulceRelax.App.Admin/      App MAUI del administrador
-│   ├── Services/              Clientes HTTP, caché SQLite y sincronización
-│   ├── ViewModels/
-│   └── Views/
-└── DulceRelax.sln
-```
-
-## Notas
-
-- El punto de entrada de la API es `DulceRelax.API/Program.cs`. En la raíz del
-  repositorio hay otro `Program.cs` que no forma parte de la solución.
-- `WeatherForecastController` y `WeatherForecast.cs` en la API son restos de la plantilla
-  de ASP.NET Core y no se usan.
-- El proyecto no incluye pruebas automatizadas.
-
-## Flujo de trabajo con Git
-
-El repositorio trabaja por ramas. `master` recibe los cambios solo por medio de un pull
-request, nunca con un push directo.
-
-Para hacer un cambio:
+### Tests
 
 ```bash
-git checkout master
-git pull
-git checkout -b feat/mi-cambio
-# ... editar archivos ...
-git add .
-git commit -m "feat: descripción del cambio"
-git push -u origin feat/mi-cambio
+dotnet test DulceRelax.Tests
 ```
 
-Luego se abre el pull request desde `feat/mi-cambio` hacia `master`. Los nombres de rama
-que ya se usan en el repositorio empiezan por `feat/`, `fix/` o `feature/`.
+The test project covers the booking rules: notice, business hours, time zone conversion,
+default duration and the one-hour rest block.
 
-## Créditos
+### Android builds
 
-Los iconos de la interfaz usan la fuente **Material Icons** de Google
-(https://github.com/google/material-design-icons), distribuida bajo la
-licencia Apache 2.0.
+Release builds are published as unsigned APKs on the
+[Releases](https://github.com/Bryanrf22/DulceRelax/releases) page. On the device, enable
+"install unknown apps" for the browser or file manager before installing them.
+
+The workflow in `.github/workflows/release-apk.yml` builds both APKs when a release is
+published; `ci.yml` builds the API and runs the tests on every pull request.
+
+## API reference
+
+See [`docs/api.md`](docs/api.md) for every endpoint, access level and error format.
+
+## Offline mode
+
+Only the admin app works offline.
+
+- `LocalDb` opens `dulcerelax_admin.db3` and creates the `citas`, `clientes` and
+  `cuenta_offline` tables.
+- `CitaCacheService` caches confirmed appointments; `ClienteCacheService` caches
+  customers. Both record the last sync in `Preferences`.
+- The agenda shows cached data when the network fails and the requested day is covered.
+  Coverage includes today and tomorrow.
+- `CuentaOfflineService` allows sign-in without network. The password is stored as
+  PBKDF2-SHA256 with 600,000 iterations, a 16-byte salt and a 32-byte hash, and compared
+  in constant time. The admin must have signed in on that device before.
+- `RedHandler` wraps network errors; statuses `502`, `503` and `504` count as server
+  unavailable.
+
+## Notifications
+
+| Notification | Source | Mechanism | Works offline |
+| --- | --- | --- | --- |
+| Confirmed appointment reminder | Admin app | Local notification scheduled 1 day and 1 hour before | Yes |
+| New appointment request | API | FCM push | No |
+| Appointment cancelled by client | API | FCM push | No |
+| Request still pending near the date | API | FCM push from a `BackgroundService` | No |
+
+Local reminders are recalculated on every sync, so a cancelled appointment loses its
+reminder. Push notifications are sent by `PushSender` with the Firebase Admin SDK.
+
+`AvisoLimiteWorker` checks pending appointments every hour and warns when the appointment
+is less than seven days away.
+
+> **Hosting caveat:** a `BackgroundService` only runs while the API is awake. If the host
+> scales to zero, move the check to a protected endpoint called by an external scheduler.
+
+## Design decisions
+
+- **Firebase instead of a custom auth server.** It provides email/password auth, JWTs,
+  password recovery and FCM without maintaining identity infrastructure.
+- **Offline only in the admin app.** That is where an unstable connection costs money;
+  the client app can ask the customer to retry.
+- **Business rules in the API, repeated in the client for early feedback.** The API
+  remains the authority, but the user does not fill a form only to get a rejection.
+- **Shared rules in `CitaRules`.** Extracting the rules removed the drift between the API
+  and the client and made them testable without Firestore.
+- **SQLite cache only for confirmed appointments.** Caching every request would make the
+  agenda lie about what is actually booked.
+
+## What I would change
+
+- Replace `AvisoLimiteWorker` with an external scheduler or a queue so reminders do not
+  depend on the API staying awake.
+- Add integration tests around the controllers and Firestore emulator.
+- Sign the Android APKs with a real keystore before distributing them.
+- Move the service catalog images from the app bundle to storage when the catalog grows.
+- Add an admin screen for the API address instead of relying on the `Preferences` key.
+
+## Known limitations
+
+- Unit tests cover the business rules, not the UI or the API integration.
+- The API runs on a free host that can scale to zero.
+- Android only.
+- The published APKs are unsigned.
+
+## Privacy
+
+The app handles names, phone numbers and home addresses because the service is delivered
+at the customer's home. This repository contains no production data and no credentials.
+Screenshots use fictional data only.
+
+## License
+
+Proprietary. Copyright © 2026 Bryan Romero. All rights reserved. The source is public for
+portfolio review; it is not open source. See [`LICENSE`](LICENSE).
+
+## Credits
+
+The UI icons use Google's **Material Icons** font
+(https://github.com/google/material-design-icons), distributed under the Apache License
+2.0.
