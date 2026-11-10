@@ -1,5 +1,6 @@
 ﻿using DulceRelax.API.Repositories;
 using DulceRelax.API.Services;
+using DulceRelax.Shared;
 using DulceRelax.Shared.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,6 @@ namespace DulceRelax.API.Controllers
     [Authorize]
     public class CitaController : ControllerBase
     {
-        private const int MinutosPorDefecto = 60;
-
         private readonly CitaRepository _repository;
         private readonly MasajeRepository _masajes;
         private readonly HorarioRepository _horario;
@@ -36,7 +35,7 @@ namespace DulceRelax.API.Controllers
             User.FindFirst("admin")?.Value.Equals("true", StringComparison.OrdinalIgnoreCase) == true;
 
         private static int Minutos(MasajeDTO? masaje) =>
-            masaje is { DuracionMinutos: > 0 } ? masaje.DuracionMinutos : MinutosPorDefecto;
+            CitaRules.DuracionMinutos(masaje?.DuracionMinutos ?? 0);
 
         [HttpGet]
         [Authorize(Policy = "Admin")]
@@ -81,7 +80,7 @@ namespace DulceRelax.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Crear(RegistrarCitaDTO dto)
         {
-            if (dto.FechaHora.ToUniversalTime() < DateTime.UtcNow.AddDays(5))
+            if (!CitaRules.CumpleAnticipacion(dto.FechaHora.ToUniversalTime(), DateTime.UtcNow))
                 return BadRequest(new { error = "La cita debe solicitarse con al menos 5 días de anticipación." });
 
             var masaje = await _masajes.GetById(dto.MasajeId);
@@ -125,7 +124,7 @@ namespace DulceRelax.API.Controllers
                     return BadRequest(new { error = "Solo se pueden editar citas pendientes." });
 
                 var cambioFecha = Math.Abs((dto.FechaHora.ToUniversalTime() - cita.FechaHora.ToUniversalTime()).TotalMinutes) >= 1;
-                if (cambioFecha && dto.FechaHora.ToUniversalTime() < DateTime.UtcNow.AddDays(5))
+                if (cambioFecha && !CitaRules.CumpleAnticipacion(dto.FechaHora.ToUniversalTime(), DateTime.UtcNow))
                     return BadRequest(new { error = "La cita debe solicitarse con al menos 5 días de anticipación." });
 
                 dto.Estado = EstadoCita.Pendiente;

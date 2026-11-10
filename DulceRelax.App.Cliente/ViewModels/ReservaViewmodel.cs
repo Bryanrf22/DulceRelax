@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DulceRelax.App.Cliente.Services;
+using DulceRelax.Shared;
 using DulceRelax.Shared.DTOs;
 
 namespace DulceRelax.App.Cliente.ViewModels
@@ -23,9 +24,9 @@ namespace DulceRelax.App.Cliente.ViewModels
         [ObservableProperty, NotifyPropertyChangedFor(nameof(TieneDuracion))]
         private MasajeDTO? masaje;
 
-        [ObservableProperty] private DateTime fechaMinima = DateTime.Today.AddDays(5);
+        [ObservableProperty] private DateTime fechaMinima = DateTime.Today.AddDays(CitaRules.DiasAnticipacion);
         [ObservableProperty, NotifyPropertyChangedFor(nameof(HorarioDiaTexto)), NotifyPropertyChangedFor(nameof(HayHorarioDia))]
-        private DateTime fecha = DateTime.Today.AddDays(5);
+        private DateTime fecha = DateTime.Today.AddDays(CitaRules.DiasAnticipacion);
         [ObservableProperty] private TimeSpan hora = new(10, 0, 0);
         [ObservableProperty] private string telefono = "";
         [ObservableProperty] private string direccion = "";
@@ -74,21 +75,6 @@ namespace DulceRelax.App.Cliente.ViewModels
             OnPropertyChanged(nameof(HayHorarioDia));
         }
 
-        private bool DentroDeHorario(DateTime inicio, int minutos)
-        {
-            if (_horario?.Dias is null || _horario.Dias.Count == 0) return true;
-
-            if (!_horario.Dias.TryGetValue(inicio.DayOfWeek.ToString(), out var d) || !d.Activo)
-                return false;
-
-            if (!TimeSpan.TryParse(d.HoraInicio, out var abre) ||
-                !TimeSpan.TryParse(d.HoraFin, out var cierra))
-                return false;
-
-            var fin = inicio.AddMinutes(minutos);
-            return fin.Date == inicio.Date && inicio.TimeOfDay >= abre && fin.TimeOfDay <= cierra;
-        }
-
         private async Task CargarEdicionAsync(RespuestaCitaDTO cita)
         {
             _cita = cita;
@@ -98,7 +84,7 @@ namespace DulceRelax.App.Cliente.ViewModels
             OnPropertyChanged(nameof(MostrarTelefono));
 
             var local = cita.FechaHora.ToLocalTime();
-            var minimaNormal = DateTime.Today.AddDays(5);
+            var minimaNormal = DateTime.Today.AddDays(CitaRules.DiasAnticipacion);
 
             FechaMinima = local.Date < minimaNormal ? local.Date : minimaNormal;
             Fecha = local.Date;
@@ -143,14 +129,14 @@ namespace DulceRelax.App.Cliente.ViewModels
             var cambioFecha = !EsEdicion ||
                 Math.Abs((utc - _cita!.FechaHora.ToUniversalTime()).TotalMinutes) >= 1;
 
-            if (cambioFecha && local < DateTime.Now.AddDays(5))
+            if (cambioFecha && !CitaRules.CumpleAnticipacion(local, DateTime.Now))
             {
                 Error = "La cita debe solicitarse con al menos 5 días de anticipación.";
                 return;
             }
 
-            var minutos = Masaje.DuracionMinutos > 0 ? Masaje.DuracionMinutos : 60;
-            if (cambioFecha && !DentroDeHorario(local, minutos))
+            var minutos = CitaRules.DuracionMinutos(Masaje.DuracionMinutos);
+            if (cambioFecha && !CitaRules.EstaDentroDelHorario(local, minutos, _horario))
             {
                 Error = $"La cita ({minutos} min) debe quedar dentro del horario de atención. {HorarioDiaTexto}".Trim();
                 return;

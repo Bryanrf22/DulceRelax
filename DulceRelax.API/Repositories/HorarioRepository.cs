@@ -1,4 +1,5 @@
-﻿using DulceRelax.Shared.DTOs;
+﻿using DulceRelax.Shared;
+using DulceRelax.Shared.DTOs;
 using Google.Cloud.Firestore;
 
 namespace DulceRelax.API.Repositories
@@ -28,22 +29,7 @@ namespace DulceRelax.API.Repositories
         public async Task<bool> EstaDentroAsync(DateTime utc, int minutos)
         {
             var horario = await GetAsync();
-            if (horario?.Dias is null || horario.Dias.Count == 0) return true;
-
-            var inicio = TimeZoneInfo.ConvertTimeFromUtc(
-                DateTime.SpecifyKind(utc, DateTimeKind.Utc), _zona);
-            var fin = inicio.AddMinutes(minutos);
-
-            if (!horario.Dias.TryGetValue(inicio.DayOfWeek.ToString(), out var dia) || !dia.Activo)
-                return false;
-
-            if (!TimeSpan.TryParse(dia.HoraInicio, out var abre) ||
-                !TimeSpan.TryParse(dia.HoraFin, out var cierra))
-                return false;
-
-            return fin.Date == inicio.Date
-                && inicio.TimeOfDay >= abre
-                && fin.TimeOfDay <= cierra;
+            return CitaRules.EstaDentroDelHorarioUtc(utc, minutos, horario, _zona);
         }
     }
 }
