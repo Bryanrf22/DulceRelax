@@ -1,7 +1,9 @@
 ﻿using DulceRelax.App.Cliente.Services;
 using DulceRelax.App.Cliente.Views;
 using DulceRelax.App.Cliente.ViewModels;
+using DulceRelax.Shared;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
 
 namespace DulceRelax.App.Cliente
 {
@@ -11,7 +13,8 @@ namespace DulceRelax.App.Cliente
         {
             var builder = MauiApp.CreateBuilder();
 
-            var apiUrl = new Uri("https://dulcerelax.onrender.com/");
+            var apiUrl = ApiSettings.Resolve(
+                Preferences.Default.Get(ApiSettings.PreferenceKey, string.Empty));
 
             builder.Services.AddTransient<AuthHandler>();
             builder.Services.AddHttpClient<IAuthService, AuthService>(c => c.BaseAddress = apiUrl)

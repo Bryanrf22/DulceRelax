@@ -2,7 +2,9 @@
 using DulceRelax.App.Admin.Services;
 using DulceRelax.App.Admin.ViewModels;
 using DulceRelax.App.Admin.Views;
+using DulceRelax.Shared;
 using Microsoft.Maui.LifecycleEvents;
+using Microsoft.Maui.Storage;
 using Plugin.Firebase.CloudMessaging;
 using Plugin.LocalNotification;
 #if ANDROID
@@ -19,7 +21,8 @@ namespace DulceRelax.App.Admin
 
             var builder = MauiApp.CreateBuilder();
 
-            var apiUrl = new Uri("https://dulcerelax.onrender.com/");
+            var apiUrl = ApiSettings.Resolve(
+                Preferences.Default.Get(ApiSettings.PreferenceKey, string.Empty));
 
             builder.Services.AddTransient<AuthHandler>();
             builder.Services.AddHttpClient<IAuthService, AuthService>(c => c.BaseAddress = apiUrl)
