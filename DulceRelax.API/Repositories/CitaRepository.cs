@@ -1,4 +1,5 @@
-﻿using DulceRelax.Shared.DTOs;
+﻿using DulceRelax.Shared;
+using DulceRelax.Shared.DTOs;
 using Google.Cloud.Firestore;
 
 namespace DulceRelax.API.Repositories
@@ -7,18 +8,11 @@ namespace DulceRelax.API.Repositories
 
     public class CitaRepository
     {
-        private static readonly TimeSpan Descanso = TimeSpan.FromHours(1);
-        private static readonly TimeSpan DuracionPorDefecto = TimeSpan.FromHours(1);
-        private static readonly TimeSpan BloqueoMaximo = TimeSpan.FromHours(5);
-
         private readonly FirestoreDb _db;
 
         public CitaRepository(FirestoreDb db) => _db = db;
 
         private CollectionReference Citas => _db.Collection("citas");
-
-        private static TimeSpan Bloque(int minutos) =>
-            (minutos > 0 ? TimeSpan.FromMinutes(minutos) : DuracionPorDefecto) + Descanso;
 
         private static bool Bloquea(CitaDTO c) => c.Estado == EstadoCita.Confirmada;
 
@@ -67,7 +61,7 @@ namespace DulceRelax.API.Repositories
         public async Task<List<(DateTime Inicio, DateTime Fin)>> GetBloqueosAsync(DateTime desdeUtc, DateTime hastaUtc)
         {
             var snap = await Citas
-                .WhereGreaterThan("FechaHora", Timestamp.FromDateTime(desdeUtc - BloqueoMaximo))
+                .WhereGreaterThan("FechaHora", Timestamp.FromDateTime(desdeUtc - CitaRules.BloqueoMaximo))
                 .WhereLessThan("FechaHora", Timestamp.FromDateTime(hastaUtc))
                 .GetSnapshotAsync();
 
@@ -77,7 +71,7 @@ namespace DulceRelax.API.Repositories
                 .Select(c =>
                 {
                     var ini = c.FechaHora.ToDateTime();
-                    return (Inicio: ini, Fin: ini + Bloque(c.DuracionMinutos));
+                    return (Inicio: ini, Fin: ini + CitaRules.Bloqueo(c.DuracionMinutos));
                 })
                 .Where(b => b.Fin > desdeUtc)
                 .OrderBy(b => b.Inicio)
@@ -163,9 +157,9 @@ namespace DulceRelax.API.Repositories
 
         private async Task<bool> HayConflictoAsync(Transaction tx, DateTime inicio, int duracionMinutos, string? excluirId)
         {
-            var finBloque = inicio + Bloque(duracionMinutos);
+            var finBloque = CitaRules.FinBloqueo(inicio, duracionMinutos);
             var query = Citas
-                .WhereGreaterThan("FechaHora", Timestamp.FromDateTime(inicio - BloqueoMaximo))
+                .WhereGreaterThan("FechaHora", Timestamp.FromDateTime(inicio - CitaRules.BloqueoMaximo))
                 .WhereLessThan("FechaHora", Timestamp.FromDateTime(finBloque));
 
             var snap = await tx.GetSnapshotAsync(query);
@@ -177,7 +171,7 @@ namespace DulceRelax.API.Repositories
                 if (!Bloquea(c)) return false;
 
                 var ini = c.FechaHora.ToDateTime();
-                return ini < finBloque && ini + Bloque(c.DuracionMinutos) > inicio;
+                return CitaRules.SeSolapan(inicio, duracionMinutos, ini, c.DuracionMinutos);
             });
         }
 

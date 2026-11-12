@@ -1,6 +1,18 @@
 @DulceRelax.API_HostAddress = http://localhost:5082
 
-GET {{DulceRelax.API_HostAddress}}/weatherforecast/
+### OpenAPI document (Development)
+GET {{DulceRelax.API_HostAddress}}/openapi/v1.json
 Accept: application/json
 
-###
+### Protected endpoint: returns 401 without a token
+GET {{DulceRelax.API_HostAddress}}/api/masaje
+Accept: application/json
+
+### Sign in
+POST {{DulceRelax.API_HostAddress}}/api/usuario/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "<password>"
+}
