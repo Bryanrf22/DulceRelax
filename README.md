@@ -180,12 +180,45 @@ default duration and the one-hour rest block.
 
 ### Android builds
 
-Release builds are published as unsigned APKs on the
-[Releases](https://github.com/Bryanrf22/DulceRelax/releases) page. On the device, enable
-"install unknown apps" for the browser or file manager before installing them.
+Every published release carries two signed APKs, built and attached automatically by
+`.github/workflows/release-apk.yml`:
 
-The workflow in `.github/workflows/release-apk.yml` builds both APKs when a release is
-published; `ci.yml` builds the API and runs the tests on every pull request.
+| File | App |
+| --- | --- |
+| `com.bryanrf22.dulcerelax.cliente-Signed.apk` | Client |
+| `com.bryanrf22.dulcerelax.admin-Signed.apk` | Admin |
+
+On the device, enable "install unknown apps" for the browser or file manager before
+installing them. `ci.yml` builds the API and runs the tests on every pull request.
+
+#### Release signing
+
+The workflow signs both APKs with a release keystore kept in repository secrets, never in
+the repository. Create the keystore once:
+
+```bash
+keytool -genkeypair -v -keystore dulcerelax.keystore \
+  -alias dulcerelax -keyalg RSA -keysize 2048 -validity 10000
+base64 -w0 dulcerelax.keystore > dulcerelax.keystore.b64
+```
+
+Then add these secrets under **Settings → Secrets and variables → Actions**:
+
+| Secret | Required | Content |
+| --- | --- | --- |
+| `ANDROID_KEYSTORE_BASE64` | Yes | Output of `base64` for the keystore file |
+| `ANDROID_KEY_ALIAS` | Yes | Alias passed to `keytool`, for example `dulcerelax` |
+| `ANDROID_KEYSTORE_PASSWORD` | Yes | Keystore password |
+| `ANDROID_KEY_PASSWORD` | No | Key password, only if it differs from the keystore password |
+| `GOOGLE_SERVICES_JSON_BASE64` | No | `google-services.json` in base64; without it the admin APK has no FCM push |
+
+Keep a backup of the keystore and its passwords: Android rejects updates signed with a
+different key, so losing them forces every user to uninstall and reinstall.
+
+For each release, raise `ApplicationVersion` (an integer) in both `.csproj` files before
+tagging; `ApplicationDisplayVersion` is the version users see. Then publish the release
+and the workflow attaches the new APKs. A `workflow_dispatch` run only builds the APKs and
+uploads them as a workflow artifact, without touching any release.
 
 ## API reference
 
@@ -243,7 +276,6 @@ is less than seven days away.
 - Replace `AvisoLimiteWorker` with an external scheduler or a queue so reminders do not
   depend on the API staying awake.
 - Add integration tests around the controllers and Firestore emulator.
-- Sign the Android APKs with a real keystore before distributing them.
 - Move the service catalog images from the app bundle to storage when the catalog grows.
 - Add an admin screen for the API address instead of relying on the `Preferences` key.
 
@@ -252,7 +284,8 @@ is less than seven days away.
 - Unit tests cover the business rules, not the UI or the API integration.
 - The API runs on a free host that can scale to zero.
 - Android only.
-- The published APKs are unsigned.
+- The admin APK only receives push notifications when the
+  `GOOGLE_SERVICES_JSON_BASE64` secret is configured.
 
 ## Privacy
 

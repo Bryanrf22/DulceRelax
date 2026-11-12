@@ -215,12 +215,46 @@ zona horaria, duración por defecto y la hora de descanso.
 
 ### Compilaciones Android
 
-Las compilaciones Release se publican como APK sin firmar en la página de
-[Releases](https://github.com/Bryanrf22/DulceRelax/releases). En el equipo hay que
-habilitar "instalar apps desconocidas" para el navegador o el gestor de archivos.
+Cada release publicado incluye dos APK firmados, que
+`.github/workflows/release-apk.yml` compila y adjunta automáticamente:
 
-El flujo `.github/workflows/release-apk.yml` compila los dos APK al publicar un release;
-`ci.yml` compila la API y corre las pruebas en cada pull request.
+| Archivo | App |
+| --- | --- |
+| `com.bryanrf22.dulcerelax.cliente-Signed.apk` | Cliente |
+| `com.bryanrf22.dulcerelax.admin-Signed.apk` | Administrador |
+
+En el equipo hay que habilitar "instalar apps desconocidas" para el navegador o el gestor
+de archivos. `ci.yml` compila la API y corre las pruebas en cada pull request.
+
+#### Firma de los releases
+
+El flujo firma los dos APK con un keystore de release guardado en secrets del repositorio,
+nunca en el repositorio. El keystore se crea una sola vez:
+
+```bash
+keytool -genkeypair -v -keystore dulcerelax.keystore \
+  -alias dulcerelax -keyalg RSA -keysize 2048 -validity 10000
+base64 -w0 dulcerelax.keystore > dulcerelax.keystore.b64
+```
+
+Luego agrega estos secrets en **Settings → Secrets and variables → Actions**:
+
+| Secret | Obligatorio | Contenido |
+| --- | --- | --- |
+| `ANDROID_KEYSTORE_BASE64` | Sí | Salida de `base64` del keystore |
+| `ANDROID_KEY_ALIAS` | Sí | Alias usado en `keytool`, por ejemplo `dulcerelax` |
+| `ANDROID_KEYSTORE_PASSWORD` | Sí | Contraseña del keystore |
+| `ANDROID_KEY_PASSWORD` | No | Contraseña de la clave, solo si difiere de la del keystore |
+| `GOOGLE_SERVICES_JSON_BASE64` | No | `google-services.json` en base64; sin él el APK de administrador no tiene push FCM |
+
+Guarda una copia del keystore y de sus contraseñas: Android rechaza actualizaciones
+firmadas con otra clave, así que perderlas obliga a cada usuario a desinstalar y
+reinstalar.
+
+En cada release sube `ApplicationVersion` (un entero) en los dos `.csproj` antes de crear
+el tag; `ApplicationDisplayVersion` es la versión que ve el usuario. Después publica el
+release y el flujo adjunta los APK nuevos. Una corrida con `workflow_dispatch` solo
+compila los APK y los deja como artifact de la corrida, sin tocar ningún release.
 
 ## Referencia de la API
 
@@ -322,7 +356,6 @@ DulceRelax/
 - Reemplazar `AvisoLimiteWorker` por un scheduler externo o una cola, para que los avisos
   no dependan de que la API esté despierta.
 - Agregar pruebas de integración de los controladores y del emulador de Firestore.
-- Firmar los APK con un keystore real antes de distribuirlos.
 - Mover las imágenes del catálogo a almacenamiento cuando el catálogo crezca.
 - Agregar una pantalla de administración para la URL de la API en lugar de la preferencia
   `api_base_url`.
@@ -332,7 +365,8 @@ DulceRelax/
 - Las pruebas cubren las reglas de negocio, no la interfaz ni la integración de la API.
 - La API corre en un hosting gratuito que puede escalar a cero.
 - Solo Android.
-- Los APK publicados no están firmados.
+- El APK de administrador solo recibe notificaciones push cuando está configurado el
+  secret `GOOGLE_SERVICES_JSON_BASE64`.
 
 ## Privacidad
 
