@@ -5,9 +5,6 @@ admin), featuring Firebase authentication, offline support and push notification
 
 [English](README.md) · [Español](README.es.md)
 
-> Screenshots are pending capture. The checklist and file names live in
-> [`docs/screenshots`](docs/screenshots/README.md).
-
 ## Overview
 
 Clients book a massage at home by choosing a service, date, time and address. Admins
@@ -41,6 +38,23 @@ that flow.
 - Offline mode for confirmed appointments already cached on the device
 - Push notifications for new and cancelled requests
 - Reminder when a request is still pending close to the appointment date
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/dulcerelax-client-catalog.webp" width="24%" alt="Client: service catalog with price and duration">
+  <img src="docs/screenshots/dulcerelax-client-booking.webp" width="24%" alt="Client: booking form with date, time and address">
+  <img src="docs/screenshots/dulcerelax-client-appointments.webp" width="24%" alt="Client: my appointments with confirmed and pending states">
+  <img src="docs/screenshots/dulcerelax-admin-agenda.webp" width="24%" alt="Admin: daily agenda with a confirmed appointment">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/dulcerelax-flow.gif" width="240" alt="Booking to confirmation flow">
+</p>
+
+The apps are Spanish-only. Screenshots were captured from a debug build on Android with
+fictional test data; the capture checklist lives in
+[`docs/screenshots`](docs/screenshots/README.md).
 
 ## Tech stack
 

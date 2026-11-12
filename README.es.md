@@ -6,9 +6,6 @@ modo sin conexión y notificaciones push.
 
 [Español](README.es.md) · [English](README.md)
 
-> Las capturas están pendientes. La lista y los nombres de archivo viven en
-> [`docs/screenshots`](docs/screenshots/README.md).
-
 ## Descripción
 
 El cliente pide una cita eligiendo masaje, fecha, hora y dirección. El administrador la
@@ -42,6 +39,23 @@ sobre ese flujo.
 - Trabajo sin conexión con las citas confirmadas que ya se descargaron en el equipo.
 - Avisos por notificación cuando el cliente pide una cita o la cancela.
 - Aviso cuando una solicitud sigue sin confirmar cerca de la fecha de la cita.
+
+## Capturas
+
+<p align="center">
+  <img src="docs/screenshots/dulcerelax-client-catalog.webp" width="24%" alt="Catálogo del cliente con precio y duración">
+  <img src="docs/screenshots/dulcerelax-client-booking.webp" width="24%" alt="Formulario de cita con fecha, hora y dirección">
+  <img src="docs/screenshots/dulcerelax-client-appointments.webp" width="24%" alt="Mis citas con estados confirmada y pendiente">
+  <img src="docs/screenshots/dulcerelax-admin-agenda.webp" width="24%" alt="Agenda diaria del administrador con una cita confirmada">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/dulcerelax-flow.gif" width="240" alt="Flujo de reserva a confirmación">
+</p>
+
+Las apps están solo en español. Las capturas se tomaron de una compilación de depuración
+en Android con datos ficticios; la lista de captura vive en
+[`docs/screenshots`](docs/screenshots/README.md).
 
 ## Tecnologías
 
